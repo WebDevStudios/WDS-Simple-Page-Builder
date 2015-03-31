@@ -10,3 +10,6 @@ Dynamically add template parts within the Edit Page screen and reorder those com
 
 The results are saved to post meta on the page and visible as soon as you save the page.
 ![page builder front-end](https://cldup.com/djUNBYKcEd.gif)
+
+Options page
+![options page](https://cldup.com/VawlJxUjBB-1200x1200.png)
