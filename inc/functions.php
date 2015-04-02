@@ -100,8 +100,32 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 		}
+
+		/**
+		 * Helper function to keep things DRY, takes care of loading the specific template
+		 * part requested
+		 *
+		 * @param array $part A template part array from either the global option or the
+		 *                    post meta for the current page.
+		 */
+		public function load_template_part( $part = array() ) {
+
+			// bail if nothing was passed
+			if ( empty( $part ) ) {
+				return;
 			}
 
+			// bail if, for some reason, there is no template_group array key
+			if ( ! isset( $part['template_group'] ) ) {
+				return;
+			}
+
+			// bail if no parts were set
+			if ( 'none' == $part['template_group'] ) {
+				return;
+			}
+
+			load_template( get_template_directory() . '/' . wds_template_parts_dir() . '/' . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' );
 
 		}
 
