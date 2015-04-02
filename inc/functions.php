@@ -64,7 +64,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				'name'         => __( 'Template', 'wds-simple-page-builder' ),
 				'id'           => 'template_group',
 				'type'         => 'select',
-				'options'      => $this->get_template_parts()
+				'options'      => wds_page_builder_get_parts()
 			) );
 		}
 

@@ -174,5 +174,31 @@ function wds_template_parts_dir() {
 	return $directory;
 }
 
+/**
+ * Get a list of the template parts in the current theme, return them
+ * in an array.
+ *
+ * @return array An array of template parts
+ */
+function wds_page_builder_get_parts() {
+	$parts        = array();
+	$parts_dir    = ( wds_page_builder_get_option( 'parts_dir' ) ) ? trailingslashit( get_stylesheet_directory() ) .wds_page_builder_get_option( 'parts_dir' ) : get_stylesheet_directory() . '/parts';
+	$parts_prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
+
+	// add a generic 'none' option
+	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
+
+	foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
+		$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
+		$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
+	}
+
+	if ( empty( $parts ) ) {
+		return __( 'No template parts found', 'wds-simple-page-builder' );
+	}
+
+	return $parts;
+}
+
 // Get it started
 WDS_Page_Builder_Options();
