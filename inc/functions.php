@@ -69,39 +69,37 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		/**
-		 * Get a list of the template parts in the current theme, return them
-		 * in an array.
-		 *
-		 * @return array An array of template parts
+		 * Handle identifying the template parts to use and trigger loading those parts
 		 */
-		public function get_template_parts() {
-
-			$parts        = array();
-			$parts_dir    = ( wds_page_builder_get_option( 'parts_dir' ) ) ?get_stylesheet_directory() . wds_page_builder_get_option( 'parts_dir' ) : get_stylesheet_directory() . '/parts';
-			$parts_prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts-prefix' ) . '-' : 'part';
-
-			foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
-				$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
-				$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
-			}
-
-			return $parts;
-		}
-
-		public function add_template_parts( $template ) {
+		public function add_template_parts() {
 
 			if ( ! is_page() ) {
-				return $template;
+				return;
 			}
 
-			$parts = get_post_meta( get_the_ID(), '_wds_builder_template', true );
+			$parts        = get_post_meta( get_the_ID(), '_wds_builder_template', true );
+			$global_parts = wds_page_builder_get_option( 'parts_global_templates' );
 
-			if ( ! $parts ) {
-				return $template;
+			// if there are no parts saved for this post and there are no global parts
+			if ( ! $parts && ! $global_parts ) {
+				return;
 			}
 
+			// check for locally set template parts first, make sure that the part isn't set to none, default to the globals if they aren't set
+			if ( ! $parts || in_array( 'none', $parts[0] ) ) {
+
+				$parts = $global_parts;
+
+			}
+
+			// loop through each part and load the template parts
 			foreach( $parts as $part ) {
-				load_template( get_template_directory() . '/' . wds_template_parts_dir() . '/' . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' );
+
+				$this->load_template_part( $part );
+
+			}
+
+		}
 			}
 
 
