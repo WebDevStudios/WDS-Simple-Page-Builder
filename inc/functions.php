@@ -23,7 +23,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->directory_url  = wds_page_builder()->directory_url;
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
-			add_filter( 'loop_end', array( $this, 'add_template_parts' ) );
+			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ) );
 		}
 
 		/**
