@@ -5,6 +5,22 @@ Uses existing template parts in the currently-active theme to build a customized
 
 Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
 
+## Usage
+
+To use this plugin, your theme template files must have the following `do_action` wherever you want the template parts to load:
+
+`<?php do_action( 'wds_page_builder_load_parts' ); ?>`
+
+This will take care of loading the correct template parts in the order you specified.
+
+## Page vs Global Parts
+
+The page builder will, by default, use the template parts that were set on the page when you set them on the Edit page screen. However, if no template parts were defined on the individual page, you can also set Global Template Parts that will load on all pages that don't have their own, individual template parts defined.
+
+You can leave the Global setting to "- No Template Parts -" to not define any global template parts if individual page-specific template parts weren't set.
+
+## Screenshots
+
 Dynamically add template parts within the Edit Page screen and reorder those components.
 ![page builder ui](https://cldup.com/epETzuW4Dx.gif)
 
