@@ -115,6 +115,27 @@ class WDS_Page_Builder_Options {
 			'default' => 'part',
 		) );
 
+		$group_field_id = $cmb->add_field( array(
+			'name'         => __( 'Global Template Parts', 'wds-simple-page-builder' ),
+			'desc'         => __( 'These can be used on pages that don\'t have template parts added to them.', 'wds-simple-page-builder' ),
+			'id'           => 'parts_global_templates',
+			'type'         => 'group',
+			'options'      => array(
+				'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
+				'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
+				'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+				'sortable'      => true
+			)
+		) );
+
+		$cmb->add_group_field( $group_field_id, array(
+			'name'         => __( 'Template', 'wds-simple-page-builder' ),
+			'id'           => 'template_group',
+			'type'         => 'select',
+			'options'      => wds_page_builder_get_parts(),
+			'default'      => 'none'
+		) );
+
 	}
 
 	/**
