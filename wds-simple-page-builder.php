@@ -31,6 +31,11 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . '/inc/options.php' );
 			require_once( $this->directory_path . '/inc/functions.php' );
 
+			// include CMB2 if it doesn't already exist
+			if ( ! defined( 'CMB2_LOADED' ) ) {
+				require_once( $this->directory_path . '/inc/cmb2/init.php' );
+			}
+
 			// Load Textdomain
 			load_plugin_textdomain( 'wds-simple-page-builder', false, dirname( $this->basename ) . '/languages' );
 
