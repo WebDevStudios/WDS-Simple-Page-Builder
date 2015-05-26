@@ -34,10 +34,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			// Load Textdomain
 			load_plugin_textdomain( 'wds-simple-page-builder', false, dirname( $this->basename ) . '/languages' );
 
-			// Activation/Deactivation Hooks
-			register_activation_hook( __FILE__, array( $this, 'activate' ) );
-			register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-
 			// Make sure we have our requirements, and disable the plugin if we do not have them.
 			add_action( 'admin_notices', array( $this, 'maybe_disable_plugin' ) );
 
