@@ -26,3 +26,8 @@ The results are saved to post meta on the page and visible as soon as you save t
 
 Options page
 ![options page](https://cldup.com/VawlJxUjBB-1200x1200.png)
+
+## Changelog
+
+**1.0.1**
+* switched to using get_queried_object instead of get_the_ID to get a post id when checking the existence of post meta for cases when a loop is not being used or the action is fired outside the loop.
