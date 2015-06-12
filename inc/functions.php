@@ -77,7 +77,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				return;
 			}
 
-			$parts        = get_post_meta( get_post_meta( get_queried_object()->ID, '_wds_builder_template', true );
+			$parts        = get_post_meta( get_queried_object()->ID, '_wds_builder_template', true );
 			$global_parts = wds_page_builder_get_option( 'parts_global_templates' );
 
 			// if there are no parts saved for this post and there are no global parts
