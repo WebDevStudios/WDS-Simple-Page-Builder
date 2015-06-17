@@ -157,7 +157,7 @@ class WDS_Page_Builder_Options {
 		$post_types = get_post_types( array( 'public' => true ), 'objects' );
 
 		foreach ( $post_types as $post_type ) {
-			$types[$post_type->name] => $post_type->labels->name;
+			$types[$post_type->name] = $post_type->labels->name;
 		}
 
 		return $types;
