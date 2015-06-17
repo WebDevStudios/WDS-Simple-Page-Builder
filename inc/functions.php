@@ -40,10 +40,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			$prefix = '_wds_builder_';
 
+			$object_types = ( wds_page_builder_get_option( 'post_types' ) ) ? wds_page_builder_get_option( 'post_types' ) : array( 'page' );
+
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder',
 				'title'        => __( 'Page Builder', 'wds-simple-page-builder' ),
-				'object_types' => array( 'page' ),
+				'object_types' => $object_types,
 				'context'      => 'normal',
 				'priority'     => 'high',
 				'show_names'   => true,
@@ -73,7 +75,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function add_template_parts() {
 
-			if ( ! is_page() ) {
+			if ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
 				return;
 			}
 
