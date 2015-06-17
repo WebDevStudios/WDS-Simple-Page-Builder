@@ -115,6 +115,17 @@ class WDS_Page_Builder_Options {
 			'default' => 'part',
 		) );
 
+		$cmb->add_field( array(
+			'name' => __( 'Allowed Post Types', 'wds-simple-page-builder' ),
+			'desc' => __( 'Post types that can use the page builder. Default is Page.', 'wds-simple-page-builder' ),
+			'id'   => 'post_types',
+			'type' => 'multicheck',
+			'default' => 'page',
+			'options' => array(
+			)
+			// get post types
+		) );
+
 		$group_field_id = $cmb->add_field( array(
 			'name'         => __( 'Global Template Parts', 'wds-simple-page-builder' ),
 			'desc'         => __( 'These can be used on pages that don\'t have template parts added to them.', 'wds-simple-page-builder' ),
