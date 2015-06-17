@@ -29,5 +29,7 @@ Options page
 
 ## Changelog
 
+**1.1**
+
 **1.0.1**
 * switched to using get_queried_object instead of get_the_ID to get a post id when checking the existence of post meta for cases when a loop is not being used or the action is fired outside the loop.

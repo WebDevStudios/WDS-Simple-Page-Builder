@@ -3,7 +3,7 @@ Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.0.1
+Stable tag: 1.1
 
 Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
 
@@ -43,6 +43,8 @@ You can leave the Global setting to "- No Template Parts -" to not define any gl
 3. Options page
 
 == Changelog ==
+
+= 1.1 =
 
 = 1.0.1 =
 * switched to using get_queried_object instead of get_the_ID to get a post id when checking the existence of post meta for cases when a loop is not being used or the action is fired outside the loop.
