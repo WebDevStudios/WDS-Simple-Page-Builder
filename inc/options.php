@@ -121,9 +121,7 @@ class WDS_Page_Builder_Options {
 			'id'   => 'post_types',
 			'type' => 'multicheck',
 			'default' => 'page',
-			'options' => array(
-			)
-			// get post types
+			'options' => $this->get_post_types()
 		) );
 
 		$group_field_id = $cmb->add_field( array(
