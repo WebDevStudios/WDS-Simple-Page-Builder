@@ -45,6 +45,7 @@ You can leave the Global setting to "- No Template Parts -" to not define any gl
 == Changelog ==
 
 = 1.1 =
+* added post type support beyond just pages. Options page now allows you to check which post types you want to use the page builder on, and the page builder metabox will appear on the Add New/Edit page for those post types.
 
 = 1.0.1 =
 * switched to using get_queried_object instead of get_the_ID to get a post id when checking the existence of post meta for cases when a loop is not being used or the action is fired outside the loop.
