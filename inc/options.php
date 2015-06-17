@@ -125,7 +125,7 @@ class WDS_Page_Builder_Options {
 			)
 			// get post types
 		) );
-$this->get_post_types();
+
 		$group_field_id = $cmb->add_field( array(
 			'name'         => __( 'Global Template Parts', 'wds-simple-page-builder' ),
 			'desc'         => __( 'These can be used on pages that don\'t have template parts added to them.', 'wds-simple-page-builder' ),
