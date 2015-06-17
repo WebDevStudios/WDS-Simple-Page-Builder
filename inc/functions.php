@@ -73,7 +73,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function add_template_parts() {
 
-			if ( ! is_page() ) {
+			if ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
 				return;
 			}
 
