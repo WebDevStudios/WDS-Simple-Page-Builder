@@ -153,7 +153,11 @@ $this->get_post_types();
 
 		$post_types = get_post_types( array( 'public' => true ), 'objects' );
 
-		var_dump($post_types);
+		foreach ( $post_types as $post_type ) {
+			$types[$post_type->name] => $post_type->labels->name;
+		}
+
+		return $types;
 
 	}
 
