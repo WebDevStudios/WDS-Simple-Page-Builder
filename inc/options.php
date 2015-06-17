@@ -147,6 +147,11 @@ class WDS_Page_Builder_Options {
 
 	}
 
+	/**
+	 * Get an array of post types for the options page multicheck array
+	 * @uses   get_post_types
+	 * @return array 			An array of public post types
+	 */
 	public function get_post_types() {
 
 		$post_types = get_post_types( array( 'public' => true ), 'objects' );
