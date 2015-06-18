@@ -145,6 +145,44 @@ class WDS_Page_Builder_Options {
 			'default'      => 'none'
 		) );
 
+		$layouts_group_id = $cmb->add_field( array(
+			'name'         => __( 'Saved Layouts', 'wds-simple-page-builder' ),
+			'desc'         => __( 'Use saved layouts to enable multiple custom page layouts that can be used on different types of pages or post types. Useful to create default layouts for different post types or for having multiple "global" layouts.', 'wds-simple-page-builder' ),
+			'id'           => 'parts_saved_layouts',
+			'type'         => 'group',
+			'options'      => array(
+				'group_title'   => __( 'Layout {#}', 'wds-simple-page-builder' ),
+				'add_button'    => __( 'Add another layout', 'wds-simple-page-builder' ),
+				'remove_button' => __( 'Remove layout', 'wds-simple-page-builder' ),
+				'sortable'      => true
+			)
+		) );
+
+		$cmb->add_group_field( $layouts_group_id, array(
+			'name'         => __( 'Layout Name', 'wds-simple-page-builder' ),
+			'desc'         => __( 'This should be a unique name used to identify this layout.', 'wds-simple-page-builder' ),
+			'id'           => 'layouts_name',
+			'type'         => 'text_medium',
+			'attributes'   => array( 'required' => 'required' )
+		) );
+
+		$cmb->add_group_field( $layouts_group_id, array(
+			'name'         => __( 'Use as Default Layout', 'wds-simple-page-builder' ),
+			'desc'         => __( 'If you\'d like to use this layout as the default layout for all posts of a type, check the post type to make this layout the default for. If you do not want to set this as the default layout for any post type, leave all types unchecked. The layout can still be called manually in the <code>do_action</code>.', 'wds-simple-page-builder' ),
+			'id'           => 'default_layout',
+			'type'         => 'multicheck',
+			'options'      => $this->get_post_types()
+		) );
+
+		$cmb->add_group_field( $layouts_group_id, array(
+			'name'         => __( 'Template', 'wds-simple-page-builder' ),
+			'id'           => 'layouts_template',
+			'type'         => 'select',
+			'options'      => array_merge( array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ), wds_page_builder_get_parts() ),
+			'default'      => 'none',
+			'repeatable'   => true,
+		) );
+
 	}
 
 	/**
