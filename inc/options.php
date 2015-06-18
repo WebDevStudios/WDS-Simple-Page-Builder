@@ -178,7 +178,7 @@ class WDS_Page_Builder_Options {
 			'name'         => __( 'Template', 'wds-simple-page-builder' ),
 			'id'           => 'layouts_template',
 			'type'         => 'select',
-			'options'      => array_merge( array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ), wds_page_builder_get_parts() ),
+			'options'      => array_merge( wds_page_builder_get_parts(), array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ) ),
 			'default'      => 'none',
 			'repeatable'   => true,
 		) );
