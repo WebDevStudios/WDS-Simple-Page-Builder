@@ -176,7 +176,7 @@ class WDS_Page_Builder_Options {
 
 		$cmb->add_group_field( $layouts_group_id, array(
 			'name'         => __( 'Template', 'wds-simple-page-builder' ),
-			'id'           => 'layouts_template',
+			'id'           => 'template_group',
 			'type'         => 'select',
 			'options'      => array_merge( wds_page_builder_get_parts(), array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ) ),
 			'default'      => 'none',
