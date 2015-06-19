@@ -46,6 +46,7 @@ You can leave the Global setting to "- No Template Parts -" to not define any gl
 
 = 1.2 =
 * added saved layouts feature. Now you can save layouts and set those saved layouts as the defaults for post types. Or you can define a specific layout in the `do_action`, e.g. `do_action( 'wds_page_builder_load_parts', 'my named layout' )`
+* added a check for the existence of a template part before loading it -- prevents accidental blowing up of the page if parts are changed and not found
 
 = 1.1 =
 * added post type support beyond just pages. Options page now allows you to check which post types you want to use the page builder on, and the page builder metabox will appear on the Add New/Edit page for those post types.
