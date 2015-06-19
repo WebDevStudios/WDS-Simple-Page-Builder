@@ -151,6 +151,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				return;
 			}
 
+			// bail if the file doesn't exist
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_template_parts_dir() ) . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' ) ) {
+				return;
+			}
+
 			load_template( get_template_directory() . '/' . wds_template_parts_dir() . '/' . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' );
 
 		}
