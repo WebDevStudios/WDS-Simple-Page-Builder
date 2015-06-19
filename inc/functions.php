@@ -92,7 +92,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// if a layout was passed or a layout is being used by default for this post type, we're going to check that first
-			if ( $saved_layouts ) {
+			if ( ! $parts && $saved_layouts ) {
 
 				// loop through the saved layouts, we'll check for the one we're looking for
 				foreach( $saved_layouts as $saved_layout ) {
