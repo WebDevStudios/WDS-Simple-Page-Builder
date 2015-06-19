@@ -92,7 +92,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// if a layout was passed or a layout is being used by default for this post type, we're going to check that first
-			if ( $saved_layouts ) {
+			if ( ! $parts && $saved_layouts ) {
 
 				// loop through the saved layouts, we'll check for the one we're looking for
 				foreach( $saved_layouts as $saved_layout ) {
@@ -105,7 +105,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 							$parts[] = array( 'template_group' => $template_group );
 						} // end template part loop
 
-					} // end layotu check
+					} // end layout check
 
 				} // end saved layouts loop
 
@@ -148,6 +148,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			// bail if no parts were set
 			if ( 'none' == $part['template_group'] ) {
+				return;
+			}
+
+			// bail if the file doesn't exist
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_template_parts_dir() ) . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' ) ) {
 				return;
 			}
 
