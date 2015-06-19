@@ -105,7 +105,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 							$parts[] = array( 'template_group' => $template_group );
 						} // end template part loop
 
-					} // end layotu check
+					} // end layout check
 
 				} // end saved layouts loop
 
