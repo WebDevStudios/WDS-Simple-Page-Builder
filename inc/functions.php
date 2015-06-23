@@ -98,7 +98,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				foreach( $saved_layouts as $saved_layout ) {
 
 					// is the layout the one that was named or one that was set for this post type?
-					if ( $layout == $saved_layout['layouts_name'] || in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
+					if ( $layout == $saved_layout['layouts_name'] || isset( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
 
 						// loop through the template parts and prepare the $parts variable for the load_template_part method
 						foreach( $saved_layout['template_group'] as $template_group ) {
