@@ -107,12 +107,16 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 					} // end layout check
 
+					else {
+						$parts = array();
+					}
+
 				} // end saved layouts loop
 
 			} // done checking saved layouts
 
 			// check for locally set template parts, make sure that the part isn't set to none, default to the globals if they aren't set
-			elseif ( ! $parts || in_array( 'none', $parts[0] ) ) {
+			elseif ( '' == $parts || ! $parts || in_array( 'none', $parts[0] ) ) {
 
 				$parts = $global_parts;
 
