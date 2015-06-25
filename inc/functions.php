@@ -77,8 +77,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function add_template_parts( $layout = '' ) {
 
-			if ( ! wds_page_builder_get_option( 'parts_saved_layouts' ) && ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
-				return;
+			if ( '' == $layout ) {
+				if ( ! wds_page_builder_get_option( 'parts_saved_layouts' ) && ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
+					return;
+				}
 			}
 
 			$post_id       = get_queried_object()->ID;
@@ -87,18 +89,25 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$saved_layouts = wds_page_builder_get_option( 'parts_saved_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
-			if ( ( '' == $parts || ! $parts ) && ( ! $global_parts || 'none' == $global_parts[0]['template_group'] ) && ! $saved_layouts && $layout == '' ) {
+			if ( ! $parts && ! $global_parts && ! $saved_layouts && $layout == '' ) {
 				return;
 			}
 
 			// if a layout was passed or a layout is being used by default for this post type, we're going to check that first
-			if ( ( ! $parts || '' == $parts ) && $saved_layouts ) {
+			if ( ! $parts && $saved_layouts ) {
 
 				// loop through the saved layouts, we'll check for the one we're looking for
 				foreach( $saved_layouts as $saved_layout ) {
 
 					// is the layout the one that was named or one that was set for this post type?
-					if ( $layout == $saved_layout['layouts_name'] || is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
+					if ( $layout == $saved_layout['layouts_name'] ) {
+
+						$parts = array();
+						foreach( $saved_layout['template_group'] as $template_group ) {
+							$parts[] = array( 'template_group' => $template_group );
+						}
+
+					} elseif ( is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
 
 						// loop through the template parts and prepare the $parts variable for the load_template_part method
 						foreach( $saved_layout['template_group'] as $template_group ) {
@@ -107,16 +116,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 					} // end layout check
 
-					else {
-						$parts = array();
-					}
-
 				} // end saved layouts loop
 
 			} // done checking saved layouts
 
 			// check for locally set template parts, make sure that the part isn't set to none, default to the globals if they aren't set
-			elseif ( '' == $parts || ! $parts || in_array( 'none', $parts[0] ) ) {
+			elseif ( ! $parts || in_array( 'none', $parts[0] ) ) {
 
 				$parts = $global_parts;
 
