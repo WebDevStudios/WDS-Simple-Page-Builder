@@ -107,7 +107,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 							$parts[] = array( 'template_group' => $template_group );
 						}
 
-					} elseif ( is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
+					} elseif ( isset( $saved_layout['default_layout'] ) && is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
 
 						// loop through the template parts and prepare the $parts variable for the load_template_part method
 						foreach( $saved_layout['template_group'] as $template_group ) {
@@ -128,10 +128,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// loop through each part and load the template parts
-			foreach( $parts as $part ) {
-
-				$this->load_template_part( $part );
-
+			if ( is_array( $parts ) ) {
+				foreach( $parts as $part ) {
+					$this->load_template_part( $part );
+				}
 			}
 
 		}
