@@ -100,7 +100,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				foreach( $saved_layouts as $saved_layout ) {
 
 					// is the layout the one that was named or one that was set for this post type?
-					if ( $layout == $saved_layout['layouts_name'] ) {
+					if ( isset( $saved_layout['layouts_name'] ) && $layout == $saved_layout['layouts_name'] ) {
 
 						$parts = array();
 						foreach( $saved_layout['template_group'] as $template_group ) {
