@@ -1,4 +1,4 @@
-# WebDevStudios Simple Page Builder
+# WDS Simple Page Builder
 
 Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
 
