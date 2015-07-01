@@ -2,6 +2,8 @@
 
 Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
 
+Questions? [Check out the wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
+
 ## Usage
 
 To use this plugin, your theme template files must have the following `do_action` wherever you want the template parts to load:
