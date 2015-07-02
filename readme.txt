@@ -3,7 +3,7 @@ Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.2
+Stable tag: 1.3
 
 Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
 
@@ -50,6 +50,10 @@ Saved layouts are used when there is no layout set for that page (or post) with 
 3. Options page
 
 == Changelog ==
+
+= 1.3 =
+* added new template tags -- `wds_page_builder_load_parts` for loading an array of specific template parts and `wds_page_builder_load_part` for loading a single template part
+* added new feature to programmatically register a new layout
 
 = 1.2 =
 * added saved layouts feature. Now you can save layouts and set those saved layouts as the defaults for post types. Or you can define a specific layout in the `do_action`, e.g. `do_action( 'wds_page_builder_load_parts', 'my named layout' )`
