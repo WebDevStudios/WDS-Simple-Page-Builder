@@ -28,7 +28,20 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 			'template_group' => $templates
 		);
 
-		update_option( 'wds_page_builder_options', $new_options );
+		// check existing layouts for the one we're trying to add to see if it exists
+		$existing_layouts = $old_options['parts_saved_layouts'];
+		$layout_exists    = false;
+		foreach( $existing_layouts as $layout ) {
+			if ( $name == $layout['layouts_name'] ) {
+				$layout_exists = true;
+			}
+		}
+
+		// if the layout doesn't exist already, add it. this allows that layout to be edited
+		if ( ! $layout_exists ) {
+			update_option( 'wds_page_builder_options', $new_options );
+		}
+
 		return;
 
 	}
