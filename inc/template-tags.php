@@ -17,6 +17,22 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	wp_cache_delete ( 'alloptions', 'options' );
 
+	// if allow edit is true, add the template to the same options group as the other templates. this will enable users to update the layout after it's registered.
+	if ( $allow_edit ) {
+
+		$old_options = get_option( 'wds_page_builder_options' );
+		$new_options = $old_options;
+		$new_options['parts_saved_layouts'][] = array(
+			'layouts_name'   => esc_attr( $name ),
+			'default_layout' => false,
+			'template_group' => $templates
+		);
+
+		update_option( 'wds_page_builder_options', $new_options );
+		return;
+
+	}
+
 }
 
 /**
