@@ -87,6 +87,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$parts         = get_post_meta( $post_id, '_wds_builder_template', true );
 			$global_parts  = wds_page_builder_get_option( 'parts_global_templates' );
 			$saved_layouts = wds_page_builder_get_option( 'parts_saved_layouts' );
+			$registered_layouts = get_option( 'wds_page_builder_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
 			if ( ! $parts && ! $global_parts && ! $saved_layouts && $layout == '' ) {
@@ -94,7 +95,14 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// if a layout was passed or a layout is being used by default for this post type, we're going to check that first
-			if ( ! $parts && $saved_layouts ) {
+			if ( ! $parts && $saved_layouts || ! $parts && $registered_layouts ) {
+
+				// check if the layout requested is one that was registered
+				if ( $registered_layouts ) {
+
+					$saved_layouts = $registered_layouts;
+
+				}
 
 				// loop through the saved layouts, we'll check for the one we're looking for
 				foreach( $saved_layouts as $saved_layout ) {
