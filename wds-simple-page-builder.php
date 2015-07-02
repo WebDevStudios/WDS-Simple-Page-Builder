@@ -30,6 +30,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			// Include any required files
 			require_once( $this->directory_path . '/inc/options.php' );
 			require_once( $this->directory_path . '/inc/functions.php' );
+			require_once( $this->directory_path . '/inc/template-tags.php' );
 
 			// include CMB2 if it doesn't already exist
 			if ( ! defined( 'CMB2_LOADED' ) ) {
