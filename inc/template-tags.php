@@ -15,6 +15,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		return false;
 	}
 
+	wp_cache_delete ( 'alloptions', 'options' );
 
 }
 
