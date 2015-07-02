@@ -60,17 +60,26 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 			$layout_exists = true;
 		}
 	}
+
+	// only run update_option if the layout doesn't exist already
+	if ( ! $layout_exists ) {
+		update_option( 'wds_page_builder_layouts', $new_options );
+	}
+
+	return;
+
 }
 
 /**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
- * @param  array  $parts (Optional) Array of specific parts to display
+ * @param  string|array  $parts (Optional) A specific layout or an array of parts to
+ *                              display
  * @return null
  */
-function wds_page_builder_load_parts( $parts = array() ) {
-	if ( empty( $parts ) ) {
-		do_action( 'wds_page_builder_load_parts' );
+function wds_page_builder_load_parts( $parts = '' ) {
+	if ( ! is_array( $parts ) ) {
+		do_action( 'wds_page_builder_load_parts', $parts );
 		return;
 	}
 
