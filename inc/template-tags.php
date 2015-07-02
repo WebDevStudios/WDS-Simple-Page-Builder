@@ -55,9 +55,11 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	// check existing layouts for the one we're trying to add to see if it exists
 	$layout_exists = false;
-	foreach( $options as $layout ) {
-		if ( esc_attr( $name ) == $layout['layouts_name'] ) {
-			$layout_exists = true;
+	if( is_array( $options ) ) {
+		foreach( $options as $layout ) {
+			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
+				$layout_exists = true;
+			}
 		}
 	}
 
