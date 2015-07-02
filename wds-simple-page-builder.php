@@ -5,7 +5,7 @@
  * Description: Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
  * Author: WebDevStudios
  * Author URI: http://webdevstudios.com
- * Version: 1.2
+ * Version: 1.3
  * License: GPLv2
  */
 
