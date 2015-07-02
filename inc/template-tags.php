@@ -46,6 +46,12 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	}
 
+	$options     = get_option( 'wds_page_builder_layouts' );
+	$new_options = $options;
+	$new_options[] = array(
+		'layouts_name'   =>  esc_attr( $name ),
+		'template_group' => $templates
+	);
 }
 
 /**
