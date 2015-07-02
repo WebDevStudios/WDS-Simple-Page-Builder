@@ -47,20 +47,38 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	}
 
 	$options     = get_option( 'wds_page_builder_layouts' );
-	$new_options = $options;
-	$new_options[] = array(
-		'layouts_name'   =>  esc_attr( $name ),
-		'template_group' => $templates
-	);
 
 	// check existing layouts for the one we're trying to add to see if it exists
-	$layout_exists = false;
+	$layout_exists   = false;
+	$updated_options = false;
 	if( is_array( $options ) ) {
+		$i = 0;
 		foreach( $options as $layout ) {
 			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
-				$layout_exists = true;
+				// check if the group has changed. if it hasn't, this layout exists
+				if ( $templates == $layout['template_group'] ) {
+					$layout_exists = true;
+				} else {
+					// if the group is different, delete the option, then insert the new templates into the template group
+					delete_option( 'wds_page_builder_layouts' );
+					unset( $options[$i] );
+					$options[$i]['layouts_name']   = esc_attr( $name );
+					$options[$i]['template_group'] = $templates;
+					$updated_options = true;
+				}
 			}
+			$i++;
 		}
+	}
+
+	if ( $updated_options ) {
+		$new_options = $options;
+	} else {
+		$new_options = $options;
+		$new_options[] = array(
+			'layouts_name'   =>  esc_attr( $name ),
+			'template_group' => $templates
+		);
 	}
 
 	// only run update_option if the layout doesn't exist already
