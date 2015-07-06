@@ -267,8 +267,8 @@ function wds_page_builder_template_parts_dir() {
  */
 function wds_page_builder_get_parts() {
 	$parts        = array();
-	$parts_dir    = ( wds_page_builder_get_option( 'parts_dir' ) ) ? trailingslashit( get_stylesheet_directory() ) .wds_page_builder_get_option( 'parts_dir' ) : get_stylesheet_directory() . '/parts';
-	$parts_prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
+	$parts_dir    = wds_page_builder_template_parts_dir();
+	$parts_prefix = wds_page_builder_parts_prefix();
 
 	// add a generic 'none' option
 	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
