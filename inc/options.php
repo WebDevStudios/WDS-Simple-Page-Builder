@@ -43,14 +43,6 @@ class WDS_Page_Builder_Options {
 		add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
 	}
 
-	/**
-	 * Initiate our hooks
-	 * @since 0.1.0
-	 */
-	public function hooks() {
-
-	}
-
 
 	/**
 	 * Register our setting to WP
