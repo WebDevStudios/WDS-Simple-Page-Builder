@@ -260,7 +260,7 @@ function wds_page_builder_template_parts_dir() {
 function wds_page_builder_get_parts() {
 	$parts        = array();
 	$parts_dir    = wds_page_builder_template_parts_dir();
-	$parts_prefix = wds_page_builder_parts_prefix();
+	$parts_prefix = wds_page_builder_template_part_prefix();
 
 	// add a generic 'none' option
 	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
