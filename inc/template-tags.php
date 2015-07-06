@@ -101,6 +101,8 @@ function unregister_page_builder_layout( $name = '' ) {
 		return;
 	}
 
+	wp_cache_delete ( 'alloptions', 'options' );
+
 }
 
 /**
