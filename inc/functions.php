@@ -26,12 +26,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
 		}
 
-		/**
-		 * Run our hooks
-		 */
-		public function do_hooks() {
-
-		}
 
 		/**
 		 * Build our meta boxes
@@ -184,5 +178,4 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 	}
 
 	$_GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
-	$_GLOBALS['WDS_Page_Builder']->do_hooks();
 }
