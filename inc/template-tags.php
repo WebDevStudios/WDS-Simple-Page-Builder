@@ -46,12 +46,12 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	}
 
-	$options     = get_option( 'wds_page_builder_layouts' );
+	$options = get_option( 'wds_page_builder_layouts' );
 
 	// check existing layouts for the one we're trying to add to see if it exists
 	$layout_exists   = false;
 	$updated_options = false;
-	if( is_array( $options ) ) {
+	if ( is_array( $options ) ) {
 		$i = 0;
 		foreach( $options as $layout ) {
 			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
@@ -84,6 +84,45 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	// only run update_option if the layout doesn't exist already
 	if ( ! $layout_exists ) {
 		update_option( 'wds_page_builder_layouts', $new_options );
+	}
+
+	return;
+
+}
+
+/**
+ * Function to remove a registered layout. Best used in a deactivation hook.
+ * @param  string $name      The layout name. Pass 'all' to delete all registered layouts.
+ * @return null
+ */
+function unregister_page_builder_layout( $name = '' ) {
+	// bail if no name was passed
+	if ( '' == $name ) {
+		return;
+	}
+
+	wp_cache_delete ( 'alloptions', 'options' );
+
+	// if 'all' is passed, delete the option entirely
+	if ( 'all' == $name ) {
+		delete_option( 'wds_page_builder_layouts' );
+		return;
+	}
+
+	$old_options = ( is_array( get_option( 'wds_page_builder_layouts' ) ) ) ? get_option( 'wds_page_builder_layouts' ) : false;
+
+	if ( $old_options ) {
+		foreach( $old_options as $layout ) {
+			// check for the passed layout name. save the layout as long as it does NOT match.
+			if ( esc_attr( $name ) !== $layout['layouts_name'] ) {
+				$new_options[] = $layout;
+			}
+		}
+
+		// delete the saved layout before updating
+		delete_option( 'wds_page_builder_layouts' );
+		update_option( 'wds_page_builder_layouts', $new_options );
+
 	}
 
 	return;
