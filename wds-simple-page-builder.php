@@ -46,14 +46,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		}
 
 		/**
-		 * Register CPTs & taxonomies.
-		 */
-		public function do_hooks() {
-			if ( $this->meets_requirements() ) {
-			}
-		}
-
-		/**
 		 * Check that all plugin requirements are met
 		 *
 		 * @return boolean
@@ -87,7 +79,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 	}
 
 	$_GLOBALS['WDS_Simple_Page_Builder'] = new WDS_Simple_Page_Builder;
-	$_GLOBALS['WDS_Simple_Page_Builder']->do_hooks();
 }
 
 /**
