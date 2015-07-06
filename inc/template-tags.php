@@ -91,6 +91,15 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 }
 
 /**
+ * Function to remove a registered layout. Best used in a deactivation hook.
+ * @param  string $name      The layout name
+ * @return null
+ */
+function unregister_page_builder_layout( $name = '' ) {
+
+}
+
+/**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
  * @param  string|array  $parts (Optional) A specific layout or an array of parts to
