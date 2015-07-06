@@ -3,7 +3,7 @@ Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.3
+Stable tag: 1.4
 
 Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
 
