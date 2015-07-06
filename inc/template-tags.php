@@ -109,6 +109,24 @@ function unregister_page_builder_layout( $name = '' ) {
 		return;
 	}
 
+	$old_options = ( is_array( get_option( 'wds_page_builder_layouts' ) ) ) ? get_option( 'wds_page_builder_layouts' ) : false;
+
+	if ( $old_options ) {
+		foreach( $old_options as $layout ) {
+			// check for the passed layout name. save the layout as long as it does NOT match.
+			if ( esc_attr( $name ) !== $layout['layouts_name'] ) {
+				$new_options[] = $layout;
+			}
+		}
+
+		// delete the saved layout before updating
+		delete_option( 'wds_page_builder_layouts' );
+		update_option( 'wds_page_builder_layouts', $new_options );
+
+	}
+
+	return;
+
 }
 
 /**
