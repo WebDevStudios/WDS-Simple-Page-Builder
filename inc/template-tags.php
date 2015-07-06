@@ -96,6 +96,10 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
  * @return null
  */
 function unregister_page_builder_layout( $name = '' ) {
+	// bail if no name was passed
+	if ( '' == $name ) {
+		return;
+	}
 
 }
 
