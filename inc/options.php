@@ -36,7 +36,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function __construct() {
 		// Set our title
-		$this->title = __( 'Page Builder Options', 'wds-simple-page-builder' );
+		$this->title = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );
 
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
