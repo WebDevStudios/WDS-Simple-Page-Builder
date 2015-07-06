@@ -55,6 +55,7 @@ Saved layouts are used when there is no layout set for that page (or post) with 
 * added actions and filters for plugin developers to hook into. See [Hooks documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Hooks)
 * removed some unused functions
 * deprecated `wds_template_part_prefix` and `wds_template_parts_dir` and replaced them with `wds_page_builder_template_part_prefix` and `wds_page_builder_template_parts_dir`, respectively
+* added `unregister_page_builder_layout` to unregister a single registered layout (or all of them if `'all'` is passed)
 
 = 1.3 =
 * added new template tags -- `wds_page_builder_load_parts` for loading an array of specific template parts and `wds_page_builder_load_part` for loading a single template part
