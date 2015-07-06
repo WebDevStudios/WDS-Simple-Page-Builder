@@ -246,7 +246,7 @@ function wds_page_builder_get_option( $key = '' ) {
 /**
  * Helper function to get the template part prefix
  */
-function wds_template_part_prefix() {
+function wds_page_builder_template_part_prefix() {
 	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
 	return $prefix;
 }
@@ -254,7 +254,7 @@ function wds_template_part_prefix() {
 /**
  * Helper function to return the template parts directory
  */
-function wds_template_parts_dir() {
+function wds_page_builder_template_parts_dir() {
 	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';
 	return $directory;
 }
