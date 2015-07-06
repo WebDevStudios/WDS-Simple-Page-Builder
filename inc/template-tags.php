@@ -103,6 +103,12 @@ function unregister_page_builder_layout( $name = '' ) {
 
 	wp_cache_delete ( 'alloptions', 'options' );
 
+	// if 'all' is passed, delete the option entirely
+	if ( 'all' == $name ) {
+		delete_option( 'wds_page_builder_layouts' );
+		return;
+	}
+
 }
 
 /**
