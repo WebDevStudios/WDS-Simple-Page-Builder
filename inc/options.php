@@ -248,7 +248,7 @@ function wds_page_builder_get_option( $key = '' ) {
  */
 function wds_page_builder_template_part_prefix() {
 	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
-	return $prefix;
+	return apply_filters( 'wds_page_builder_parts_prefix', $prefix );
 }
 
 /**
@@ -256,7 +256,7 @@ function wds_page_builder_template_part_prefix() {
  */
 function wds_page_builder_template_parts_dir() {
 	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';
-	return $directory;
+	return apply_filters( 'wds_page_builder_parts_directory', $directory );
 }
 
 /**
