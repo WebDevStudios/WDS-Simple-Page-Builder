@@ -137,9 +137,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			// loop through each part and load the template parts
 			if ( is_array( $parts ) ) {
+				do_action( 'wds_page_builder_before_load_parts' );
 				foreach( $parts as $part ) {
 					$this->load_template_part( $part );
 				}
+				do_action( 'wds_page_builder_after_load_parts' );
 			}
 
 		}
@@ -169,11 +171,13 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// bail if the file doesn't exist
-			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_template_parts_dir() ) . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' ) ) {
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $part['template_group'] . '.php' ) ) {
 				return;
 			}
 
-			load_template( get_template_directory() . '/' . wds_template_parts_dir() . '/' . wds_template_part_prefix() . '-' . $part['template_group'] . '.php' );
+			do_action( 'wds_page_builder_before_load_template' );
+			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $part['template_group'] . '.php' );
+			do_action( 'wds_page_builder_after_load_template' );
 
 		}
 

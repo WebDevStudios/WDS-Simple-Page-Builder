@@ -36,19 +36,11 @@ class WDS_Page_Builder_Options {
 	 */
 	public function __construct() {
 		// Set our title
-		$this->title = __( 'Page Builder Options', 'wds-simple-page-builder' );
+		$this->title = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );
 
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
-	}
-
-	/**
-	 * Initiate our hooks
-	 * @since 0.1.0
-	 */
-	public function hooks() {
-
 	}
 
 
@@ -192,7 +184,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function get_post_types() {
 
-		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+		$post_types = apply_filters( 'wds_page_builder_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
 
 		foreach ( $post_types as $post_type ) {
 			$types[$post_type->name] = $post_type->labels->name;
@@ -246,17 +238,17 @@ function wds_page_builder_get_option( $key = '' ) {
 /**
  * Helper function to get the template part prefix
  */
-function wds_template_part_prefix() {
+function wds_page_builder_template_part_prefix() {
 	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
-	return $prefix;
+	return apply_filters( 'wds_page_builder_parts_prefix', $prefix );
 }
 
 /**
  * Helper function to return the template parts directory
  */
-function wds_template_parts_dir() {
+function wds_page_builder_template_parts_dir() {
 	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';
-	return $directory;
+	return apply_filters( 'wds_page_builder_parts_directory', $directory );
 }
 
 /**
@@ -267,8 +259,8 @@ function wds_template_parts_dir() {
  */
 function wds_page_builder_get_parts() {
 	$parts        = array();
-	$parts_dir    = ( wds_page_builder_get_option( 'parts_dir' ) ) ? trailingslashit( get_stylesheet_directory() ) .wds_page_builder_get_option( 'parts_dir' ) : get_stylesheet_directory() . '/parts';
-	$parts_prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
+	$parts_dir    = wds_page_builder_template_parts_dir();
+	$parts_prefix = wds_page_builder_parts_prefix();
 
 	// add a generic 'none' option
 	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );

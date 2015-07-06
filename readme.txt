@@ -3,7 +3,7 @@ Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.3
+Stable tag: 1.4
 
 Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
 
@@ -50,6 +50,11 @@ Saved layouts are used when there is no layout set for that page (or post) with 
 3. Options page
 
 == Changelog ==
+
+= 1.4 =
+* added actions and filters for plugin developers to hook into. See [Hooks documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Hooks)
+* removed some unused functions
+* deprecated `wds_template_part_prefix` and `wds_template_parts_dir` and replaced them with `wds_page_builder_template_part_prefix` and `wds_page_builder_template_parts_dir`, respectively
 
 = 1.3 =
 * added new template tags -- `wds_page_builder_load_parts` for loading an array of specific template parts and `wds_page_builder_load_part` for loading a single template part

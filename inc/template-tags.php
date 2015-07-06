@@ -99,7 +99,9 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
  */
 function wds_page_builder_load_parts( $parts = '' ) {
 	if ( ! is_array( $parts ) ) {
+		do_action( 'wds_page_builder_before_load_parts' );
 		do_action( 'wds_page_builder_load_parts', $parts );
+		do_action( 'wds_page_builder_after_load_parts' );
 		return;
 	}
 
