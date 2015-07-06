@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: WebDevStudios Simple Page Builder
+ * Plugin Name: WDS Simple Page Builder
  * Plugin URI: https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki
  * Description: Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
  * Author: WebDevStudios
  * Author URI: http://webdevstudios.com
- * Version: 1.3
+ * Version: 1.4
  * License: GPLv2
  */
 
@@ -46,14 +46,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		}
 
 		/**
-		 * Register CPTs & taxonomies.
-		 */
-		public function do_hooks() {
-			if ( $this->meets_requirements() ) {
-			}
-		}
-
-		/**
 		 * Check that all plugin requirements are met
 		 *
 		 * @return boolean
@@ -87,7 +79,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 	}
 
 	$_GLOBALS['WDS_Simple_Page_Builder'] = new WDS_Simple_Page_Builder;
-	$_GLOBALS['WDS_Simple_Page_Builder']->do_hooks();
 }
 
 /**

@@ -46,12 +46,12 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	}
 
-	$options     = get_option( 'wds_page_builder_layouts' );
+	$options = get_option( 'wds_page_builder_layouts' );
 
 	// check existing layouts for the one we're trying to add to see if it exists
 	$layout_exists   = false;
 	$updated_options = false;
-	if( is_array( $options ) ) {
+	if ( is_array( $options ) ) {
 		$i = 0;
 		foreach( $options as $layout ) {
 			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
@@ -91,6 +91,45 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 }
 
 /**
+ * Function to remove a registered layout. Best used in a deactivation hook.
+ * @param  string $name      The layout name. Pass 'all' to delete all registered layouts.
+ * @return null
+ */
+function unregister_page_builder_layout( $name = '' ) {
+	// bail if no name was passed
+	if ( '' == $name ) {
+		return;
+	}
+
+	wp_cache_delete ( 'alloptions', 'options' );
+
+	// if 'all' is passed, delete the option entirely
+	if ( 'all' == $name ) {
+		delete_option( 'wds_page_builder_layouts' );
+		return;
+	}
+
+	$old_options = ( is_array( get_option( 'wds_page_builder_layouts' ) ) ) ? get_option( 'wds_page_builder_layouts' ) : false;
+
+	if ( $old_options ) {
+		foreach( $old_options as $layout ) {
+			// check for the passed layout name. save the layout as long as it does NOT match.
+			if ( esc_attr( $name ) !== $layout['layouts_name'] ) {
+				$new_options[] = $layout;
+			}
+		}
+
+		// delete the saved layout before updating
+		delete_option( 'wds_page_builder_layouts' );
+		update_option( 'wds_page_builder_layouts', $new_options );
+
+	}
+
+	return;
+
+}
+
+/**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
  * @param  string|array  $parts (Optional) A specific layout or an array of parts to
@@ -99,7 +138,9 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
  */
 function wds_page_builder_load_parts( $parts = '' ) {
 	if ( ! is_array( $parts ) ) {
+		do_action( 'wds_page_builder_before_load_parts' );
 		do_action( 'wds_page_builder_load_parts', $parts );
+		do_action( 'wds_page_builder_after_load_parts' );
 		return;
 	}
 
