@@ -41,6 +41,14 @@ Saved layouts are used when there is no layout set for that page (or post) with 
 
 == Frequently Asked Questions ==
 
+**How do I use this thing?**
+[Check out our Wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
+
+**Why is there an empty "- No Template Parts -" (or multiple) template in the saved layouts after I save the options?**
+It's a [CMB2](https://wordpress.org/plugins/CMB2)-related bug in having a repeatable field within a repeatable group. It will be fixed. [Follow the issue on Github](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/5)
+
+**I can't remove a saved layout after I've created one.**
+Another [CMB2](https://wordpress.org/plugins/CMB2) issue which will also be fixed soon. [Follow *this* issue on Github](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3)
 
 
 == Screenshots ==
