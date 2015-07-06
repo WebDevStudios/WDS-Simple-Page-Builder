@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WebDevStudios Simple Page Builder
+ * Plugin Name: WDS Simple Page Builder
  * Plugin URI: https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki
  * Description: Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
  * Author: WebDevStudios
