@@ -192,7 +192,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function get_post_types() {
 
-		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+		$post_types = apply_filters( 'wds_page_builder_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
 
 		foreach ( $post_types as $post_type ) {
 			$types[$post_type->name] = $post_type->labels->name;
