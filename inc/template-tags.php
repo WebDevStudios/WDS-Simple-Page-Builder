@@ -46,7 +46,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	}
 
-	$options     = get_option( 'wds_page_builder_layouts' );
+	$options = get_option( 'wds_page_builder_layouts' );
 
 	// check existing layouts for the one we're trying to add to see if it exists
 	$layout_exists   = false;
