@@ -1,4 +1,0 @@
-[submodule "inc/cmb2"]
-	path = inc/cmb2
-	url = https://github.com/WebDevStudios/CMB2/
-	branch = master
