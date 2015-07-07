@@ -50,6 +50,28 @@ class WDS_Page_Builder_Options {
 	 */
 	public function init() {
 		register_setting( $this->key, $this->key );
+		add_filter( 'pre_update_option_wds_page_builder_options', array( $this, 'prevent_blank_templates' ), 10, 2 );
+	}
+
+	/**
+	 * Hooks to pre_update_option_{option name} to prevent empty templates from being saved
+	 * to the Saved Layouts
+	 * @param  mixed $new_value The new value
+	 * @param  mixed $old_value The old value
+	 * @return mixed            The filtered setting
+	 * @link   https://codex.wordpress.org/Plugin_API/Filter_Reference/pre_update_option_(option_name)
+	 * @since  1.4.1
+	 */
+	public function prevent_blank_templates( $new_value, $old_value ) {
+		$saved_layouts = $new_value['parts_saved_layouts'];
+		$i = 0;
+		foreach( $saved_layouts as $layout ) {
+			$layout['template_group'] = array_diff( $layout['template_group'], array('none'));
+			$saved_layouts[$i] = $layout;
+			$i++;
+		}
+		$new_value['parts_saved_layouts'] = $saved_layouts;
+		return $new_value;
 	}
 
 	/**
