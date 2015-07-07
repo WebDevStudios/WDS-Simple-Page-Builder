@@ -39,6 +39,9 @@ Options page
 
 ## Changelog
 
+**1.4.1**
+* fixed empty templates showing up after options save in Saved Layouts ([fixes #5](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/5))
+
 **1.4**
 * added actions and filters for plugin developers to hook into. See [Hooks documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Hooks)
 * removed some unused functions
