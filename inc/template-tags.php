@@ -103,7 +103,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 		$existing_layouts = $options['parts_saved_layouts'];
 		$layout_exists    = false;
 		foreach( $existing_layouts as $layout ) {
-			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
+			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
 			}
 		}
@@ -111,7 +111,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 		$options       = get_option( 'wds_page_builder_layouts' );
 		$layout_exists = false;
 		foreach( $options as $layout ) {
-			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
+			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
 			}
 		}
