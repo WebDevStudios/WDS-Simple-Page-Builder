@@ -41,6 +41,8 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	}
 
+	// This is a hard coded layout
+
 	$options = get_option( 'wds_page_builder_layouts' );
 
 	// check existing layouts for the one we're trying to add to see if it exists
