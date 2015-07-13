@@ -91,6 +91,40 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 }
 
 /**
+ * Check if a given layout exists
+ * @param  string  $layout_name The name of the saved layout
+ * @param  boolean $editable    Whether the layout is editable or hard-coded
+ * @return boolean              True if it exists, false if it doesn't
+ */
+function saved_page_builder_layout_exists( $layout_name = '', $editable = true ) {
+	if ( '' == $layout_name ) {
+		return false;
+	}
+
+	if ( $editable ) {
+		$options          = get_option( 'wds_page_builder_options' );
+		$existing_layouts = $options['parts_saved_layouts'];
+		$layout_exists    = false;
+		foreach( $existing_layouts as $layout ) {
+			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
+				$layout_exists = true;
+			}
+		}
+	} else {
+		$options       = get_option( 'wds_page_builder_layouts' );
+		$layout_exists = false;
+		foreach( $options as $layout ) {
+			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
+				$layout_exists = true;
+			}
+		}
+	}
+
+	return $layout_exists;
+
+}
+
+/**
  * Function to remove a registered layout. Best used in a deactivation hook.
  * @param  string $name      The layout name. Pass 'all' to delete all registered layouts.
  * @return null
