@@ -30,12 +30,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 		// check existing layouts for the one we're trying to add to see if it exists
 		$existing_layouts = $old_options['parts_saved_layouts'];
-		$layout_exists    = false;
-		foreach( $existing_layouts as $layout ) {
-			if ( $name == $layout['layouts_name'] ) {
-				$layout_exists = true;
-			}
-		}
+		$layout_exists    = saved_page_builder_layout_exists( esc_attr( $name ) );
 
 		// if the layout doesn't exist already, add it. this allows that layout to be edited
 		if ( ! $layout_exists ) {
@@ -46,6 +41,8 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	}
 
+	// This is a hard coded layout
+
 	$options = get_option( 'wds_page_builder_layouts' );
 
 	// check existing layouts for the one we're trying to add to see if it exists
@@ -54,9 +51,9 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	if ( is_array( $options ) ) {
 		$i = 0;
 		foreach( $options as $layout ) {
-			if ( esc_attr( $name ) == $layout['layouts_name'] ) {
+			if ( saved_page_builder_layout_exists( esc_attr( $name ), false ) ) {
 				// check if the group has changed. if it hasn't, this layout exists
-				if ( $templates == $layout['template_group'] ) {
+				if ( $templates !== $layout['template_group'] ) {
 					$layout_exists = true;
 				} else {
 					// if the group is different, delete the option, then insert the new templates into the template group
