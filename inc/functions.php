@@ -38,7 +38,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder',
-				'title'        => __( 'Page Builder', 'wds-simple-page-builder' ),
+				'title'        => esc_html__( 'Page Builder', 'wds-simple-page-builder' ),
 				'object_types' => $object_types,
 				'context'      => 'normal',
 				'priority'     => 'high',
@@ -49,15 +49,15 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				'id'           => $prefix . 'template',
 				'type'         => 'group',
 				'options'      => array(
-					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
-					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
-					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+					'group_title'   => esc_html__( 'Template Part {#}', 'wds-simple-page-builder' ),
+					'add_button'    => esc_html__( 'Add another template part', 'wds-simple-page-builder' ),
+					'remove_button' => esc_html__( 'Remove template part', 'wds-simple-page-builder' ),
 					'sortable'      => true
 				)
 			) );
 
 			$cmb->add_group_field( $group_field_id, array(
-				'name'         => __( 'Template', 'wds-simple-page-builder' ),
+				'name'         => esc_html__( 'Template', 'wds-simple-page-builder' ),
 				'id'           => 'template_group',
 				'type'         => 'select',
 				'options'      => wds_page_builder_get_parts()

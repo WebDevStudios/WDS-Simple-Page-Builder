@@ -68,7 +68,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			if ( ! $this->meets_requirements() ) {
 				// Display our error
 				echo '<div id="message" class="error">';
-				echo '<p>' . sprintf( __( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) . '</p>';
+				echo '<p>' . sprintf( esc_html__( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) . '</p>';
 				echo '</div>';
 
 				// Deactivate our plugin
