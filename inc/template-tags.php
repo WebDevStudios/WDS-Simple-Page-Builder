@@ -2,6 +2,7 @@
 
 /**
  * Function to register a new layout programmatically
+ * @since  1.3
  * @param  string $name       The layout name
  * @param  array  $templates  An array of templates to add to the layout
  * @param  bool   $allow_edit If false, layout will not appear in the Page Builder Options
@@ -89,6 +90,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 /**
  * Check if a given layout exists
+ * @since  1.4.2
  * @param  string  $layout_name The name of the saved layout
  * @param  boolean $editable    Whether the layout is editable or hard-coded
  * @return boolean              True if it exists, false if it doesn't
@@ -123,6 +125,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 
 /**
  * Function to remove a registered layout. Best used in a deactivation hook.
+ * @since  1.4
  * @param  string $name      The layout name. Pass 'all' to delete all registered layouts.
  * @return null
  */
@@ -163,8 +166,9 @@ function unregister_page_builder_layout( $name = '' ) {
 /**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
- * @param  string|array  $parts (Optional) A specific layout or an array of parts to
- *                              display
+ * @since  1.3
+ * @param  mixed  $parts (Optional) A specific layout or an array of parts to
+ *                       display
  * @return null
  */
 function wds_page_builder_load_parts( $parts = '' ) {
@@ -185,6 +189,7 @@ function wds_page_builder_load_parts( $parts = '' ) {
 
 /**
  * Helper function for loading a single template part
+ * @since  1.3
  * @param  string $part The part slug
  * @return null
  */
