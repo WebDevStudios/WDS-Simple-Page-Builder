@@ -233,7 +233,6 @@ function get_the_page_builder_classes( $class = '' ) {
  * custom class names that were passed to the function.
  *
  * @param  string|array $class     One or more classes to add to the class list
- * @param  string       $part_slug Optional. The template part slug.
  * @return array                   Array of classes.
  */
 function get_page_builder_class( $class = '' ) {
