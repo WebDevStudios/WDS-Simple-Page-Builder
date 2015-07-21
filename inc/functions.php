@@ -256,6 +256,14 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			return strpos($var, 'part-');
 		}
 
+		public function before_parts() {
+
+		}
+
+		public function after_parts() {
+
+		}
+
 	}
 
 	$_GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
