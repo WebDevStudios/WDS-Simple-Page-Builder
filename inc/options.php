@@ -46,7 +46,7 @@ class WDS_Page_Builder_Options {
 
 	public function load_scripts( $hook ) {
 		if ( 'settings_page_wds_page_builder_options' == $hook ) {
-			wp_enqueue_script( 'page-builder', wds_page_builder()->directory_url . '/assets/js/page-builder.js', array( 'jquery' ), '1.4.1', true );
+			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), '20150721', true );
 		}
 	}
 
@@ -266,6 +266,7 @@ function wds_page_builder_get_option( $key = '' ) {
 
 /**
  * Helper function to get the template part prefix
+ * @return string The template part prefix (without the hyphen)
  */
 function wds_page_builder_template_part_prefix() {
 	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
@@ -274,6 +275,7 @@ function wds_page_builder_template_part_prefix() {
 
 /**
  * Helper function to return the template parts directory
+ * @return string The template part directory name
  */
 function wds_page_builder_template_parts_dir() {
 	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';

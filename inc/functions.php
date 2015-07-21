@@ -13,6 +13,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 	class WDS_Page_Builder {
 
+		public $part_slug;
+
 		/**
 		 * Construct function to get things started.
 		 */
@@ -21,11 +23,23 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->basename       = wds_page_builder()->basename;
 			$this->directory_path = wds_page_builder()->directory_path;
 			$this->directory_url  = wds_page_builder()->directory_url;
+			$this->part_slug      = '';
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
+			add_action( 'wds_page_builder_after_load_parts', array( $this, 'load_scripts' ) );
 		}
 
+
+		public function load_scripts() {
+			wp_register_script( 'public', wds_page_builder()->directory_url . '/assets/js/public.js', array( 'jquery' ), '20150720', true );
+			wp_localize_script( 'public', 'builder_l10n', array(
+				'builder_class' => 'pagebuilder-part',
+				'parts' => $this->page_builder_parts(),
+				'parts_count' => count( $this->page_builder_parts() ),
+			) );
+			wp_enqueue_script( 'public' );
+		}
 
 		/**
 		 * Build our meta boxes
@@ -164,15 +178,43 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				return;
 			}
 
+			$this->set_part( $part['template_group'] );
+
 			// bail if the file doesn't exist
-			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $part['template_group'] . '.php' ) ) {
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' ) ) {
 				return;
 			}
 
 			do_action( 'wds_page_builder_before_load_template' );
-			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $part['template_group'] . '.php' );
+			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' );
 			do_action( 'wds_page_builder_after_load_template' );
 
+		}
+
+		public function get_part() {
+			return $this->part_slug;
+		}
+
+		public function set_part( $part ) {
+			$this->part_slug = $part;
+		}
+
+		public function page_builder_parts() {
+			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
+			foreach ( $some_files as $file ) {
+				$the_files[] = stripslashes( str_replace( array(
+					get_template_directory(),
+					'.php',
+					wds_page_builder_template_parts_dir(),
+					wds_page_builder_template_part_prefix() . '-',
+					'//'
+				), '', $file ) );
+			}
+			return $the_files;
+		}
+
+		private function match_parts($var) {
+			return strpos($var, 'part-');
 		}
 
 	}

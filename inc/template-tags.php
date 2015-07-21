@@ -202,3 +202,62 @@ function wds_page_builder_load_part( $part = '' ) {
 	$page_builder = new WDS_Page_Builder;
 	$page_builder->load_template_part( array( 'template_group' => $part ) );
 }
+
+/**
+ * Display the classes for the template part wrapper
+ * @since  1.5
+ * @param  string|array $class     One or more classes to add to the class list
+ * @return null
+ */
+function page_builder_class( $class = '' ) {
+	// Separates classes with a single space, collates classes for template part wrapper DIV
+	echo 'class="' . join( ' ', get_page_builder_class( $class ) ) . '"';
+}
+
+/**
+ * Retrieve the class names for the template part as an array
+ *
+ * Based on post_class, but we're not getting as much information as post_class.
+ * We just want to return a generic class, the current template part slug, and any
+ * custom class names that were passed to the function.
+ *
+ * @param  string|array $class     One or more classes to add to the class list
+ * @param  string       $part_slug Optional. The template part slug.
+ * @return array                   Array of classes.
+ */
+function get_page_builder_class( $class = '', $part_slug = '' ) {
+
+	if ( $class ) {
+		if ( ! is_array( $class ) ) {
+		        $class = preg_split( '#\s+#', $class );
+		}
+		$classes = array_map( 'esc_attr', $class );
+	}
+
+	$classes[] = 'pagebuilder-part';
+
+	/**
+	 * Filter the list of CSS classes for the current part
+	 * @since  1.5
+	 * @param  array  $classes   An array of pagebuilder part classes
+	 * @param  string $class     A comma-separated list of additional classes added to the post
+	 * @param  string $part_slug The template part slug to add the filtered classes to
+	 */
+	$classes = apply_filters( 'page_builder_class', $classes, $class, $part_slug );
+
+	return array_unique( $classes );
+
+}
+
+/**
+ * Gets an array of page builder parts.
+ *
+ * Note, this function ONLY returns values AFTER the parts have been loaded, so hook into
+ * wds_page_builder_after_load_parts or later for this to be populated
+ * @since  1.5
+ * @return array An array of template parts in use on the page
+ */
+function get_page_builder_parts() {
+	$page_builder = new WDS_Page_Builder;
+	return $page_builder->page_builder_parts();
+}
