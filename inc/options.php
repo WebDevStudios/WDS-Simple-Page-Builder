@@ -266,6 +266,7 @@ function wds_page_builder_get_option( $key = '' ) {
 
 /**
  * Helper function to get the template part prefix
+ * @return string The template part prefix (without the hyphen)
  */
 function wds_page_builder_template_part_prefix() {
 	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
@@ -274,6 +275,7 @@ function wds_page_builder_template_part_prefix() {
 
 /**
  * Helper function to return the template parts directory
+ * @return string The template part directory name
  */
 function wds_page_builder_template_parts_dir() {
 	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';
