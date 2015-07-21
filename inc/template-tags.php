@@ -251,8 +251,7 @@ function get_page_builder_class( $class = '' ) {
 		$classes = array_map( 'esc_attr', $class );
 	}
 
-	$classes[] = 'pagebuilder-part';
-
+	$classes[] = wds_page_builder_container_class();
 
 	return array_unique( $classes );
 
