@@ -36,6 +36,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			wp_localize_script( 'public', 'builder_l10n', array(
 				'builder_class' => 'pagebuilder-part',
 				'parts' => $this->page_builder_parts(),
+				'parts_count' => count( $this->page_builder_parts() ),
 			) );
 			wp_enqueue_script( 'public' );
 		}
