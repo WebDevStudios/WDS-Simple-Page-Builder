@@ -109,10 +109,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				}
 			}
 
-			$post_id       = ( is_singular() ) ? get_queried_object()->ID : 0;
-			$parts         = get_post_meta( $post_id, '_wds_builder_template', true );
-			$global_parts  = wds_page_builder_get_option( 'parts_global_templates' );
-			$saved_layouts = wds_page_builder_get_option( 'parts_saved_layouts' );
+			$post_id            = ( is_singular() ) ? get_queried_object()->ID : 0;
+			$parts              = get_post_meta( $post_id, '_wds_builder_template', true );
+			$global_parts       = wds_page_builder_get_option( 'parts_global_templates' );
+			$saved_layouts      = wds_page_builder_get_option( 'parts_saved_layouts' );
 			$registered_layouts = get_option( 'wds_page_builder_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
