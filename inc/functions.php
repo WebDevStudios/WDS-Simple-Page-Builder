@@ -46,6 +46,19 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		/**
+		 * If we've set the option to use a wrapper around the page builder parts, add the actions
+		 * to display those parts
+		 * @since  1.5
+		 * @return void
+		 */
+		public function wrapper_init() {
+			if ( wds_page_builder_get_option( 'use_wrap' ) ) {
+				add_action( 'wds_page_builder_before_load_parts', array( $this, 'before_parts' ) );
+				add_action( 'wds_page_builder_after_load_parts', array( $this, 'after_parts' ) );
+			}
+		}
+
+		/**
 		 * Build our meta boxes
 		 */
 		public function do_meta_boxes( $meta_boxes ) {
