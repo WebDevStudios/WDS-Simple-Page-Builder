@@ -35,7 +35,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			wp_register_script( 'public', wds_page_builder()->directory_url . '/assets/js/public.js', array( 'jquery' ), '20150720', true );
 			wp_localize_script( 'public', 'builder_l10n', array(
 				'builder_class' => 'pagebuilder-part',
-				'parts' => get_page_builder_parts();
+				'parts' => $this->page_builder_parts(),
 			) );
 			wp_enqueue_script( 'public' );
 		}
