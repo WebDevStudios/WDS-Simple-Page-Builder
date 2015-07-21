@@ -225,7 +225,7 @@ function page_builder_class( $class = '' ) {
  * @param  string       $part_slug Optional. The template part slug.
  * @return array                   Array of classes.
  */
-function get_page_builder_class( $class = '', $part_slug = '' ) {
+function get_page_builder_class( $class = '' ) {
 
 	if ( $class ) {
 		if ( ! is_array( $class ) ) {
@@ -240,10 +240,8 @@ function get_page_builder_class( $class = '', $part_slug = '' ) {
 	 * Filter the list of CSS classes for the current part
 	 * @since  1.5
 	 * @param  array  $classes   An array of pagebuilder part classes
-	 * @param  string $class     A comma-separated list of additional classes added to the post
-	 * @param  string $part_slug The template part slug to add the filtered classes to
 	 */
-	$classes = apply_filters( 'page_builder_class', $classes, $class, $part_slug );
+	$classes = apply_filters( 'page_builder_classes', $classes );
 
 	return array_unique( $classes );
 
