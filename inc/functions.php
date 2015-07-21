@@ -257,11 +257,22 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		public function before_parts() {
-
+			$before = '<' . wds_page_builder_container() . ' class="' . get_the_page_builder_classes() . '>';
+			/**
+			 * Filter the wrapper markup.
+			 *
+			 * Note, there's no filter for what the closing markup would look like, so if the
+			 * container element is being changed, make sure to only change the container by
+			 * filtering wds_page_builder_container.
+			 *
+			 * @since 1.5
+			 * @param string $before The full opening container markup
+			 */
+			echo apply_filters( 'wds_page_builder_wrapper', $before );
 		}
 
 		public function after_parts() {
-
+			echo '</' . wds_page_builder_container() . '>';
 		}
 
 	}
