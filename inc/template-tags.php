@@ -253,3 +253,8 @@ function get_page_builder_class( $class = '', $part_slug = '' ) {
 	return array_unique( $classes );
 
 }
+
+function get_page_builder_parts() {
+	$page_builder = new WDS_Page_Builder;
+	return $page_builder->page_builder_parts();
+}
