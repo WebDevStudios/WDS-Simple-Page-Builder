@@ -13,6 +13,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 	class WDS_Page_Builder {
 
+		public $part_slug;
+
 		/**
 		 * Construct function to get things started.
 		 */
@@ -21,6 +23,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->basename       = wds_page_builder()->basename;
 			$this->directory_path = wds_page_builder()->directory_path;
 			$this->directory_url  = wds_page_builder()->directory_url;
+			$this->part_slug      = '';
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
