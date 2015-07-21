@@ -210,8 +210,25 @@ function wds_page_builder_load_part( $part = '' ) {
  * @return null
  */
 function page_builder_class( $class = '' ) {
+	echo 'class="' . get_the_page_builder_classes( $class ) . '"';
+}
+
+/**
+ * Return the classes for the template part wrapper
+ * @since  1.5
+ * @param  string|array $class     One or more classes to add to the class list
+ * @return string       A parsed list of classes as they would appear in a div class attribute
+ */
+function get_the_page_builder_classes( $class = '' ) {
 	// Separates classes with a single space, collates classes for template part wrapper DIV
-	echo 'class="' . join( ' ', get_page_builder_class( $class ) ) . '"';
+	$classes = join( ' ', get_page_builder_class( $class ) );
+
+	/**
+	 * Filter the list of CSS classes
+	 * @since  1.5
+	 * @param  array  $classes   An array of pagebuilder part classes
+	 */
+	return apply_filters( 'page_builder_classes', $classes );
 }
 
 /**
@@ -222,10 +239,9 @@ function page_builder_class( $class = '' ) {
  * custom class names that were passed to the function.
  *
  * @param  string|array $class     One or more classes to add to the class list
- * @param  string       $part_slug Optional. The template part slug.
  * @return array                   Array of classes.
  */
-function get_page_builder_class( $class = '', $part_slug = '' ) {
+function get_page_builder_class( $class = '' ) {
 
 	if ( $class ) {
 		if ( ! is_array( $class ) ) {
@@ -234,16 +250,7 @@ function get_page_builder_class( $class = '', $part_slug = '' ) {
 		$classes = array_map( 'esc_attr', $class );
 	}
 
-	$classes[] = 'pagebuilder-part';
-
-	/**
-	 * Filter the list of CSS classes for the current part
-	 * @since  1.5
-	 * @param  array  $classes   An array of pagebuilder part classes
-	 * @param  string $class     A comma-separated list of additional classes added to the post
-	 * @param  string $part_slug The template part slug to add the filtered classes to
-	 */
-	$classes = apply_filters( 'page_builder_class', $classes, $class, $part_slug );
+	$classes[] = wds_page_builder_container_class();
 
 	return array_unique( $classes );
 
@@ -260,4 +267,28 @@ function get_page_builder_class( $class = '', $part_slug = '' ) {
 function get_page_builder_parts() {
 	$page_builder = new WDS_Page_Builder;
 	return $page_builder->page_builder_parts();
+}
+
+/**
+ * Helper function to display page builder with a full wrap.
+ *
+ * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll
+ * get the page builder contents twice
+ * @param  string $container Optional. Unique container html element or use the default
+ * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way
+ *                           to change the container classes without a filter.
+ * @param  string $layout    Optional. The specific layout name to load, or the default.
+ * @return void
+ */
+function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
+	$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+	$classes = get_the_page_builder_classes( $class );
+
+	// do the page builder stuff
+	do_action( 'wds_page_builder_before_load_parts' );
+	echo '<' . $container. 'class="' . $classes . '">';
+	wds_page_builder_load_parts( $layout );
+	echo '</' . $container . '>';
+	do_action( 'wds_page_builder_after_load_parts' );
+
 }

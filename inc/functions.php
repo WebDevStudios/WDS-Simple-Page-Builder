@@ -26,11 +26,16 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->part_slug      = '';
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
+			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'load_scripts' ) );
 		}
 
-
+		/**
+		 * Load the front-end javascript
+		 * @since  1.5
+		 * @return void
+		 */
 		public function load_scripts() {
 			wp_register_script( 'public', wds_page_builder()->directory_url . '/assets/js/public.js', array( 'jquery' ), '20150720', true );
 			wp_localize_script( 'public', 'builder_l10n', array(
@@ -39,6 +44,19 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				'parts_count' => count( $this->page_builder_parts() ),
 			) );
 			wp_enqueue_script( 'public' );
+		}
+
+		/**
+		 * If we've set the option to use a wrapper around the page builder parts, add the actions
+		 * to display those parts
+		 * @since  1.5
+		 * @return void
+		 */
+		public function wrapper_init() {
+			if ( wds_page_builder_get_option( 'use_wrap' ) ) {
+				add_action( 'wds_page_builder_before_load_parts', array( $this, 'before_parts' ) );
+				add_action( 'wds_page_builder_after_load_parts', array( $this, 'after_parts' ) );
+			}
 		}
 
 		/**
@@ -91,10 +109,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				}
 			}
 
-			$post_id       = ( is_singular() ) ? get_queried_object()->ID : 0;
-			$parts         = get_post_meta( $post_id, '_wds_builder_template', true );
-			$global_parts  = wds_page_builder_get_option( 'parts_global_templates' );
-			$saved_layouts = wds_page_builder_get_option( 'parts_saved_layouts' );
+			$post_id            = ( is_singular() ) ? get_queried_object()->ID : 0;
+			$parts              = get_post_meta( $post_id, '_wds_builder_template', true );
+			$global_parts       = wds_page_builder_get_option( 'parts_global_templates' );
+			$saved_layouts      = wds_page_builder_get_option( 'parts_saved_layouts' );
 			$registered_layouts = get_option( 'wds_page_builder_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
@@ -191,30 +209,70 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 		}
 
+		/**
+		 * Get the current part_slug class variable
+		 * @since  1.5
+		 * @return string The current value of part_slug
+		 */
 		public function get_part() {
 			return $this->part_slug;
 		}
 
+		/**
+		 * Set the current part_slug class variable
+		 * @since  1.5
+		 * @param string $part Sets a new value for the part_slug class variable
+		 */
 		public function set_part( $part ) {
 			$this->part_slug = $part;
 		}
 
+		/**
+		 * Returns an array of all the page builder template part slugs on the current page
+		 * @since  1.5
+		 * @return array The page builder part slugs
+		 */
 		public function page_builder_parts() {
 			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
 			foreach ( $some_files as $file ) {
 				$the_files[] = stripslashes( str_replace( array(
 					get_template_directory(),
-					'.php',
 					wds_page_builder_template_parts_dir(),
 					wds_page_builder_template_part_prefix() . '-',
+					'.php',
 					'//'
 				), '', $file ) );
 			}
 			return $the_files;
 		}
 
+		/**
+		 * array_filter callback to match template parts
+		 * @since  1.5
+		 * @param  string $var The thing to check
+		 * @return bool        Whether the string was found
+		 */
 		private function match_parts($var) {
 			return strpos($var, 'part-');
+		}
+
+		public function before_parts() {
+			$before = '<' . wds_page_builder_container() . ' class="' . get_the_page_builder_classes() . '>';
+			/**
+			 * Filter the wrapper markup.
+			 *
+			 * Note, there's no filter for what the closing markup would look like, so if the
+			 * container element is being changed, make sure to only change the container by
+			 * filtering wds_page_builder_container.
+			 *
+			 * @since 1.5
+			 * @param string $before The full opening container markup
+			 */
+			echo apply_filters( 'wds_page_builder_wrapper', $before );
+		}
+
+		public function after_parts() {
+			echo '</' . wds_page_builder_container() . '>';
 		}
 
 	}
