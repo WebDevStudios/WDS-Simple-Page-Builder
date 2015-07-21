@@ -249,6 +249,14 @@ function get_page_builder_class( $class = '', $part_slug = '' ) {
 
 }
 
+/**
+ * Gets an array of page builder parts.
+ *
+ * Note, this function ONLY returns values AFTER the parts have been loaded, so hook into
+ * wds_page_builder_after_load_parts or later for this to be populated
+ * @since  1.5
+ * @return array An array of template parts in use on the page
+ */
 function get_page_builder_parts() {
 	$page_builder = new WDS_Page_Builder;
 	return $page_builder->page_builder_parts();
