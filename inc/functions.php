@@ -191,28 +191,49 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 		}
 
+		/**
+		 * Get the current part_slug class variable
+		 * @since  1.5
+		 * @return string The current value of part_slug
+		 */
 		public function get_part() {
 			return $this->part_slug;
 		}
 
+		/**
+		 * Set the current part_slug class variable
+		 * @since  1.5
+		 * @param string $part Sets a new value for the part_slug class variable
+		 */
 		public function set_part( $part ) {
 			$this->part_slug = $part;
 		}
 
+		/**
+		 * Returns an array of all the page builder template part slugs on the current page
+		 * @since  1.5
+		 * @return array The page builder part slugs
+		 */
 		public function page_builder_parts() {
 			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
 			foreach ( $some_files as $file ) {
 				$the_files[] = stripslashes( str_replace( array(
 					get_template_directory(),
-					'.php',
 					wds_page_builder_template_parts_dir(),
 					wds_page_builder_template_part_prefix() . '-',
+					'.php',
 					'//'
 				), '', $file ) );
 			}
 			return $the_files;
 		}
 
+		/**
+		 * array_filter callback to match template parts
+		 * @since  1.5
+		 * @param  string $var The thing to check
+		 * @return bool        Whether the string was found
+		 */
 		private function match_parts($var) {
 			return strpos($var, 'part-');
 		}
