@@ -215,6 +215,17 @@ function page_builder_class( $class = '' ) {
 }
 
 /**
+ * Return the classes for the template part wrapper
+ * @since  1.5
+ * @param  string|array $class     One or more classes to add to the class list
+ * @return string       A parsed list of classes as they would appear in a div class attribute
+ */
+function get_the_page_builder_classes( $class = '' ) {
+	// Separates classes with a single space, collates classes for template part wrapper DIV
+	return join( ' ', get_page_builder_class( $class ) );
+}
+
+/**
  * Retrieve the class names for the template part as an array
  *
  * Based on post_class, but we're not getting as much information as post_class.
