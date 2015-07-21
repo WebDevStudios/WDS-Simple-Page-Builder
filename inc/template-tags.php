@@ -210,8 +210,7 @@ function wds_page_builder_load_part( $part = '' ) {
  * @return null
  */
 function page_builder_class( $class = '' ) {
-	// Separates classes with a single space, collates classes for template part wrapper DIV
-	echo 'class="' . join( ' ', get_page_builder_class( $class ) ) . '"';
+	echo 'class="' . get_the_page_builder_classes( $class ) . '"';
 }
 
 /**
