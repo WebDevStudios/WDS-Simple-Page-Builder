@@ -27,7 +27,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
-			add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
+			add_action( 'wds_page_builder_after_load_parts', array( $this, 'load_scripts' ) );
 		}
 
 
