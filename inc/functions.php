@@ -24,8 +24,18 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 		}
 
+
+		public function load_scripts() {
+			wp_register_script( 'public', wds_page_builder()->directory_url . '/assets/js/public.js', array( 'jquery' ), '20150720', true );
+			wp_localize_script( 'public', 'builder_l10n', array(
+				'builder_class' => 'pagebuilder-part',
+				'parts' => get_page_builder_parts();
+			) );
+			wp_enqueue_script( 'public' );
+		}
 
 		/**
 		 * Build our meta boxes
