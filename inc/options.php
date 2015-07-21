@@ -283,6 +283,15 @@ function wds_page_builder_template_parts_dir() {
 }
 
 /**
+ * Helper function to return the main page builder container class
+ * @return string The class name
+ */
+function wds_page_builder_container_class() {
+	$class = ( wds_page_builder_get_option( 'container_class' ) ) ? wds_page_builder_get_option( 'container_class' ) : 'pagebuilder-part';
+	return sanitize_title( apply_filters( 'wds_page_builder_container_class', $class ) );
+}
+
+/**
  * Get a list of the template parts in the current theme, return them
  * in an array.
  *
