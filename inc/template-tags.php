@@ -236,11 +236,6 @@ function get_page_builder_class( $class = '', $part_slug = '' ) {
 
 	$classes[] = 'pagebuilder-part';
 
-	// if ( ! $part_slug ) {
-	// 	$part_slug = get_page_builder_part_slug();
-	// }
-	// $classes[] = $part_slug;
-
 	/**
 	 * Filter the list of CSS classes for the current part
 	 * @since  1.5
