@@ -30,7 +30,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'load_scripts' ) );
 		}
 
-
+		/**
+		 * Load the front-end javascript
+		 * @since  1.5
+		 * @return void
+		 */
 		public function load_scripts() {
 			wp_register_script( 'public', wds_page_builder()->directory_url . '/assets/js/public.js', array( 'jquery' ), '20150720', true );
 			wp_localize_script( 'public', 'builder_l10n', array(
