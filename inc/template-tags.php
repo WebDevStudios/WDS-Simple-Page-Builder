@@ -222,7 +222,14 @@ function page_builder_class( $class = '' ) {
  */
 function get_the_page_builder_classes( $class = '' ) {
 	// Separates classes with a single space, collates classes for template part wrapper DIV
-	return join( ' ', get_page_builder_class( $class ) );
+	$classes = join( ' ', get_page_builder_class( $class ) );
+
+	/**
+	 * Filter the list of CSS classes
+	 * @since  1.5
+	 * @param  array  $classes   An array of pagebuilder part classes
+	 */
+	return apply_filters( 'page_builder_classes', $classes );
 }
 
 /**
@@ -246,12 +253,6 @@ function get_page_builder_class( $class = '' ) {
 
 	$classes[] = 'pagebuilder-part';
 
-	/**
-	 * Filter the list of CSS classes for the current part
-	 * @since  1.5
-	 * @param  array  $classes   An array of pagebuilder part classes
-	 */
-	$classes = apply_filters( 'page_builder_classes', $classes );
 
 	return array_unique( $classes );
 
