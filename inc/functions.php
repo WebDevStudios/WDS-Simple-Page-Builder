@@ -198,6 +198,24 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->part_slug = $part;
 		}
 
+		public function page_builder_parts() {
+			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
+			foreach ( $some_files as $file ) {
+				$the_files[] = stripslashes( str_replace( array(
+					get_template_directory(),
+					'.php',
+					wds_page_builder_template_parts_dir(),
+					wds_page_builder_template_part_prefix() . '-',
+					'//'
+				), '', $file ) );
+			}
+			return $the_files;
+		}
+
+		private function match_parts($var) {
+			return strpos($var, 'part-');
+		}
+
 	}
 
 	$_GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
