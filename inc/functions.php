@@ -188,6 +188,14 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 		}
 
+		public function get_part() {
+			return $this->part_slug;
+		}
+
+		public function set_part( $part ) {
+			$this->part_slug = $part;
+		}
+
 	}
 
 	$_GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
