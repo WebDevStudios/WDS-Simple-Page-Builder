@@ -260,8 +260,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			return strpos($var, 'part-');
 		}
 
-		public function before_parts() {
-			$before = '<' . wds_page_builder_container() . ' class="' . get_the_page_builder_classes() . '>';
+		public function before_parts( $container = '', $class = '' ) {
+			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+			$classes = get_the_page_builder_classes( $class );
+			$before = "<$container class=\"$classes\">";
+
 			/**
 			 * Filter the wrapper markup.
 			 *
@@ -275,8 +278,9 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			echo apply_filters( 'wds_page_builder_wrapper', $before );
 		}
 
-		public function after_parts() {
-			echo '</' . wds_page_builder_container() . '>';
+		public function after_parts( $container = '' ) {
+			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+			echo "</$container>";
 		}
 
 	}
