@@ -41,7 +41,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		public function wrapper_init() {
 			if ( wds_page_builder_get_option( 'use_wrap' ) ) {
 				add_action( 'wds_page_builder_before_load_template', array( $this, 'before_parts' ), 10, 2 );
-				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ) );
+				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ), 10, 2 );
 			}
 		}
 
@@ -198,7 +198,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			do_action( 'wds_page_builder_before_load_template', $container, $classes );
 			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' );
-			do_action( 'wds_page_builder_after_load_template', $container );
+			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug );
 
 		}
 
@@ -268,9 +268,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			echo apply_filters( 'wds_page_builder_wrapper', $before );
 		}
 
-		public function after_parts( $container = '' ) {
+		public function after_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
 			echo "</$container>";
+			echo ( $class ) ? '<!-- .' . sanitize_title( $class ) . ' -->' : '';
 		}
 
 	}
