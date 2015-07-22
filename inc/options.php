@@ -137,10 +137,39 @@ class WDS_Page_Builder_Options {
 		) );
 
 		$cmb->add_field( array(
-			'name' => __( 'Allowed Post Types', 'wds-simple-page-builder' ),
-			'desc' => __( 'Post types that can use the page builder. Default is Page.', 'wds-simple-page-builder' ),
-			'id'   => 'post_types',
-			'type' => 'multicheck',
+			'name'    => __( 'Use Wrapper', 'wds-simple-page-builder' ),
+			'desc'    => __( 'If checked, a wrapper HTML container will be added around each individual template part.', 'wds-simple-page-builder' ),
+			'id'      => 'use_wrap',
+			'type'    => 'checkbox',
+		) );
+
+		$cmb->add_field( array(
+			'name'    => __( 'Container Type', 'wds-simple-page-builder' ),
+			'desc'    => __( 'The type of HTML container wrapper to use, if Use Wrapper is selected.', 'wds-simple-page-builder' ),
+			'id'      => 'container',
+			'type'    => 'select',
+			'options' => array(
+				'section' => __( 'Section', 'wds-simple-page-builder' ),
+				'div'     => __( 'Div', 'wds-simple-page-builder' ),
+				'aside'   => __( 'Aside', 'wds-simple-page-builder' ),
+				'article' => __( 'Article', 'wds-simple-page-builder' ),
+			),
+			'default' => 'section'
+		) );
+
+		$cmb->add_field( array(
+			'name'    => __( 'Container Class', 'wds-simple-page-builder' ),
+			'desc'    => sprintf( __( '%1$sThe default class to use for all template part wrappers. Specific classes will be added to each wrapper in addition to this. %2$sMultiple classes, separated by a space, can be added here.%3$s', 'wds-simple-page-builder' ), '<p>', '<br />', '</p>' ),
+			'id'      => 'container_class',
+			'type'    => 'text_medium',
+			'default' => 'pagebuilder-part',
+		) );
+
+		$cmb->add_field( array(
+			'name'    => __( 'Allowed Post Types', 'wds-simple-page-builder' ),
+			'desc'    => __( 'Post types that can use the page builder. Default is Page.', 'wds-simple-page-builder' ),
+			'id'      => 'post_types',
+			'type'    => 'multicheck',
 			'default' => 'page',
 			'options' => $this->get_post_types()
 		) );
