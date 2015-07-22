@@ -281,14 +281,11 @@ function get_page_builder_parts() {
  * @return void
  */
 function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
-	$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
-	$classes = get_the_page_builder_classes( $class );
+	$page_builder = new WDS_Page_Builder;
+	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 3 );
+	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ) );
 
 	// do the page builder stuff
-	do_action( 'wds_page_builder_before_load_parts' );
-	echo '<' . $container. 'class="' . $classes . '">';
-	wds_page_builder_load_parts( $layout );
-	echo '</' . $container . '>';
-	do_action( 'wds_page_builder_after_load_parts' );
+	wds_page_builder_load_parts( $layout, $container, $class );
 
 }
