@@ -148,11 +148,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			// loop through each part and load the template parts
 			if ( is_array( $parts ) ) {
 				do_action( 'wds_page_builder_before_load_parts' );
-				$i = 0;
 				foreach( $parts as $part ) {
-					if ( $i < count( $parts ) ) {
-						$this->load_template_part( $part, $container, $class );
-					}
+					$this->load_template_part( $part, $container, $class );
 				}
 				do_action( 'wds_page_builder_after_load_parts' );
 			}
