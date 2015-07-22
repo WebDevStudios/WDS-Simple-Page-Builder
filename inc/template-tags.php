@@ -282,8 +282,8 @@ function get_page_builder_parts() {
  */
 function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
 	$page_builder = new WDS_Page_Builder;
-	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 3 );
 	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ) );
+	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
 
 	// do the page builder stuff
 	wds_page_builder_load_parts( $layout, $container, $class );
