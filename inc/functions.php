@@ -24,10 +24,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->directory_path = wds_page_builder()->directory_path;
 			$this->directory_url  = wds_page_builder()->directory_url;
 			$this->part_slug      = '';
+			$this->templates_loaded = false;
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
+			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
 		}
 
 		/**
@@ -40,6 +42,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			if ( wds_page_builder_get_option( 'use_wrap' ) ) {
 				add_action( 'wds_page_builder_before_load_template', array( $this, 'before_parts' ), 10, 2 );
 				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ) );
+			}
+		}
+
+		public function templates_loaded() {
+			if ( $this->templates_loaded === false ) {
+				$this->templates_loaded = true;
 			}
 		}
 
@@ -146,7 +154,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// loop through each part and load the template parts
-			if ( is_array( $parts ) ) {
+			if ( is_array( $parts ) && ! $this->templates_loaded ) {
 				do_action( 'wds_page_builder_before_load_parts' );
 				foreach( $parts as $part ) {
 					$this->load_template_part( $part, $container, $class );
