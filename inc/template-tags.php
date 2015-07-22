@@ -167,15 +167,15 @@ function unregister_page_builder_layout( $name = '' ) {
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
  * @since  1.3
- * @param  mixed  $parts (Optional) A specific layout or an array of parts to
- *                       display
+ * @param  mixed  $parts     Optional. A specific layout or an array of parts to
+ *                           display
+ * @param  string $container Optional. Container HTML element.
+ * @param  string $class     Optional. Custom container class to wrap around individual parts
  * @return null
  */
-function wds_page_builder_load_parts( $parts = '' ) {
+function wds_page_builder_load_parts( $parts = '', $container = '', $class = '' ) {
 	if ( ! is_array( $parts ) ) {
-		do_action( 'wds_page_builder_before_load_parts' );
-		do_action( 'wds_page_builder_load_parts', $parts );
-		do_action( 'wds_page_builder_after_load_parts' );
+		do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
 		return;
 	}
 
