@@ -213,7 +213,7 @@ class WDS_Page_Builder_Options {
 			'desc'         => __( 'This should be a unique name used to identify this layout.', 'wds-simple-page-builder' ),
 			'id'           => 'layouts_name',
 			'type'         => 'text_medium',
-			'attributes'   => array( 'required' => 'required' )
+			// 'attributes'   => array( 'required' => 'required' )
 		) );
 
 		$cmb->add_group_field( $layouts_group_id, array(
