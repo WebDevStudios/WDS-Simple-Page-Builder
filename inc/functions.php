@@ -222,6 +222,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function page_builder_parts() {
 			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
+			$the_files  = array();
 			foreach ( $some_files as $file ) {
 				$the_files[] = stripslashes( str_replace( array(
 					get_template_directory(),
