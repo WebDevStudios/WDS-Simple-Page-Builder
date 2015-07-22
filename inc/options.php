@@ -36,18 +36,30 @@ class WDS_Page_Builder_Options {
 	 */
 	public function __construct() {
 		// Set our title
-		$this->title = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );
+		$this->title   = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );
+		$this->options = $this->get_page_builder_options();
 
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+		add_action( 'wds_register_page_builder_options', array( $this, 'register_settings' ) );
 	}
 
 	public function load_scripts( $hook ) {
 		if ( 'settings_page_wds_page_builder_options' == $hook ) {
 			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), '20150721', true );
 		}
+	}
+
+	public function register_settings( $args = array() ) {
+		if ( ! empty( $args ) ) {
+			wp_cache_delete( 'alloptions', 'options' );
+			update_option( 'wds_page_builder_options', $args );
+		}
+	}
+
+	public function get_page_builder_options() {
+		return get_option( 'wds_page_builder_options' );
 	}
 
 	/**
@@ -57,6 +69,7 @@ class WDS_Page_Builder_Options {
 	public function init() {
 		register_setting( $this->key, $this->key );
 		add_filter( 'pre_update_option_wds_page_builder_options', array( $this, 'prevent_blank_templates' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 	}
 
 	/**
@@ -118,60 +131,64 @@ class WDS_Page_Builder_Options {
 			),
 		) );
 
-		// Set our CMB2 fields
-
 		$cmb->add_field( array(
-			'name' => __( 'Template Parts Directory', 'wds-simple-page-builder' ),
-			'desc' => __( 'Where the template parts are located in the theme. Default is /parts', 'wds-simple-page-builder' ),
-			'id'   => 'parts_dir',
-			'type' => 'text_small',
-			'default' => 'parts',
+			'name'       => __( 'Template Parts Directory', 'wds-simple-page-builder' ),
+			'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'wds-simple-page-builder' ),
+			'id'         => 'parts_dir',
+			'type'       => 'text_small',
+			'default'    => 'parts',
+			'show_on_cb' => array( $this, 'show_parts_dir' ),
 		) );
 
 		$cmb->add_field( array(
-			'name' => __( 'Template Parts Prefix', 'wds-simple-page-builder' ),
-			'desc' => __( 'File prefix that identifies template parts. Default is part-', 'wds-simple-page-builder' ),
-			'id'   => 'parts_prefix',
-			'type' => 'text_small',
-			'default' => 'part',
+			'name'       => __( 'Template Parts Prefix', 'wds-simple-page-builder' ),
+			'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'wds-simple-page-builder' ),
+			'id'         => 'parts_prefix',
+			'type'       => 'text_small',
+			'default'    => 'part',
+			'show_on_cb' => array( $this, 'show_parts_prefix' ),
 		) );
 
 		$cmb->add_field( array(
-			'name'    => __( 'Use Wrapper', 'wds-simple-page-builder' ),
-			'desc'    => __( 'If checked, a wrapper HTML container will be added around each individual template part.', 'wds-simple-page-builder' ),
-			'id'      => 'use_wrap',
-			'type'    => 'checkbox',
+			'name'       => __( 'Use Wrapper', 'wds-simple-page-builder' ),
+			'desc'       => __( 'If checked, a wrapper HTML container will be added around each individual template part.', 'wds-simple-page-builder' ),
+			'id'         => 'use_wrap',
+			'type'       => 'checkbox',
+			'show_on_cb' => array( $this, 'show_use_wrap' ),
 		) );
 
 		$cmb->add_field( array(
-			'name'    => __( 'Container Type', 'wds-simple-page-builder' ),
-			'desc'    => __( 'The type of HTML container wrapper to use, if Use Wrapper is selected.', 'wds-simple-page-builder' ),
-			'id'      => 'container',
-			'type'    => 'select',
-			'options' => array(
+			'name'       => __( 'Container Type', 'wds-simple-page-builder' ),
+			'desc'       => __( 'The type of HTML container wrapper to use, if Use Wrapper is selected.', 'wds-simple-page-builder' ),
+			'id'         => 'container',
+			'type'       => 'select',
+			'options'    => array(
 				'section' => __( 'Section', 'wds-simple-page-builder' ),
 				'div'     => __( 'Div', 'wds-simple-page-builder' ),
 				'aside'   => __( 'Aside', 'wds-simple-page-builder' ),
 				'article' => __( 'Article', 'wds-simple-page-builder' ),
 			),
-			'default' => 'section'
+			'default'    => 'section',
+			'show_on_cb' => array( $this, 'show_container' ),
 		) );
 
 		$cmb->add_field( array(
-			'name'    => __( 'Container Class', 'wds-simple-page-builder' ),
-			'desc'    => sprintf( __( '%1$sThe default class to use for all template part wrappers. Specific classes will be added to each wrapper in addition to this. %2$sMultiple classes, separated by a space, can be added here.%3$s', 'wds-simple-page-builder' ), '<p>', '<br />', '</p>' ),
-			'id'      => 'container_class',
-			'type'    => 'text_medium',
-			'default' => 'pagebuilder-part',
+			'name'       => __( 'Container Class', 'wds-simple-page-builder' ),
+			'desc'       => sprintf( __( '%1$sThe default class to use for all template part wrappers. Specific classes will be added to each wrapper in addition to this. %2$sMultiple classes, separated by a space, can be added here.%3$s', 'wds-simple-page-builder' ), '<p>', '<br />', '</p>' ),
+			'id'         => 'container_class',
+			'type'       => 'text_medium',
+			'default'    => 'pagebuilder-part',
+			'show_on_cb' => array( $this, 'show_container_class' ),
 		) );
 
 		$cmb->add_field( array(
-			'name'    => __( 'Allowed Post Types', 'wds-simple-page-builder' ),
-			'desc'    => __( 'Post types that can use the page builder. Default is Page.', 'wds-simple-page-builder' ),
-			'id'      => 'post_types',
-			'type'    => 'multicheck',
-			'default' => 'page',
-			'options' => $this->get_post_types()
+			'name'       => __( 'Allowed Post Types', 'wds-simple-page-builder' ),
+			'desc'       => __( 'Post types that can use the page builder. Default is Page.', 'wds-simple-page-builder' ),
+			'id'         => 'post_types',
+			'type'       => 'multicheck',
+			'default'    => 'page',
+			'options'    => $this->get_post_types(),
+			'show_on_cb' => array( $this, 'show_post_types' ),
 		) );
 
 		$group_field_id = $cmb->add_field( array(
@@ -265,6 +282,30 @@ class WDS_Page_Builder_Options {
 		}
 
 		throw new Exception( 'Invalid property: ' . $field );
+	}
+
+	public function show_parts_dir() {
+		return ! ( $this->options['hide_options'] && isset( $this->options['parts_dir'] ) );
+	}
+
+	public function show_parts_prefix() {
+		return ! ( $this->options['hide_options'] && isset( $this->options['parts_prefix'] ) );
+	}
+
+	public function show_use_wrap() {
+		return ! ( $this->options['hide_options'] && isset( $this->options['use_wrap'] ) );
+	}
+
+	public function show_container() {
+		return ! ( $this->options['hide_options'] && isset( $this->options['show_container'] ) );
+	}
+
+	public function show_container_class() {
+		return ! ( $this->options['hide_options'] && isset( $this->options['show_container_class'] ) );
+	}
+
+	public function show_post_types() {
+		return ! ( $this->options['hide_options'] && isset( $this->options['show_post_types'] ) );
 	}
 
 }

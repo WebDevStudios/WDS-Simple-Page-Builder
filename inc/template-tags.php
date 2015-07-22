@@ -30,7 +30,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		);
 
 		// check existing layouts for the one we're trying to add to see if it exists
-		$existing_layouts = $old_options['parts_saved_layouts'];
+		$existing_layouts = isset( $old_options['parts_saved_layouts'] ) ? $old_options['parts_saved_layouts'] : array();
 		$layout_exists    = saved_page_builder_layout_exists( esc_attr( $name ) );
 
 		// if the layout doesn't exist already, add it. this allows that layout to be edited
@@ -102,7 +102,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 
 	if ( $editable ) {
 		$options          = get_option( 'wds_page_builder_options' );
-		$existing_layouts = $options['parts_saved_layouts'];
+		$existing_layouts = isset( $options['parts_saved_layouts'] ) ? $options['parts_saved_layouts'] : array();
 		$layout_exists    = false;
 		foreach( $existing_layouts as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
@@ -288,4 +288,14 @@ function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
 	// do the page builder stuff
 	wds_page_builder_load_parts( $layout, $container, $class );
 
+}
+
+function wds_register_page_builder_options( $args = array() ) {
+	$defaults = array(
+		'hide_options'    => true,
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	do_action( 'wds_register_page_builder_options', $args );
 }
