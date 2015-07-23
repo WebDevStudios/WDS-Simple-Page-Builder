@@ -321,15 +321,15 @@ class WDS_Page_Builder_Options {
 			return true;
 		}
 
-		return ! ( $this->options['hide_options'] && isset( $this->options['show_container'] ) );
+		return ! ( $this->options['hide_options'] && isset( $this->options['container'] ) );
 	}
 
 	public function show_container_class() {
-		return ! ( $this->options['hide_options'] && isset( $this->options['show_container_class'] ) );
+		return ! ( $this->options['hide_options'] && isset( $this->options['container_class'] ) );
 	}
 
 	public function show_post_types() {
-		return ! ( $this->options['hide_options'] && isset( $this->options['show_post_types'] ) );
+		return ! ( $this->options['hide_options'] && isset( $this->options['post_types'] ) );
 	}
 
 }
