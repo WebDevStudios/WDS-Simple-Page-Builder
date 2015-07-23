@@ -292,6 +292,11 @@ class WDS_Page_Builder_Options {
 		throw new Exception( 'Invalid property: ' . $field );
 	}
 
+	/**
+	 * CMB2 show_on callback function for parts_dir option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
 	public function show_parts_dir() {
 		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
@@ -300,6 +305,11 @@ class WDS_Page_Builder_Options {
 		return ! ( $this->options['hide_options'] && isset( $this->options['parts_dir'] ) );
 	}
 
+	/**
+	 * CMB2 show_on callback function for parts_prefix option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
 	public function show_parts_prefix() {
 		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
@@ -308,6 +318,11 @@ class WDS_Page_Builder_Options {
 		return ! ( $this->options['hide_options'] && isset( $this->options['parts_prefix'] ) );
 	}
 
+	/**
+	 * CMB2 show_on callback function for use_wrap option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
 	public function show_use_wrap() {
 		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
@@ -316,6 +331,11 @@ class WDS_Page_Builder_Options {
 		return ! ( $this->options['hide_options'] && isset( $this->options['use_wrap'] ) );
 	}
 
+	/**
+	 * CMB2 show_on callback function for container option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
 	public function show_container() {
 		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
@@ -324,6 +344,11 @@ class WDS_Page_Builder_Options {
 		return ! ( $this->options['hide_options'] && isset( $this->options['container'] ) );
 	}
 
+	/**
+	 * CMB2 show_on callback function for container_class option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
 	public function show_container_class() {
 		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
@@ -332,6 +357,11 @@ class WDS_Page_Builder_Options {
 		return ! ( $this->options['hide_options'] && isset( $this->options['container_class'] ) );
 	}
 
+	/**
+	 * CMB2 show_on callback function for post_types option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
 	public function show_post_types() {
 		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
