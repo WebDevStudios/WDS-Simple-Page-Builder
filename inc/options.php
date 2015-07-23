@@ -43,6 +43,7 @@ class WDS_Page_Builder_Options {
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
 		add_action( 'wds_register_page_builder_options', array( $this, 'register_settings' ) );
+		add_action( 'wds_page_builder_add_theme_support', array( $this, 'add_theme_support' ) );
 	}
 
 	/**
