@@ -290,6 +290,19 @@ function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
 
 }
 
+/**
+ * Function to programmatically set certain Page Builder options
+ * @param  array  $args An array of arguments matching Page Builder settings in the options table.
+ *                      'parts_dir'       The directory that template parts are saved in
+ *                      'parts_prefix'    The template part prefix being used
+ *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *                      'container'       A valid HTML container type.
+ *                      'container_class' The container class
+ *                      'post_types'      A post type name as a string or array of post types
+ *                      'hide_options'    True to hide options that have been set, disabled to
+ *                                        display them as uneditable fields
+ * @return void
+ */
 function wds_register_page_builder_options( $args = array() ) {
 	$defaults = array(
 		'hide_options'    => true,
