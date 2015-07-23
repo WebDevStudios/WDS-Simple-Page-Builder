@@ -111,6 +111,20 @@ class WDS_Page_Builder_Options {
 
 
 	/**
+	 * Support WordPress add_theme_support feature
+	 * @since  1.5
+	 * @uses   current_theme_supports
+	 * @param  array $args            Array of Page Builder options to set
+	 * @link   http://justintadlock.com/archives/2010/11/01/theme-supported-features
+	 */
+	public function add_theme_support( $args ) {
+		if ( current_theme_supports( 'wds-simple-page-builder' ) ) {
+			wds_register_page_builder_options( $args );
+		}
+	}
+
+
+	/**
 	 * Add menu options page
 	 * @since 0.1.0
 	 */
