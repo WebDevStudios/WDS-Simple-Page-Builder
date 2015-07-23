@@ -325,10 +325,18 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function show_container_class() {
+		if ( 'disabled' === $this->options['hide_options'] ) {
+			return true;
+		}
+
 		return ! ( $this->options['hide_options'] && isset( $this->options['container_class'] ) );
 	}
 
 	public function show_post_types() {
+		if ( 'disabled' === $this->options['hide_options'] ) {
+			return true;
+		}
+
 		return ! ( $this->options['hide_options'] && isset( $this->options['post_types'] ) );
 	}
 
