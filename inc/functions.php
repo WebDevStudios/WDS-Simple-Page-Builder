@@ -13,6 +13,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 	class WDS_Page_Builder {
 
+		public $part_slug;
+
 		/**
 		 * Construct function to get things started.
 		 */
@@ -21,11 +23,34 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->basename       = wds_page_builder()->basename;
 			$this->directory_path = wds_page_builder()->directory_path;
 			$this->directory_url  = wds_page_builder()->directory_url;
+			$this->part_slug      = '';
+			$this->templates_loaded = false;
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
-			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 1 );
+			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
+			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
+			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
+
 		}
 
+		/**
+		 * If we've set the option to use a wrapper around the page builder parts, add the actions
+		 * to display those parts
+		 * @since  1.5
+		 * @return void
+		 */
+		public function wrapper_init() {
+			if ( wds_page_builder_get_option( 'use_wrap' ) ) {
+				add_action( 'wds_page_builder_before_load_template', array( $this, 'before_parts' ), 10, 2 );
+				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ), 10, 2 );
+			}
+		}
+
+		public function templates_loaded() {
+			if ( $this->templates_loaded === false ) {
+				$this->templates_loaded = true;
+			}
+		}
 
 		/**
 		 * Build our meta boxes
@@ -69,7 +94,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 *
 		 * @param string $layout Optional parameter to specify a specific layout to use
 		 */
-		public function add_template_parts( $layout = '' ) {
+		public function add_template_parts( $layout = '', $container = '', $class = '' ) {
 
 			if ( '' == $layout ) {
 				if ( ! wds_page_builder_get_option( 'parts_saved_layouts' ) && ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
@@ -77,10 +102,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				}
 			}
 
-			$post_id       = ( is_singular() ) ? get_queried_object()->ID : 0;
-			$parts         = get_post_meta( $post_id, '_wds_builder_template', true );
-			$global_parts  = wds_page_builder_get_option( 'parts_global_templates' );
-			$saved_layouts = wds_page_builder_get_option( 'parts_saved_layouts' );
+			$post_id            = ( is_singular() ) ? get_queried_object()->ID : 0;
+			$parts              = get_post_meta( $post_id, '_wds_builder_template', true );
+			$global_parts       = wds_page_builder_get_option( 'parts_global_templates' );
+			$saved_layouts      = wds_page_builder_get_option( 'parts_saved_layouts' );
 			$registered_layouts = get_option( 'wds_page_builder_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
@@ -130,10 +155,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			// loop through each part and load the template parts
-			if ( is_array( $parts ) ) {
+			if ( is_array( $parts ) && ! $this->templates_loaded ) {
 				do_action( 'wds_page_builder_before_load_parts' );
 				foreach( $parts as $part ) {
-					$this->load_template_part( $part );
+					$this->load_template_part( $part, $container, $class );
 				}
 				do_action( 'wds_page_builder_after_load_parts' );
 			}
@@ -147,7 +172,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @param array $part A template part array from either the global option or the
 		 *                    post meta for the current page.
 		 */
-		public function load_template_part( $part = array() ) {
+		public function load_template_part( $part = array(), $container = '', $class = '' ) {
 
 			// bail if nothing was passed
 			if ( empty( $part ) ) {
@@ -164,15 +189,90 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				return;
 			}
 
+			$this->set_part( $part['template_group'] );
+			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
+
 			// bail if the file doesn't exist
-			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $part['template_group'] . '.php' ) ) {
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' ) ) {
 				return;
 			}
 
-			do_action( 'wds_page_builder_before_load_template' );
-			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $part['template_group'] . '.php' );
-			do_action( 'wds_page_builder_after_load_template' );
+			do_action( 'wds_page_builder_before_load_template', $container, $classes );
+			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' );
+			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug );
 
+		}
+
+		/**
+		 * Get the current part_slug class variable
+		 * @since  1.5
+		 * @return string The current value of part_slug
+		 */
+		public function get_part() {
+			return $this->part_slug;
+		}
+
+		/**
+		 * Set the current part_slug class variable
+		 * @since  1.5
+		 * @param string $part Sets a new value for the part_slug class variable
+		 */
+		public function set_part( $part ) {
+			$this->part_slug = $part;
+		}
+
+		/**
+		 * Returns an array of all the page builder template part slugs on the current page
+		 * @since  1.5
+		 * @return array The page builder part slugs
+		 */
+		public function page_builder_parts() {
+			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
+			$the_files  = array();
+			foreach ( $some_files as $file ) {
+				$the_files[] = stripslashes( str_replace( array(
+					get_template_directory(),
+					wds_page_builder_template_parts_dir(),
+					wds_page_builder_template_part_prefix() . '-',
+					'.php',
+					'//'
+				), '', $file ) );
+			}
+			return $the_files;
+		}
+
+		/**
+		 * array_filter callback to match template parts
+		 * @since  1.5
+		 * @param  string $var The thing to check
+		 * @return bool        Whether the string was found
+		 */
+		private function match_parts($var) {
+			return strpos($var, 'part-');
+		}
+
+		public function before_parts( $container = '', $class = '' ) {
+			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+			$classes = get_the_page_builder_classes( $class );
+			$before = "<$container class=\"$classes\">";
+
+			/**
+			 * Filter the wrapper markup.
+			 *
+			 * Note, there's no filter for what the closing markup would look like, so if the
+			 * container element is being changed, make sure to only change the container by
+			 * filtering wds_page_builder_container.
+			 *
+			 * @since 1.5
+			 * @param string $before The full opening container markup
+			 */
+			echo apply_filters( 'wds_page_builder_wrapper', $before );
+		}
+
+		public function after_parts( $container = '', $class = '' ) {
+			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+			echo "</$container>";
+			echo ( $class ) ? '<!-- .' . sanitize_title( $class ) . ' -->' : '';
 		}
 
 	}

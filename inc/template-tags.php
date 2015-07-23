@@ -2,6 +2,7 @@
 
 /**
  * Function to register a new layout programmatically
+ * @since  1.3
  * @param  string $name       The layout name
  * @param  array  $templates  An array of templates to add to the layout
  * @param  bool   $allow_edit If false, layout will not appear in the Page Builder Options
@@ -29,7 +30,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		);
 
 		// check existing layouts for the one we're trying to add to see if it exists
-		$existing_layouts = $old_options['parts_saved_layouts'];
+		$existing_layouts = isset( $old_options['parts_saved_layouts'] ) ? $old_options['parts_saved_layouts'] : array();
 		$layout_exists    = saved_page_builder_layout_exists( esc_attr( $name ) );
 
 		// if the layout doesn't exist already, add it. this allows that layout to be edited
@@ -89,6 +90,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 /**
  * Check if a given layout exists
+ * @since  1.4.2
  * @param  string  $layout_name The name of the saved layout
  * @param  boolean $editable    Whether the layout is editable or hard-coded
  * @return boolean              True if it exists, false if it doesn't
@@ -100,7 +102,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 
 	if ( $editable ) {
 		$options          = get_option( 'wds_page_builder_options' );
-		$existing_layouts = $options['parts_saved_layouts'];
+		$existing_layouts = isset( $options['parts_saved_layouts'] ) ? $options['parts_saved_layouts'] : array();
 		$layout_exists    = false;
 		foreach( $existing_layouts as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
@@ -123,6 +125,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 
 /**
  * Function to remove a registered layout. Best used in a deactivation hook.
+ * @since  1.4
  * @param  string $name      The layout name. Pass 'all' to delete all registered layouts.
  * @return null
  */
@@ -163,15 +166,16 @@ function unregister_page_builder_layout( $name = '' ) {
 /**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
- * @param  string|array  $parts (Optional) A specific layout or an array of parts to
- *                              display
+ * @since  1.3
+ * @param  mixed  $parts     Optional. A specific layout or an array of parts to
+ *                           display
+ * @param  string $container Optional. Container HTML element.
+ * @param  string $class     Optional. Custom container class to wrap around individual parts
  * @return null
  */
-function wds_page_builder_load_parts( $parts = '' ) {
+function wds_page_builder_load_parts( $parts = '', $container = '', $class = '' ) {
 	if ( ! is_array( $parts ) ) {
-		do_action( 'wds_page_builder_before_load_parts' );
-		do_action( 'wds_page_builder_load_parts', $parts );
-		do_action( 'wds_page_builder_after_load_parts' );
+		do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
 		return;
 	}
 
@@ -185,6 +189,7 @@ function wds_page_builder_load_parts( $parts = '' ) {
 
 /**
  * Helper function for loading a single template part
+ * @since  1.3
  * @param  string $part The part slug
  * @return null
  */
@@ -196,4 +201,142 @@ function wds_page_builder_load_part( $part = '' ) {
 
 	$page_builder = new WDS_Page_Builder;
 	$page_builder->load_template_part( array( 'template_group' => $part ) );
+}
+
+/**
+ * Display the classes for the template part wrapper
+ * @since  1.5
+ * @param  string|array $class     One or more classes to add to the class list
+ * @return null
+ */
+function page_builder_class( $class = '' ) {
+	echo 'class="' . get_the_page_builder_classes( $class ) . '"';
+}
+
+/**
+ * Return the classes for the template part wrapper
+ * @since  1.5
+ * @param  string|array $class     One or more classes to add to the class list
+ * @return string       A parsed list of classes as they would appear in a div class attribute
+ */
+function get_the_page_builder_classes( $class = '' ) {
+	// Separates classes with a single space, collates classes for template part wrapper DIV
+	$classes = join( ' ', get_page_builder_class( $class ) );
+
+	/**
+	 * Filter the list of CSS classes
+	 * @since  1.5
+	 * @param  array  $classes   An array of pagebuilder part classes
+	 */
+	return apply_filters( 'page_builder_classes', $classes );
+}
+
+/**
+ * Retrieve the class names for the template part as an array
+ *
+ * Based on post_class, but we're not getting as much information as post_class.
+ * We just want to return a generic class, the current template part slug, and any
+ * custom class names that were passed to the function.
+ *
+ * @param  string|array $class     One or more classes to add to the class list
+ * @return array                   Array of classes.
+ */
+function get_page_builder_class( $class = '' ) {
+
+	if ( $class ) {
+		if ( ! is_array( $class ) ) {
+		        $class = preg_split( '#\s+#', $class );
+		}
+		$classes = array_map( 'esc_attr', $class );
+	}
+
+	$classes[] = wds_page_builder_container_class();
+
+	return array_unique( $classes );
+
+}
+
+/**
+ * Gets an array of page builder parts.
+ *
+ * Note, this function ONLY returns values AFTER the parts have been loaded, so hook into
+ * wds_page_builder_after_load_parts or later for this to be populated
+ * @since  1.5
+ * @return array An array of template parts in use on the page
+ */
+function get_page_builder_parts() {
+	$page_builder = new WDS_Page_Builder;
+	return $page_builder->page_builder_parts();
+}
+
+/**
+ * Helper function to display page builder with a full wrap.
+ *
+ * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll
+ * get the page builder contents twice
+ * @param  string $container Optional. Unique container html element or use the default
+ * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way
+ *                           to change the container classes without a filter.
+ * @param  string $layout    Optional. The specific layout name to load, or the default.
+ * @return void
+ */
+function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
+	$page_builder = new WDS_Page_Builder;
+	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
+	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
+
+	// do the page builder stuff
+	wds_page_builder_load_parts( $layout, $container, $class );
+
+}
+
+/**
+ * Function to programmatically set certain Page Builder options
+ * @param  array  $args An array of arguments matching Page Builder settings in the options table.
+ *                      'parts_dir'       The directory that template parts are saved in
+ *                      'parts_prefix'    The template part prefix being used
+ *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *                      'container'       A valid HTML container type.
+ *                      'container_class' The container class
+ *                      'post_types'      A post type name as a string or array of post types
+ *                      'hide_options'    True to hide options that have been set, disabled to
+ *                                        display them as uneditable fields
+ * @return void
+ */
+function wds_register_page_builder_options( $args = array() ) {
+	$defaults = array(
+		'hide_options'    => true,
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	do_action( 'wds_register_page_builder_options', $args );
+}
+
+/**
+ * Helper function to add Page Builder theme support
+ *
+ * Because theme features are all hard-coded, we can't pass arguments directly to
+ * add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in
+ * combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct
+ * values to the Page Builder options.
+ * @since  1.5
+ * @param  array  $args An array of arguments matching Page Builder settings in the options table.
+ *                      'parts_dir'       The directory that template parts are saved in
+ *                      'parts_prefix'    The template part prefix being used
+ *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *                      'container'       A valid HTML container type.
+ *                      'container_class' The container class
+ *                      'post_types'      A post type name as a string or array of post types
+ *                      'hide_options'    True to hide options that have been set, disabled to
+ *                                        display them as uneditable fields
+ * @return void
+ */
+function wds_page_builder_theme_support( $args = array() ) {
+	$defaults = array(
+		'hide_options'    => true,
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+	do_action( 'wds_page_builder_add_theme_support', $args );
 }
