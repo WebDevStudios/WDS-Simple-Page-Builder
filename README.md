@@ -39,6 +39,13 @@ Options page
 
 ## Changelog
 
+**1.5**
+* fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))
+* added a new `page_builder_class` function ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/11) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#page_builder_class-class---))
+* added a new function that will initialize page builder with a wrapping container around it ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/13) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#wds_page_builder_wrap-container---class---layout---))
+* added a new function to initialize the page builder options and set those initialized options as either hidden or visible but uneditable ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/13) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#wds_register_page_builder_options-args--array-))
+* added the ability to register Page Builder as a theme feature (using `add_theme_support( 'wds-simple-page-builder' )`) and a helper function to initialize the Page Builder options ([documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Adding-Theme-Support))
+
 **1.4.2**
 * added `saved_page_builder_layout_exists` function
 
