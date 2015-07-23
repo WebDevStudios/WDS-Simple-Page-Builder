@@ -312,3 +312,31 @@ function wds_register_page_builder_options( $args = array() ) {
 
 	do_action( 'wds_register_page_builder_options', $args );
 }
+
+/**
+ * Helper function to add Page Builder theme support
+ *
+ * Because theme features are all hard-coded, we can't pass arguments directly to
+ * add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in
+ * combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct
+ * values to the Page Builder options.
+ * @since  1.5
+ * @param  array  $args An array of arguments matching Page Builder settings in the options table.
+ *                      'parts_dir'       The directory that template parts are saved in
+ *                      'parts_prefix'    The template part prefix being used
+ *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *                      'container'       A valid HTML container type.
+ *                      'container_class' The container class
+ *                      'post_types'      A post type name as a string or array of post types
+ *                      'hide_options'    True to hide options that have been set, disabled to
+ *                                        display them as uneditable fields
+ * @return void
+ */
+function wds_page_builder_theme_support( $args = array() ) {
+	$defaults = array(
+		'hide_options'    => true,
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+	do_action( 'wds_page_builder_add_theme_support', $args );
+}
