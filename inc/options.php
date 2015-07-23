@@ -121,6 +121,8 @@ class WDS_Page_Builder_Options {
 	 */
 	function add_options_page_metabox() {
 
+		$disabled = ( 'disabled' == $this->options['hide_options'] ) ? array( 'disabled' => '' ) : array();
+
 		$cmb = new_cmb2_box( array(
 			'id'      => $this->metabox_id,
 			'hookup'  => false,
@@ -138,6 +140,7 @@ class WDS_Page_Builder_Options {
 			'type'       => 'text_small',
 			'default'    => 'parts',
 			'show_on_cb' => array( $this, 'show_parts_dir' ),
+			'attributes' => $disabled,
 		) );
 
 		$cmb->add_field( array(
@@ -147,6 +150,7 @@ class WDS_Page_Builder_Options {
 			'type'       => 'text_small',
 			'default'    => 'part',
 			'show_on_cb' => array( $this, 'show_parts_prefix' ),
+			'attributes' => $disabled,
 		) );
 
 		$cmb->add_field( array(
@@ -155,6 +159,7 @@ class WDS_Page_Builder_Options {
 			'id'         => 'use_wrap',
 			'type'       => 'checkbox',
 			'show_on_cb' => array( $this, 'show_use_wrap' ),
+			'attributes' => $disabled,
 		) );
 
 		$cmb->add_field( array(
@@ -170,6 +175,7 @@ class WDS_Page_Builder_Options {
 			),
 			'default'    => 'section',
 			'show_on_cb' => array( $this, 'show_container' ),
+			'attributes' => $disabled,
 		) );
 
 		$cmb->add_field( array(
@@ -179,6 +185,7 @@ class WDS_Page_Builder_Options {
 			'type'       => 'text_medium',
 			'default'    => 'pagebuilder-part',
 			'show_on_cb' => array( $this, 'show_container_class' ),
+			'attributes' => $disabled,
 		) );
 
 		$cmb->add_field( array(
@@ -189,6 +196,7 @@ class WDS_Page_Builder_Options {
 			'default'    => 'page',
 			'options'    => $this->get_post_types(),
 			'show_on_cb' => array( $this, 'show_post_types' ),
+			'attributes' => $disabled,
 		) );
 
 		$group_field_id = $cmb->add_field( array(
@@ -285,18 +293,34 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function show_parts_dir() {
+		if ( 'disabled' == $this->options['hide_options'] ) {
+			return true;
+		}
+
 		return ! ( $this->options['hide_options'] && isset( $this->options['parts_dir'] ) );
 	}
 
 	public function show_parts_prefix() {
+		if ( 'disabled' == $this->options['hide_options'] ) {
+			return true;
+		}
+
 		return ! ( $this->options['hide_options'] && isset( $this->options['parts_prefix'] ) );
 	}
 
 	public function show_use_wrap() {
+		if ( 'disabled' == $this->options['hide_options'] ) {
+			return true;
+		}
+
 		return ! ( $this->options['hide_options'] && isset( $this->options['use_wrap'] ) );
 	}
 
 	public function show_container() {
+		if ( 'disabled' == $this->options['hide_options'] ) {
+			return true;
+		}
+
 		return ! ( $this->options['hide_options'] && isset( $this->options['show_container'] ) );
 	}
 
