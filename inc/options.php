@@ -293,7 +293,7 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function show_parts_dir() {
-		if ( 'disabled' == $this->options['hide_options'] ) {
+		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -301,7 +301,7 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function show_parts_prefix() {
-		if ( 'disabled' == $this->options['hide_options'] ) {
+		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -309,7 +309,7 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function show_use_wrap() {
-		if ( 'disabled' == $this->options['hide_options'] ) {
+		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -317,7 +317,7 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function show_container() {
-		if ( 'disabled' == $this->options['hide_options'] ) {
+		if ( 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
