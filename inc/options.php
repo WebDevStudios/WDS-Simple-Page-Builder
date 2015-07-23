@@ -45,12 +45,23 @@ class WDS_Page_Builder_Options {
 		add_action( 'wds_register_page_builder_options', array( $this, 'register_settings' ) );
 	}
 
+	/**
+	 * Load the admin js
+	 * @param  string $hook The admin page we're on
+	 * @return void
+	 */
 	public function load_scripts( $hook ) {
 		if ( 'settings_page_wds_page_builder_options' == $hook ) {
 			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), '20150721', true );
 		}
 	}
 
+	/**
+	 * Registers the settings via wds_register_page_builder_options
+	 * @since  1.5
+	 * @param  array  $args The options to update/register
+	 * @return void
+	 */
 	public function register_settings( $args = array() ) {
 		if ( ! empty( $args ) ) {
 			wp_cache_delete( 'alloptions', 'options' );
@@ -58,6 +69,11 @@ class WDS_Page_Builder_Options {
 		}
 	}
 
+	/**
+	 * Helper function to get the current Page Builder Options
+	 * @since  1.5
+	 * @return array The Page Builder options array
+	 */
 	public function get_page_builder_options() {
 		return get_option( 'wds_page_builder_options' );
 	}
