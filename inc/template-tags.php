@@ -175,7 +175,7 @@ function register_page_builder_area( $name = '' ) {
 	}
 
 	// use register_page_builder_layout to use page builder areas just like layouts
-	register_page_builder_layout( $name );
+	register_page_builder_layout( 'area-' . sanitize_title( $name ) );
 }
 
 /**
