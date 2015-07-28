@@ -211,6 +211,48 @@ function get_page_builder_areas() {
 
 
 /**
+ * Function that can be used to return a specific page builder area
+ * @param  string  $area    The area by slug/name
+ * @param  integer $post_id Optional. The post id. If none is passed, we will try to get one if
+ *                          it's necessary.
+ * @return void
+ */
+function get_page_builder_area( $area = '', $post_id = 0 ) {
+	// first, get the page builder areas
+	$areas = get_page_builder_areas();
+
+	// if there were no page builder areas, bail
+	if ( ! $areas ) {
+		return;
+	}
+
+	// if no post ID was passed, try to get one
+	if ( 0 == $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	// if the area we're looking for doesn't exist, bail
+	if ( ! in_array( 'area-' . $area, $areas ) ) {
+		return;
+	}
+
+	// if it's not singular -- like an archive or a 404 or something -- you can only add template
+	// parts by registering the area
+	if ( ! is_singular() ) {
+		wds_page_builder_load_parts( 'area-' . $area );
+		return;
+	}
+
+	// check if a page builder area for that area exists on this post and load those parts
+	if ( get_post_meta( $post_id, '_page_builder_area-' . $area, true ) ) {
+		$parts = get_post_meta( $post_id, '_page_builder_area-' . $area, true );
+		wds_page_builder_load_parts( $parts );
+		return;
+	}
+
+}
+
+/**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
  * @since  1.3
