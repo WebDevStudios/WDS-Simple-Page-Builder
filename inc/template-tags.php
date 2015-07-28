@@ -182,8 +182,7 @@ function register_page_builder_area( $name = '', $templates = array() ) {
 
 /**
  * Gets the page builder areas
- * @return mixed False if there are no areas, the single layout name if there's only one, or an
- *               array of layouts if there's more than one.
+ * @return mixed False if there are no areas or an array of layouts if there's more than one.
  */
 function get_page_builder_areas() {
 	$areas = get_option( 'wds_page_builder_layouts' );
@@ -196,7 +195,7 @@ function get_page_builder_areas() {
 			return false;
 		}
 
-		return str_replace( 'area-', '', $areas );
+		return array( $areas );
 	}
 
 	$_areas = array();
