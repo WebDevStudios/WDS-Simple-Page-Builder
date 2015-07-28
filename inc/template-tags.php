@@ -165,10 +165,12 @@ function unregister_page_builder_layout( $name = '' ) {
 
 /**
  * Function to register a new page builder "area"
- * @param  string $name The area name
+ * @param  string $name      The area name
+ * @param  array  $templates You can define the templates that go in this area the same way you
+ *                           would with register_page_builder_layout
  * @return void
  */
-function register_page_builder_area( $name = '' ) {
+function register_page_builder_area( $name = '', $templates = array() ) {
 	// bail if no name was passed
 	if ( '' == $name ) {
 		return;
