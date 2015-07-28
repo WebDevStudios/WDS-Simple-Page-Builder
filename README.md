@@ -39,6 +39,9 @@ Options page
 
 ## Changelog
 
+**1.6**
+* added new Page Builder "Areas" feature ([documentation](#))
+
 **1.5**
 * fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))
 * added a new `page_builder_class` function ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/11) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#page_builder_class-class---))

@@ -3,7 +3,7 @@ Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.5
+Stable tag: 1.6
 
 Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
 
@@ -58,6 +58,9 @@ Another [CMB2](https://wordpress.org/plugins/CMB2) issue which will also be fixe
 3. Options page
 
 == Changelog ==
+
+= 1.6 =
+* added new Page Builder "Areas" feature ([documentation](#))
 
 = 1.5 =
 * fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))
