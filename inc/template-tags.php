@@ -179,6 +179,37 @@ function register_page_builder_area( $name = '' ) {
 }
 
 /**
+ * Gets the page builder areas
+ * @return mixed False if there are no areas, the single layout name if there's only one, or an
+ *               array of layouts if there's more than one.
+ */
+function get_page_builder_areas() {
+	$areas = get_option( 'wds_page_builder_layouts' );
+
+	// if $areas isn't an array, there's just one area
+	if ( ! is_array( $areas ) ) {
+
+		// check for the area- prefix, if it's not there, we're not dealing with an area
+		if ( false === strpos( $areas, 'area-' ) ) {
+			return false;
+		}
+
+		return str_replace( 'area-', '', $areas );
+	}
+
+	$_areas = array();
+
+	foreach ( $areas as $area ) {
+		if ( strpos( $area, 'area-' ) ) {
+			$_areas[] = $area;
+		}
+	}
+
+	return $_areas;
+}
+
+
+/**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
  * @since  1.3
