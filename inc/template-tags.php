@@ -164,6 +164,21 @@ function unregister_page_builder_layout( $name = '' ) {
 }
 
 /**
+ * Function to register a new page builder "area"
+ * @param  string $name The area name
+ * @return void
+ */
+function register_page_builder_area( $name = '' ) {
+	// bail if no name was passed
+	if ( '' == $name ) {
+		return;
+	}
+
+	// use register_page_builder_layout to use page builder areas just like layouts
+	register_page_builder_layout( $name );
+}
+
+/**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
  * for the wds_page_builder_load_parts action.
  * @since  1.3
