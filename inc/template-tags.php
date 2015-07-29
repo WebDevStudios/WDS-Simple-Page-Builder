@@ -306,6 +306,28 @@ function wds_page_builder_load_part( $part = '' ) {
 	$page_builder->load_template_part( array( 'template_group' => $part ) );
 }
 
+
+/**
+ * The function to load a specific page builder area
+ * @param  string  $area    Which area to load. Must be registered with register_page_builder_area
+ * @param  integer $post_id Optional. The post id.
+ * @return void
+ */
+function wds_page_builder_area( $area = '', $post_id = 0 ) {
+	// bail if no area was specified
+	if ( '' == $area ) {
+		return;
+	}
+
+	$parts = get_page_builder_area( $area, $post_id );
+
+	do_action( 'wds_page_builder_before_load_parts' );
+	foreach( $parts as $part ) {
+		wds_page_builder_load_part( $part );
+	}
+	do_action( 'wds_page_builder_after_load_parts' );
+}
+
 /**
  * Display the classes for the template part wrapper
  * @since  1.5
