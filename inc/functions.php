@@ -72,6 +72,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				'show_names'   => true,
 			) );
 
+			$cmb->add_field( array(
+				'id'           => $prefix . 'template_group_title',
+				'type'         => 'title',
+				'name'         => __( 'Content Area Templates', 'wds-simple-page-builder' )
+			) );
+
 			$group_field_id = $cmb->add_field( array(
 				'id'           => $prefix . 'template',
 				'type'         => 'group',
