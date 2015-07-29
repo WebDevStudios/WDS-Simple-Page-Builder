@@ -244,24 +244,26 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 	}
 
 	// if the area we're looking for doesn't exist, bail
-	if ( ! in_array( 'area-' . $area, $areas ) ) {
+	if ( ! isset( $areas[$area] ) ) {
 		return;
 	}
 
 	// if it's not singular -- like an archive or a 404 or something -- you can only add template
 	// parts by registering the area
 	if ( ! is_singular() ) {
-		wds_page_builder_load_parts( 'area-' . $area );
-		return;
+		return $areas[$area]['template_group'];
 	}
 
-	// check if a page builder area for that area exists on this post and load those parts
-	if ( get_post_meta( $post_id, '_page_builder_area-' . $area, true ) ) {
-		$parts = get_post_meta( $post_id, '_page_builder_area-' . $area, true );
-		wds_page_builder_load_parts( $parts );
-		return;
+	if ( get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true ) ) {
+		$templates = get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true );
+		foreach( $templates as $template ) {
+			$out[] = $template['_page_builder_area-' . $area];
+		}
+
+		return $out;
 	}
 
+	return;
 }
 
 /**
