@@ -30,7 +30,14 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
 
+		}
+
+		public function load_admin_css( $hook ) {
+			if ( 'post-new.php' == $hook && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
+				wp_enqueue_style( 'admin', $this->directory_url . '/assets/css/admin.css', '', '20150729' );
+			}
 		}
 
 		/**
