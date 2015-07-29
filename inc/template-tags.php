@@ -176,8 +176,35 @@ function register_page_builder_area( $name = '', $templates = array() ) {
 		return;
 	}
 
-	// use register_page_builder_layout to use page builder areas just like layouts
-	register_page_builder_layout( 'area-' . sanitize_title( $name ) );
+	wp_cache_delete( 'alloptions', 'options' );
+
+	$old_options    = get_option( 'wds_page_builder_areas' );
+	$update_options = false;
+
+	// check existing layouts for the one we're trying to add to see if it exists
+	if ( is_array( $old_options ) ) {
+
+		if ( isset( $old_options[$name] ) ) {
+			unset( $old_options[$name]['template_group'] );
+			unset( $old_options[$name] );
+		}
+
+		$new_options = $old_options;
+
+		if ( ! in_array( sanitize_title( $name ), $old_options ) ) {
+			$update_options = true;
+		}
+
+	} else {
+		$update_options = true;
+	}
+
+	if ( $update_options ) {
+		$new_options[ esc_attr( $name ) ]['template_group'] = $templates;
+		delete_option( 'wds_page_builder_areas' );
+		update_option( 'wds_page_builder_areas', $new_options );
+	}
+
 }
 
 /**
@@ -185,28 +212,13 @@ function register_page_builder_area( $name = '', $templates = array() ) {
  * @return mixed False if there are no areas or an array of layouts if there's more than one.
  */
 function get_page_builder_areas() {
-	$areas = get_option( 'wds_page_builder_layouts' );
+	$areas = get_option( 'wds_page_builder_areas' );
 
-	// if $areas isn't an array, there's just one area
-	if ( ! is_array( $areas ) ) {
-
-		// check for the area- prefix, if it's not there, we're not dealing with an area
-		if ( false === strpos( $areas, 'area-' ) ) {
-			return false;
-		}
-
-		return array( $areas );
+	if ( ! $areas ) {
+		return false;
 	}
 
-	$_areas = array();
-
-	foreach ( $areas as $area ) {
-		if ( strpos( $area, 'area-' ) ) {
-			$_areas[] = $area;
-		}
-	}
-
-	return $_areas;
+	return $areas;
 }
 
 
