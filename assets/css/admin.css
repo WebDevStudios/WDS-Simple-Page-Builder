@@ -1,0 +1,12 @@
+#wds_simple_page_builder .cmb2-wrap>.cmb-field-list>.cmb-type-title.cmb-row {
+    padding: 0;
+    border-bottom: none;
+}
+
+#cmb2-metabox-wds_simple_page_builder .cmb-repeat-group-wrap.cmb-row {
+	padding: 0 0 2em;
+}
+
+#wds_simple_page_builder h5.cmb2-metabox-title {
+    font-size: 1.2em;
+}
