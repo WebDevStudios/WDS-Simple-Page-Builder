@@ -66,7 +66,21 @@ class WDS_Page_Builder_Options {
 	public function register_settings( $args = array() ) {
 		if ( ! empty( $args ) ) {
 			wp_cache_delete( 'alloptions', 'options' );
-			update_option( 'wds_page_builder_options', $args );
+			$old_options = get_option( 'wds_page_builder_options' );
+
+			$new_options = wp_parse_args( $args, array(
+				'hide_options'    => false,
+				'parts_dir'       => 'parts',
+				'parts_prefix'    => 'part',
+				'use_wrap'        => 'on',
+				'container'       => 'section',
+				'container_class' => 'pagebuilder-part',
+				'post_types'      => array( 'page' ),
+				'parts_global_templates' => $old_options['parts_global_templates'],
+				'parts_saved_layouts'    => $old_options['parts_saved_layouts'],
+			) );
+
+			update_option( 'wds_page_builder_options', $new_options );
 		}
 	}
 
