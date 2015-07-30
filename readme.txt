@@ -63,6 +63,7 @@ Another [CMB2](https://wordpress.org/plugins/CMB2) issue which will also be fixe
 * added new Page Builder "Areas" feature ([documentation](#))
 * CMB2 takes care of figuring out which version to run internally, so don't check CMB2_LOADED
 * fixed a bug where saved layouts were getting deleted when the options were registered
+* fixed an issue where a saved layout wouldn't display when layouts were displayed if registered layouts existed
 
 = 1.5 =
 * fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))
