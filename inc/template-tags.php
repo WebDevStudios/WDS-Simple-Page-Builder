@@ -319,7 +319,8 @@ function wds_page_builder_load_part( $part = '' ) {
 
 /**
  * The function to load a specific page builder area
- * @param  string  $area    Which area to load. Must be registered with register_page_builder_area
+ * @param  string  $area    Which area to load. If no page builder area is found, will
+ *                          look for a saved layout with the same name.
  * @param  integer $post_id Optional. The post id.
  * @return void
  */
