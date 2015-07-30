@@ -42,6 +42,7 @@ Options page
 **1.6**
 * added new Page Builder "Areas" feature ([documentation](#))
 * CMB2 takes care of figuring out which version to run internally, so don't check CMB2_LOADED
+* fixed a bug where saved layouts were getting deleted when the options were registered
 
 **1.5**
 * fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))
