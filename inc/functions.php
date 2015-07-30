@@ -35,7 +35,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		public function load_admin_css( $hook ) {
-			if ( 'post-new.php' == $hook && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
+			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
 				wp_enqueue_style( 'admin', $this->directory_url . '/assets/css/admin.css', '', '20150729' );
 			}
 		}
