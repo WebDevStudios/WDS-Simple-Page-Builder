@@ -104,6 +104,11 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 		$options          = get_option( 'wds_page_builder_options' );
 		$existing_layouts = isset( $options['parts_saved_layouts'] ) ? $options['parts_saved_layouts'] : array();
 		$layout_exists    = false;
+
+		if ( ! $options ) {
+			return $layout_exists;
+		}
+
 		foreach( $existing_layouts as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
@@ -112,6 +117,11 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 	} else {
 		$options       = get_option( 'wds_page_builder_layouts' );
 		$layout_exists = false;
+
+		if ( ! $options  ) {
+			return $layout_exists;
+		}
+
 		foreach( $options as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
