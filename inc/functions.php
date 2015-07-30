@@ -107,31 +107,36 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 				foreach( $areas as $area => $layout ) {
 
-					$area_group_field_id = $area . '_group_field_id';
+					// only show these meta fields if there's no defined layout for the area
+					if ( empty( $layout['template_group'] ) ) {
 
-					$cmb->add_field( array(
-						'id'       => $prefix . $area . '_' . 'title',
-						'type'     => 'title',
-						'name'     => sprintf( __( '%s Area Templates', 'wds-simple-page-builder' ), ucfirst( $area )),
-					) );
+						$area_group_field_id = $area . '_group_field_id';
 
-					$$area_group_field_id = $cmb->add_field( array(
-						'id'       => $prefix . $area . '_' . 'template',
-						'type'     => 'group',
-						'options'  => array(
-							'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), ucfirst( $area ) ),
-							'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
-							'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
-							'sortable'      => true
-						)
-					) );
+						$cmb->add_field( array(
+							'id'       => $prefix . $area . '_' . 'title',
+							'type'     => 'title',
+							'name'     => sprintf( __( '%s Area Templates', 'wds-simple-page-builder' ), ucfirst( $area )),
+						) );
 
-					$cmb->add_group_field( $$area_group_field_id, array(
-						'name'         => __( 'Template', 'wds-simple-page-builder' ),
-						'id'           => '_page_builder_area-' . $area,
-						'type'         => 'select',
-						'options'      => wds_page_builder_get_parts()
-					) );
+						$$area_group_field_id = $cmb->add_field( array(
+							'id'       => $prefix . $area . '_' . 'template',
+							'type'     => 'group',
+							'options'  => array(
+								'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+								'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
+								'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+								'sortable'      => true
+							)
+						) );
+
+						$cmb->add_group_field( $$area_group_field_id, array(
+							'name'         => __( 'Template', 'wds-simple-page-builder' ),
+							'id'           => '_page_builder_area-' . $area,
+							'type'         => 'select',
+							'options'      => wds_page_builder_get_parts()
+						) );
+
+					}
 
 				}
 			}
