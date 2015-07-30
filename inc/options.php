@@ -485,7 +485,7 @@ function wds_page_builder_container() {
  */
 function wds_page_builder_get_parts() {
 	$parts        = array();
-	$parts_dir    = trailingslashit( get_stylesheet_directory() ) . wds_page_builder_template_parts_dir();
+	$parts_dir    = trailingslashit( get_template_directory() ) . wds_page_builder_template_parts_dir();
 	$parts_prefix = wds_page_builder_template_part_prefix();
 
 	// add a generic 'none' option
