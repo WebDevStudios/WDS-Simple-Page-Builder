@@ -247,8 +247,10 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->set_part( $part['template_group'] );
 			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
 
+			$filename = trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php';
+
 			// bail if the file doesn't exist
-			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' ) ) {
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . $filename ) ) {
 				return;
 			}
 
