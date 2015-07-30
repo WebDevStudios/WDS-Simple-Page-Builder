@@ -247,6 +247,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->set_part( $part['template_group'] );
 			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
 
+			$in_child = false;
 			$filename = trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php';
 
 			// bail if the file doesn't exist
