@@ -4,7 +4,15 @@
 
 Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
 
-Questions? [Check out the wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
+WDS Simple Page Builder was developed with one main underlying idea: that content editors (the people choosing the layout of a page) should not be required to know HTML or CSS. This is an important distinction and it informs all the development decisions of the plugin.
+
+###_So, what does that mean?_
+
+What this means is that the plugin assumes that you are a theme developer, you are building a custom theme, and your theme has template parts that can be dropped into theme template files wherever you want. How and where (e.g. inside the Loop vs. outside the Loop) is up to you, but there are guidelines and best practices that will be outlined in this wiki.
+
+As a content editor, all I need to know is that there are these things (template parts) that I can put into my post or page and I can order them however I want, and, magically, stuff happens on the front end.
+
+Still have questions? [Check out the wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
 
 ## Usage
 

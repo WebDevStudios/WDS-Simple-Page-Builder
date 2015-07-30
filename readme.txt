@@ -9,7 +9,13 @@ Uses existing template parts in the currently-active theme to build a customized
 
 == Description ==
 
-Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
+WDS Simple Page Builder was developed with one main underlying idea: that content editors (the people choosing the layout of a page) should not be required to know HTML or CSS. This is an important distinction and it informs all the development decisions of the plugin.
+
+_So, what does that mean?_
+
+What this means is that the plugin assumes that you are a theme developer, you are building a custom theme, and your theme has template parts that can be dropped into theme template files wherever you want. How and where (e.g. inside the Loop vs. outside the Loop) is up to you, but there are guidelines and best practices that will be outlined in this wiki.
+
+As a content editor, all I need to know is that there are these things (template parts) that I can put into my post or page and I can order them however I want, and, magically, stuff happens on the front end.
 
 [Check out the wiki for full documentation!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
 
@@ -24,6 +30,8 @@ This will take care of loading the correct template parts in the order you speci
 `<?php do_action( 'wds_page_builder_load_parts', 'my-saved-layout' ); ?>`
 
 **Note:** With saved layouts, the name you pass to the do_action must match *exactly* the way it is saved on the options page. So, if your layout was instead named "my saved layout", you would need to pass it to the `do_action` with the spaces intact.
+
+A full list of helper functions can be found [in the wiki](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Handy-Functions)
 
 = Page vs Global Parts vs Saved Layouts =
 
