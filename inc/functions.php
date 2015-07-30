@@ -172,7 +172,9 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				// check if the layout requested is one that was registered
 				if ( $registered_layouts ) {
 
-					$saved_layouts = $registered_layouts;
+					if ( in_array( $layout, $registered_layouts ) ) {
+						$saved_layouts = $registered_layouts;
+					}
 
 				}
 
