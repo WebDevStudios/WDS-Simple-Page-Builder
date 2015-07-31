@@ -150,6 +150,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		public function add_template_parts( $layout = '', $container = '', $class = '' ) {
 
 			if ( '' == $layout ) {
+				$this->templates_loaded = false;
 				if ( ! wds_page_builder_get_option( 'parts_saved_layouts' ) && ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
 					return;
 				}
