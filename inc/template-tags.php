@@ -340,3 +340,20 @@ function wds_page_builder_theme_support( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 	do_action( 'wds_page_builder_add_theme_support', $args );
 }
+
+
+function wds_page_builder_get_part_data( $part_slug, $meta_key ) {
+
+	// @TODO determine if template parts always have this naming structure.. if not, how to handle this
+	// $part_slug = str_replace( array( '.php', 'part-' ), '', basename( $file ) );
+	$meta      = get_post_meta( get_the_ID(), '_wds_builder_template', 1 );
+
+	foreach ( (array) $meta as $group ) {
+
+		if ( $part_slug == $group['template_group'] ) {
+			return isset( $group[ $meta_key ] ) ? $group[ $meta_key ] : null;
+		}
+	}
+
+	return null;
+}

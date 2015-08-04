@@ -81,12 +81,46 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				)
 			) );
 
-			$cmb->add_group_field( $group_field_id, array(
-				'name'         => esc_html__( 'Template', 'wds-simple-page-builder' ),
-				'id'           => 'template_group',
-				'type'         => 'select',
-				'options'      => wds_page_builder_get_parts()
-			) );
+			$fields = $this->get_fields();
+
+			foreach ( $fields as $field ) {
+				$cmb->add_group_field( $group_field_id, $field );
+			}
+
+		}
+
+		public function get_fields() {
+			$template_parts = wds_page_builder_get_parts();
+
+			$fields = array(
+				array(
+					'name'    => esc_html__( 'Template', 'wds-simple-page-builder' ),
+					'id'      => 'template_group',
+					'type'    => 'select',
+					'options' => $template_parts,
+				),
+			);
+
+			foreach ( $template_parts as $part_slug => $part_value ) {
+				$new_fields = apply_filters( "wds_page_builder_fields_$part_slug", array() );
+
+				if ( ! empty( $new_fields ) && is_array( $new_fields ) ) {
+					foreach ( $new_fields as $new_field ) {
+
+						$new_field['_builder_group'] = $part_slug;
+
+						// Add before wrap
+						$new_field['before_row'] = isset( $new_field['before_row'] ) ? $new_field['before_row'] : '<div class="hidden-parts-fields hidden" id="hidden-parts-'. $part_slug .'" >';
+
+						// Add after wrap
+						$new_field['after_row'] = isset( $new_field['after_row'] ) ? $new_field['after_row'] : '</div><!-- #hidden-parts-'. $part_slug .' -->';
+
+						$fields[] = $new_field;
+					}
+				}
+			}
+
+			return $fields;
 		}
 
 		/**
