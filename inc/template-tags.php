@@ -373,12 +373,14 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
  * @since 1.6
  * @param string $part_slug     The template part slug
  * @param string $meta_key      The meta to find the value of.
+ * @param int    $post_id       The Post ID to retrieve the data for (optional)
  *
  * @return null|mixed           Null on failure, the stored meta value on success.
  */
-function wds_page_builder_get_part_data( $part_slug, $meta_key ) {
+function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
 
-	$meta = get_post_meta( get_the_ID(), '_wds_builder_template', 1 );
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$meta    = get_post_meta( $post_id, '_wds_builder_template', 1 );
 
 	foreach ( (array) $meta as $group ) {
 		if ( $part_slug == $group['template_group'] ) {
