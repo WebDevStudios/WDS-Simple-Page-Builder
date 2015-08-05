@@ -11,26 +11,35 @@
 	};
 
 	app.init = function() {
-		app.cache();
+		app.resetCacheAndHide();
 
-		app.resetHide();
-
-		app.$.dropdowns
-			.on( 'change', app.maybeUnhide );
+		app.$.box
+			.on( 'change', '.wds-simple-page-builder-template-select', app.maybeUnhide );
 
 		app.$.postForm
 			.on( 'submit', app.removeHidden );
 
-		cmb.metabox().find('.cmb-repeatable-group')
-			.on( 'cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete', app.resetHide );
+		cmb.metabox().find( '.cmb-repeatable-group' )
+			.on( 'cmb2_shift_rows_complete', app.resetHide )
+			.on( 'cmb2_add_row cmb2_remove_row', app.resetCacheAndHide );
 	};
 
 	app.removeHidden = function() {
 		$( '.hidden-parts-fields.hidden' ).remove();
 	};
 
-	app.resetHide = function() {
+	app.resetCacheAndHide = function( evt, row ) {
+		app.cache();
+		app.resetHide( evt, row );
+	};
+
+	app.resetHide = function( evt, row ) {
+		if ( row ) {
+			cmb.emptyValue( evt, row );
+		}
+
 		app.$.hiddenParts.addClass( 'hidden' );
+
 		app.$.dropdowns.each( app.maybeUnhide );
 	};
 
@@ -38,6 +47,7 @@
 		var $this = $(this);
 		var id    = $this.val();
 		var $row  = $this.parents( '.cmb-repeatable-grouping' );
+
 
 		if ( evt.target ) {
 			$row.find( '.hidden-parts-fields' ).addClass( 'hidden' );
