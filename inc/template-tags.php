@@ -359,6 +359,7 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
 			return wds_page_builder_get_part_data( $part_slug, $meta_key );
 		}
 	}
+
 	return null;
 }
 
