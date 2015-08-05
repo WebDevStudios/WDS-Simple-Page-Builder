@@ -14,6 +14,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 	class WDS_Page_Builder {
 
 		public $part_slug;
+		public $builder_js_required = false;
 
 		/**
 		 * Construct function to get things started.
@@ -65,9 +66,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				'id'           => 'wds_simple_page_builder',
 				'title'        => esc_html__( 'Page Builder', 'wds-simple-page-builder' ),
 				'object_types' => $object_types,
-				'context'      => 'normal',
 				'priority'     => 'high',
-				'show_names'   => true,
+				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
 			) );
 
 			$group_field_id = $cmb->add_field( array(
@@ -86,7 +86,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			foreach ( $fields as $field ) {
 				$cmb->add_group_field( $group_field_id, $field );
 			}
-
 		}
 
 		public function get_fields() {
@@ -105,15 +104,18 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				$new_fields = apply_filters( "wds_page_builder_fields_$part_slug", array() );
 
 				if ( ! empty( $new_fields ) && is_array( $new_fields ) ) {
+
+					$this->builder_js_required = true;
+
 					foreach ( $new_fields as $new_field ) {
 
 						$new_field['_builder_group'] = $part_slug;
 
 						// Add before wrap
-						$new_field['before_row'] = isset( $new_field['before_row'] ) ? $new_field['before_row'] : '<div class="hidden-parts-fields hidden" id="hidden-parts-'. $part_slug .'" >';
+						$new_field['before_row'] = isset( $new_field['before_row'] ) ? $new_field['before_row'] : '<div class="hidden-parts-fields hidden-parts-'. $part_slug .' hidden" >';
 
 						// Add after wrap
-						$new_field['after_row'] = isset( $new_field['after_row'] ) ? $new_field['after_row'] : '</div><!-- #hidden-parts-'. $part_slug .' -->';
+						$new_field['after_row'] = isset( $new_field['after_row'] ) ? $new_field['after_row'] : '</div><!-- .hidden-parts-'. $part_slug .' -->';
 
 						$fields[] = $new_field;
 					}
@@ -121,6 +123,18 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			return $fields;
+		}
+
+		public function maybe_enqueue_builder_js() {
+			if ( $this->builder_js_required ) {
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_builder_js' ) );
+			}
+
+			return true;
+		}
+
+		public function enqueue_builder_js() {
+			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
 		}
 
 		/**
