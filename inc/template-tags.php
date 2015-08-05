@@ -341,13 +341,24 @@ function wds_page_builder_theme_support( $args = array() ) {
 	do_action( 'wds_page_builder_add_theme_support', $args );
 }
 
+/**
+ * Grabs the value of the current template part's meta key.
+ *
+ * @param string $meta_key  The meta key to find the value of.
+ *
+ * @return mixed|null       Null on failure or the value of the meta key on success.
+ */
 function wds_page_builder_get_this_part_data( $meta_key ) {
 
-	$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
+	if ( method_exists( $GLOBALS['WDS_Page_Builder'], 'get_part' ) ) {
+		// Add method exists check just in case global was modified.
+		$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
 
-	if ( $part_slug ) {
-		return wds_page_builder_get_part_data( $part_slug, $meta_key );
+		if ( $part_slug ) {
+			return wds_page_builder_get_part_data( $part_slug, $meta_key );
+		}
 	}
+	return null;
 }
 
 /**
