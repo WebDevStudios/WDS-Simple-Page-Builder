@@ -88,6 +88,15 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 		}
 
+		/**
+		 * Gets the fields for each group set.
+		 *
+		 * Has an internal filter to allow for the addition of fields based on the part slug.
+		 * ie: To add fields for the template part-sample.php you would add_filter( 'wds_page_builder_fields_sample', 'myfunc' )
+		 * The added fields will then only show up if that template part is selected within the group.
+		 *
+		 * @return array    A list CMB2 field types
+		 */
 		public function get_fields() {
 			$template_parts = wds_page_builder_get_parts();
 
