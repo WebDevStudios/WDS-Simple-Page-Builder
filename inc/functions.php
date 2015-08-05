@@ -93,10 +93,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 			$fields = array(
 				array(
-					'name'    => esc_html__( 'Template', 'wds-simple-page-builder' ),
-					'id'      => 'template_group',
-					'type'    => 'select',
-					'options' => $template_parts,
+					'name'       => esc_html__( 'Template', 'wds-simple-page-builder' ),
+					'id'         => 'template_group',
+					'type'       => 'select',
+					'options'    => $template_parts,
+					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
 				),
 			);
 

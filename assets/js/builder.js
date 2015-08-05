@@ -5,7 +5,8 @@
 
 	app.cache = function() {
 		app.$.box = $( document.getElementById( '_wds_builder_template_repeat' ) );
-		app.$.dropdowns = app.$.box.find( '.cmb2_select' );
+		app.$.dropdowns = app.$.box.find( '.wds-simple-page-builder-template-select' );
+		app.$.postForm = $( document.getElementById( 'post' ) );
 	};
 
 	app.init = function() {
@@ -14,6 +15,13 @@
 		app.$.dropdowns
 			.on( 'change', app.maybeUnhide )
 			.each( app.maybeUnhide );
+
+		app.$.postForm
+			.on( 'submit', app.removeHidden );
+	};
+
+	app.removeHidden = function( evt ) {
+		$( '.hidden-parts-fields.hidden' ).remove();
 	};
 
 	app.maybeUnhide = function( evt ) {
