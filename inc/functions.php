@@ -146,7 +146,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		public function enqueue_builder_js() {
-			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
+			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
 		}
 
 		/**
