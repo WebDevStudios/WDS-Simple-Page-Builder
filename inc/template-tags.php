@@ -344,6 +344,7 @@ function wds_page_builder_theme_support( $args = array() ) {
 /**
  * Grabs the value of the current template part's meta key.
  *
+ * @since 1.6
  * @param string $meta_key  The meta key to find the value of.
  *
  * @return mixed|null       Null on failure or the value of the meta key on success.
@@ -368,6 +369,7 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
  * part is `part-sample.php` where part is the prefix, the slug would be `sample` excluding
  * the .php extension.
  *
+ * @since 1.6
  * @param string $part_slug     The template part slug
  * @param string $meta_key      The meta to find the value of.
  *

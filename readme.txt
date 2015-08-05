@@ -3,7 +3,7 @@ Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.5
+Stable tag: 1.6
 
 Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
 
@@ -58,6 +58,10 @@ Another [CMB2](https://wordpress.org/plugins/CMB2) issue which will also be fixe
 3. Options page
 
 == Changelog ==
+
+=1.6=
+* added filters for template-specific fields, users can now use a filter of `wds_page_builder_fields_($part_slug}` to allow fields to show when a user selects that template part ([Issue #19](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/19))
+* added template tags for getting part-specific data, `wds_page_builder_get_this_part_data( $meta_key )` and `wds_page_builder_get_part_data( $part_slug, $meta_key )` respectively.  The former can be used in the part itself, the latter can be used anywhere within the site.
 
 = 1.5 =
 * fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))

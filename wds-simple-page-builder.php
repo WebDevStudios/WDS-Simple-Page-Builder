@@ -5,7 +5,7 @@
  * Description: Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
  * Author: WebDevStudios
  * Author URI: http://webdevstudios.com
- * Version: 1.5
+ * Version: 1.6
  * License: GPLv2
  */
 
@@ -23,7 +23,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		 * @var   string
 		 * @since 1.5
 		 */
-		const VERSION = '1.5';
+		const VERSION = '1.6';
 
 		/**
 		 * Construct function to get things started.

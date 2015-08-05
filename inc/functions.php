@@ -95,6 +95,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * ie: To add fields for the template part-sample.php you would add_filter( 'wds_page_builder_fields_sample', 'myfunc' )
 		 * The added fields will then only show up if that template part is selected within the group.
 		 *
+		 * @since 1.6
+		 *
 		 * @return array    A list CMB2 field types
 		 */
 		public function get_fields() {
