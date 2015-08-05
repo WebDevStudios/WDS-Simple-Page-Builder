@@ -342,11 +342,19 @@ function wds_page_builder_theme_support( $args = array() ) {
 }
 
 
+function wds_page_builder_get_this_part_data( $meta_key ) {
+
+	$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
+
+	if ( $part_slug ) {
+		return wds_page_builder_get_part_data( $part_slug, $meta_key );
+	}
+}
+
+
 function wds_page_builder_get_part_data( $part_slug, $meta_key ) {
 
-	// @TODO determine if template parts always have this naming structure.. if not, how to handle this
-	// $part_slug = str_replace( array( '.php', 'part-' ), '', basename( $file ) );
-	$meta      = get_post_meta( get_the_ID(), '_wds_builder_template', 1 );
+	$meta = get_post_meta( get_the_ID(), '_wds_builder_template', 1 );
 
 	foreach ( (array) $meta as $group ) {
 
