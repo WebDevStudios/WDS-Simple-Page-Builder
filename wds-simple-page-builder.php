@@ -19,6 +19,13 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 	class WDS_Simple_Page_Builder {
 
 		/**
+		 * Current version number
+		 * @var   string
+		 * @since 1.5
+		 */
+		const VERSION = '1.6';
+
+		/**
 		 * Construct function to get things started.
 		 */
 		public function __construct() {
@@ -66,7 +73,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			if ( ! $this->meets_requirements() ) {
 				// Display our error
 				echo '<div id="message" class="error">';
-				echo '<p>' . sprintf( __( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) . '</p>';
+				echo '<p>' . sprintf( esc_html__( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) . '</p>';
 				echo '</div>';
 
 				// Deactivate our plugin
@@ -76,7 +83,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 
 	}
 
-	$_GLOBALS['WDS_Simple_Page_Builder'] = new WDS_Simple_Page_Builder;
+	$GLOBALS['WDS_Simple_Page_Builder'] = new WDS_Simple_Page_Builder;
 }
 
 /**

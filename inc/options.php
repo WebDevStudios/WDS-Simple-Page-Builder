@@ -53,7 +53,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function load_scripts( $hook ) {
 		if ( 'settings_page_wds_page_builder_options' == $hook ) {
-			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), '20150721', true );
+			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
 		}
 	}
 

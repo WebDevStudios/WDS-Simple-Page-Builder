@@ -4,15 +4,7 @@
 
 Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
 
-WDS Simple Page Builder was developed with one main underlying idea: that content editors (the people choosing the layout of a page) should not be required to know HTML or CSS. This is an important distinction and it informs all the development decisions of the plugin.
-
-###_So, what does that mean?_
-
-What this means is that the plugin assumes that you are a theme developer, you are building a custom theme, and your theme has template parts that can be dropped into theme template files wherever you want. How and where (e.g. inside the Loop vs. outside the Loop) is up to you, but there are guidelines and best practices that will be outlined in this wiki.
-
-As a content editor, all I need to know is that there are these things (template parts) that I can put into my post or page and I can order them however I want, and, magically, stuff happens on the front end.
-
-Still have questions? [Check out the wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
+Questions? [Check out the wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
 
 ## Usage
 
@@ -48,11 +40,8 @@ Options page
 ## Changelog
 
 **1.6**
-* added new Page Builder "Areas" feature ([documentation](#))
-* CMB2 takes care of figuring out which version to run internally, so don't check CMB2_LOADED
-* fixed a bug where saved layouts were getting deleted when the options were registered
-* fixed an issue where a saved layout wouldn't display when layouts were displayed if registered layouts existed
-* fixed an issue where the global layouts didn't display the templates dropdown if no global layout was saved
+* added filters for template-specific fields, users can now use a filter of `wds_page_builder_fields_($part_slug}` to allow fields to show when a user selects that template part ([Issue #19](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/19))
+* added template tags for getting part-specific data, `wds_page_builder_get_this_part_data( $meta_key )` and `wds_page_builder_get_part_data( $part_slug, $meta_key )` respectively.  The former can be used in the part itself, the latter can be used anywhere within the site.
 
 **1.5**
 * fixed a bug that prevented options from being saved with an empty saved layout name (removed the name requirement) ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/3))
