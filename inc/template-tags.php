@@ -480,3 +480,53 @@ function wds_page_builder_theme_support( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 	do_action( 'wds_page_builder_add_theme_support', $args );
 }
+
+/**
+ * Grabs the value of the current template part's meta key.
+ *
+ * @since 1.6
+ * @param string $meta_key  The meta key to find the value of.
+ *
+ * @return mixed|null       Null on failure or the value of the meta key on success.
+ */
+function wds_page_builder_get_this_part_data( $meta_key ) {
+
+	if ( method_exists( $GLOBALS['WDS_Page_Builder'], 'get_part' ) ) {
+		// Add method exists check just in case global was modified.
+		$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
+
+		if ( $part_slug ) {
+			return wds_page_builder_get_part_data( $part_slug, $meta_key );
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Grabs the value of specific meta keys for specific template parts.
+ *
+ * $part_slug should be the slug of the template part, for instance if the template
+ * part is `part-sample.php` where part is the prefix, the slug would be `sample` excluding
+ * the .php extension.
+ *
+ * @since 1.6
+ * @param string $part_slug     The template part slug
+ * @param string $meta_key      The meta to find the value of.
+ * @param int    $post_id       The Post ID to retrieve the data for (optional)
+ *
+ * @return null|mixed           Null on failure, the stored meta value on success.
+ */
+function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
+
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$meta    = get_post_meta( $post_id, '_wds_builder_template', 1 );
+
+	foreach ( (array) $meta as $group ) {
+		if ( $part_slug == $group['template_group'] ) {
+			return isset( $group[ $meta_key ] ) ? $group[ $meta_key ] : null;
+		}
+	}
+
+	return null;
+}
