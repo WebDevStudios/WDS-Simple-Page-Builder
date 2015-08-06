@@ -38,6 +38,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 		}
 
+		/**
+		 * Handles conditionally loading the SPB admin css
+		 * @since  1.6
+		 * @param  string $hook Current page hook
+		 * @return null
+		 */
 		public function load_admin_css( $hook ) {
 			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
 				wp_enqueue_style( 'admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
@@ -57,6 +63,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 		}
 
+		/**
+		 * Toggles the templates-loaded status, triggered by the wds_page_builder_after_load_parts hook
+		 * @since  1.5
+		 * @return null
+		 */
 		public function templates_loaded() {
 			if ( $this->templates_loaded === false ) {
 				$this->templates_loaded = true;
@@ -410,6 +421,13 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			return strpos($var, 'part-');
 		}
 
+		/**
+		 * Adds opening wrap markup
+		 * @since  1.5
+		 * @param  string  $container
+		 * @param  string  $class
+		 * @return null
+		 */
 		public function before_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
 			$classes = get_the_page_builder_classes( $class );
@@ -428,6 +446,13 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			echo apply_filters( 'wds_page_builder_wrapper', $before );
 		}
 
+		/**
+		 * Adds closing wrap markup
+		 * @since  1.5
+		 * @param  string  $container
+		 * @param  string  $class
+		 * @return null
+		 */
 		public function after_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
 			echo "</$container>";
