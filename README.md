@@ -40,7 +40,12 @@ Options page
 ## Changelog
 
 **1.6**
-* added filters for template-specific fields, users can now use a filter of `wds_page_builder_fields_($part_slug}` to allow fields to show when a user selects that template part ([Issue #19](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/19))
+* added new Page Builder "Areas" feature ([documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Page-Builder-Areas))
+* CMB2 takes care of figuring out which version to run internally, so don't check CMB2_LOADED
+* fixed a bug where saved layouts were getting deleted when the options were registered
+* fixed an issue where a saved layout wouldn't display when layouts were displayed if registered layouts existed
+* fixed an issue where the global layouts didn't display the templates dropdown if no global layout was saved
+* added filters for template-specific fields, users can now use a filter of `wds_page_builder_fields_{$part_slug}` to allow fields to show when a user selects that template part ([Issue #19](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/19))
 * added template tags for getting part-specific data, `wds_page_builder_get_this_part_data( $meta_key )` and `wds_page_builder_get_part_data( $part_slug, $meta_key )` respectively.  The former can be used in the part itself, the latter can be used anywhere within the site.
 
 **1.5**

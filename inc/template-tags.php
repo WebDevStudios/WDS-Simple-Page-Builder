@@ -491,13 +491,11 @@ function wds_page_builder_theme_support( $args = array() ) {
  */
 function wds_page_builder_get_this_part_data( $meta_key ) {
 
-	if ( method_exists( $GLOBALS['WDS_Page_Builder'], 'get_part' ) ) {
-		// Add method exists check just in case global was modified.
-		$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
+	// Add method exists check just in case global was modified.
+	$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
 
-		if ( $part_slug ) {
-			return wds_page_builder_get_part_data( $part_slug, $meta_key );
-		}
+	if ( $part_slug ) {
+		return wds_page_builder_get_part_data( $part_slug, $meta_key );
 	}
 
 	return null;

@@ -14,7 +14,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 	class WDS_Page_Builder {
 
 		public $part_slug;
-		public $builder_js_required = false;
+		protected $builder_js_required = false;
+		protected $cmb = null;
+		protected $data_fields = null;
+		protected $parts = array();
+		protected $prefix = '_wds_builder_';
 
 		/**
 		 * Construct function to get things started.
@@ -31,7 +35,20 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
 
+		}
+
+		/**
+		 * Handles conditionally loading the SPB admin css
+		 * @since  1.6
+		 * @param  string $hook Current page hook
+		 * @return null
+		 */
+		public function load_admin_css( $hook ) {
+			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
+				wp_enqueue_style( 'admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
+			}
 		}
 
 		/**
@@ -47,6 +64,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 		}
 
+		/**
+		 * Toggles the templates-loaded status, triggered by the wds_page_builder_after_load_parts hook
+		 * @since  1.5
+		 * @return null
+		 */
 		public function templates_loaded() {
 			if ( $this->templates_loaded === false ) {
 				$this->templates_loaded = true;
@@ -58,34 +80,37 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function do_meta_boxes( $meta_boxes ) {
 
-			$prefix = '_wds_builder_';
-
 			$object_types = ( wds_page_builder_get_option( 'post_types' ) ) ? wds_page_builder_get_option( 'post_types' ) : array( 'page' );
 
-			$cmb = new_cmb2_box( array(
+			$this->cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder',
-				'title'        => esc_html__( 'Page Builder', 'wds-simple-page-builder' ),
+				'title'        => __( 'Page Builder', 'wds-simple-page-builder' ),
 				'object_types' => $object_types,
-				'priority'     => 'high',
 				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
 			) );
 
-			$group_field_id = $cmb->add_field( array(
-				'id'           => $prefix . 'template',
+			$this->cmb->add_field( array(
+				'id'           => $this->prefix . 'template_group_title',
+				'type'         => 'title',
+				'name'         => __( 'Content Area Templates', 'wds-simple-page-builder' )
+			) );
+
+			$group_field_id = $this->cmb->add_field( array(
+				'id'           => $this->prefix . 'template',
 				'type'         => 'group',
 				'options'      => array(
-					'group_title'   => esc_html__( 'Template Part {#}', 'wds-simple-page-builder' ),
-					'add_button'    => esc_html__( 'Add another template part', 'wds-simple-page-builder' ),
-					'remove_button' => esc_html__( 'Remove template part', 'wds-simple-page-builder' ),
+					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
+					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
+					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
 					'sortable'      => true
 				)
 			) );
 
-			$fields = $this->get_fields();
-
-			foreach ( $fields as $field ) {
-				$cmb->add_group_field( $group_field_id, $field );
+			foreach ( $this->get_group_fields() as $field ) {
+				$this->cmb->add_group_field( $group_field_id, $field );
 			}
+
+			$this->register_all_area_fields();
 		}
 
 		/**
@@ -99,20 +124,34 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 *
 		 * @return array    A list CMB2 field types
 		 */
-		public function get_fields() {
-			$template_parts = wds_page_builder_get_parts();
+		public function get_group_fields( $id = 'template_group' ) {
 
 			$fields = array(
 				array(
-					'name'       => esc_html__( 'Template', 'wds-simple-page-builder' ),
-					'id'         => 'template_group',
+					'name'       => __( 'Template', 'wds-simple-page-builder' ),
+					'id'         => $id,
 					'type'       => 'select',
-					'options'    => $template_parts,
+					'options'    => $this->get_parts(),
 					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
 				),
 			);
 
-			foreach ( $template_parts as $part_slug => $part_value ) {
+			return array_merge( $fields, $this->get_data_fields() );
+		}
+
+		/**
+		 * Retrieve all registered (via filters) additional data fields
+		 * @since  1.6
+		 * @return array  Array of additional fields
+		 */
+		public function get_data_fields() {
+			if ( ! is_null( $this->data_fields ) ) {
+				return $this->data_fields;
+			}
+
+			$this->data_fields = array();
+
+			foreach ( $this->get_parts() as $part_slug => $part_value ) {
 				$new_fields = apply_filters( "wds_page_builder_fields_$part_slug", array() );
 
 				if ( ! empty( $new_fields ) && is_array( $new_fields ) ) {
@@ -120,31 +159,108 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 					$this->builder_js_required = true;
 
 					foreach ( $new_fields as $new_field ) {
-
-						$new_field['_builder_group'] = $part_slug;
-
-						// Add before wrap
-						$new_field['before_row'] = isset( $new_field['before_row'] ) ? $new_field['before_row'] : '<div class="hidden-parts-fields hidden-parts-'. $part_slug .' hidden" >';
-
-						// Add after wrap
-						$new_field['after_row'] = isset( $new_field['after_row'] ) ? $new_field['after_row'] : '</div><!-- .hidden-parts-'. $part_slug .' -->';
-
-						$fields[] = $new_field;
+						$this->data_fields[] = $this->add_wrap_to_field_args( $part_slug, $new_field );
 					}
 				}
 			}
 
-			return $fields;
+			return $this->data_fields;
 		}
 
+		/**
+		 * Modify fields to have a before_row/after_row wrap
+		 * @since 1.6
+		 * @param  string  $part_slug  The template part slug
+		 * @param  array   $field_args The field arguments array
+		 * @return array               The modified field arguments array
+		 */
+		public function add_wrap_to_field_args( $part_slug, $field_args ) {
+
+			$field_args['_builder_group'] = $part_slug;
+
+			// Add before wrap
+			$field_args['before_row'] = isset( $field_args['before_row'] ) ? $field_args['before_row'] : '<div class="hidden-parts-fields hidden-parts-'. $part_slug .' hidden" >';
+
+			// Add after wrap
+			$field_args['after_row'] = isset( $field_args['after_row'] ) ? $field_args['after_row'] : '</div><!-- .hidden-parts-'. $part_slug .' -->';
+
+			return $field_args;
+		}
+
+		/**
+		 * Handles registering get_page_builder_areas fields
+		 * @since  1.6
+		 * @return null
+		 */
+		public function register_all_area_fields() {
+
+			$areas = get_page_builder_areas();
+
+			if ( ! $areas ) {
+				return;
+			}
+
+			foreach( $areas as $area => $layout ) {
+				// only show these meta fields if there's no defined layout for the area
+				if ( empty( $layout['template_group'] ) ) {
+					$this->register_area_fields( $area );
+				}
+
+			}
+
+		}
+
+		/**
+		 * Handles registering fields for a single area
+		 * @since  1.6
+		 * @param  string $area   Area slug
+		 * @return null
+		 */
+		public function register_area_fields( $area ) {
+
+			$area_group_field_id = $area . '_group_field_id';
+
+			$this->cmb->add_field( array(
+				'id'       => $this->prefix . $area . '_' . 'title',
+				'type'     => 'title',
+				'name'     => sprintf( __( '%s Area Templates', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+			) );
+
+			$$area_group_field_id = $this->cmb->add_field( array(
+				'id'       => $this->prefix . $area . '_' . 'template',
+				'type'     => 'group',
+				'options'  => array(
+					'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
+					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+					'sortable'      => true,
+				)
+			) );
+
+			foreach ( $this->get_group_fields( '_page_builder_area-' . $area ) as $field ) {
+				$this->cmb->add_group_field( $$area_group_field_id, $field );
+			}
+		}
+
+		/**
+		 * Enqueue builder JS if it's needed (based on additional fields being present)
+		 * @since  1.6
+		 * @return bool  Whether box should show (it should)
+		 */
 		public function maybe_enqueue_builder_js() {
 			if ( $this->builder_js_required ) {
 				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_builder_js' ) );
 			}
 
+			// We're just using this hook for adding the admin_enqueue_scripts hook.. return true to display the metabox
 			return true;
 		}
 
+		/**
+		 * Enqueue the builder JS
+		 * @since  1.6
+		 * @return null
+		 */
 		public function enqueue_builder_js() {
 			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
 		}
@@ -157,6 +273,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		public function add_template_parts( $layout = '', $container = '', $class = '' ) {
 
 			if ( '' == $layout ) {
+				$this->templates_loaded = false;
 				if ( ! wds_page_builder_get_option( 'parts_saved_layouts' ) && ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
 					return;
 				}
@@ -179,7 +296,9 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				// check if the layout requested is one that was registered
 				if ( $registered_layouts ) {
 
-					$saved_layouts = $registered_layouts;
+					if ( in_array( $layout, $registered_layouts ) ) {
+						$saved_layouts = $registered_layouts;
+					}
 
 				}
 
@@ -252,8 +371,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->set_part( $part['template_group'] );
 			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
 
+			$in_child = false;
+			$filename = trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php';
+
 			// bail if the file doesn't exist
-			if ( ! file_exists( trailingslashit( get_template_directory() ) . trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' ) ) {
+			if ( ! file_exists( trailingslashit( get_template_directory() ) . $filename ) ) {
 				return;
 			}
 
@@ -311,6 +433,13 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			return strpos($var, 'part-');
 		}
 
+		/**
+		 * Adds opening wrap markup
+		 * @since  1.5
+		 * @param  string  $container
+		 * @param  string  $class
+		 * @return null
+		 */
 		public function before_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
 			$classes = get_the_page_builder_classes( $class );
@@ -329,10 +458,31 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			echo apply_filters( 'wds_page_builder_wrapper', $before );
 		}
 
+		/**
+		 * Adds closing wrap markup
+		 * @since  1.5
+		 * @param  string  $container
+		 * @param  string  $class
+		 * @return null
+		 */
 		public function after_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
 			echo "</$container>";
 			echo ( $class ) ? '<!-- .' . sanitize_title( $class ) . ' -->' : '';
+		}
+
+		/**
+		 * Wrapper for wds_page_builder_get_parts which stores it's result
+		 * @since  1.6
+		 * @return array  Array of parts options
+		 */
+		public function get_parts() {
+			if ( ! empty( $this->parts ) ) {
+				return $this->parts;
+			}
+
+			$this->parts = wds_page_builder_get_parts();
+			return $this->parts;
 		}
 
 	}
