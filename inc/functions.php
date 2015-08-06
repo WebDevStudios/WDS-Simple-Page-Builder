@@ -16,6 +16,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		public $part_slug;
 		protected $builder_js_required = false;
 		protected $cmb = null;
+		protected $data_fields = null;
 		protected $parts = array();
 		protected $prefix = '_wds_builder_';
 
@@ -110,7 +111,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			}
 
 			$this->register_all_area_fields();
-
 		}
 
 		/**
@@ -124,17 +124,32 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 *
 		 * @return array    A list CMB2 field types
 		 */
-		public function get_group_fields() {
+		public function get_group_fields( $id = 'template_group' ) {
 
 			$fields = array(
 				array(
 					'name'       => __( 'Template', 'wds-simple-page-builder' ),
-					'id'         => 'template_group',
+					'id'         => $id,
 					'type'       => 'select',
 					'options'    => $this->get_parts(),
 					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
 				),
 			);
+
+			return array_merge( $fields, $this->get_data_fields() );
+		}
+
+		/**
+		 * Retrieve all registered (via filters) additional data fields
+		 * @since  1.6
+		 * @return array  Array of additional fields
+		 */
+		public function get_data_fields() {
+			if ( ! is_null( $this->data_fields ) ) {
+				return $this->data_fields;
+			}
+
+			$this->data_fields = array();
 
 			foreach ( $this->get_parts() as $part_slug => $part_value ) {
 				$new_fields = apply_filters( "wds_page_builder_fields_$part_slug", array() );
@@ -144,12 +159,12 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 					$this->builder_js_required = true;
 
 					foreach ( $new_fields as $new_field ) {
-						$fields[] = $this->add_wrap_to_field_args( $part_slug, $new_field );
+						$this->data_fields[] = $this->add_wrap_to_field_args( $part_slug, $new_field );
 					}
 				}
 			}
 
-			return $fields;
+			return $this->data_fields;
 		}
 
 		/**
@@ -222,12 +237,9 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				)
 			) );
 
-			$this->cmb->add_group_field( $$area_group_field_id, array(
-				'name'         => __( 'Template', 'wds-simple-page-builder' ),
-				'id'           => '_page_builder_area-' . $area,
-				'type'         => 'select',
-				'options'      => $this->get_parts(),
-			) );
+			foreach ( $this->get_group_fields( '_page_builder_area-' . $area ) as $field ) {
+				$this->cmb->add_group_field( $$area_group_field_id, $field );
+			}
 		}
 
 		/**
