@@ -19,6 +19,13 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 	class WDS_Simple_Page_Builder {
 
 		/**
+		 * Current version number
+		 * @var   string
+		 * @since 1.5
+		 */
+		const VERSION = '1.6';
+
+		/**
 		 * Construct function to get things started.
 		 */
 		public function __construct() {
