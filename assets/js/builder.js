@@ -4,7 +4,7 @@
 	var app = { $ : {} };
 
 	app.cache = function() {
-		app.$.box         = $( document.getElementById( '_wds_builder_template_repeat' ) );
+		app.$.box         = $( document.getElementById( 'cmb2-metabox-wds_simple_page_builder' ) );
 		app.$.dropdowns   = app.$.box.find( '.wds-simple-page-builder-template-select' );
 		app.$.postForm    = $( document.getElementById( 'post' ) );
 		app.$.hiddenParts = app.$.box.find( '.hidden-parts-fields' );
