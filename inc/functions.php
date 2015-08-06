@@ -336,5 +336,5 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 	}
 
-	$_GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
+	$GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
 }
