@@ -109,7 +109,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				$this->cmb->add_group_field( $group_field_id, $field );
 			}
 
-			$this->register_area_fields();
+			$this->register_all_area_fields();
 
 		}
 
@@ -124,7 +124,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 *
 		 * @return array    A list CMB2 field types
 		 */
-		public function get_group_fields( $group_field_id ) {
+		public function get_group_fields() {
 
 			$fields = array(
 				array(
@@ -177,7 +177,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @since  1.6
 		 * @return null
 		 */
-		public function register_area_fields() {
+		public function register_all_area_fields() {
 
 			$areas = get_page_builder_areas();
 
