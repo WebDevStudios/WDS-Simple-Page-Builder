@@ -509,7 +509,7 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
  * the .php extension.
  *
  * @since 1.6
- * @param string $part_slug     The template part slug
+ * @param string $part_slug     The template part slug or index/slug array
  * @param string $meta_key      The meta to find the value of.
  * @param int    $post_id       The Post ID to retrieve the data for (optional)
  *
@@ -517,13 +517,35 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
  */
 function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
 
+	// Can specify the index if parts are used multiple times on a page
+	if ( is_array( $part_slug ) ) {
+
+		// Oops? you're doing it wrong!
+		if ( ! isset( $part_slug['index'], $part_slug['slug'] ) ) {
+			return new WP_Error( 'index_slug_defined_incorrectly', 'The index/slug array was defined incorrectly. Try array( \'index\' => 0, \'slug\' => \'slug-name\' )' );
+		}
+
+		$part_index = $part_slug['index'];
+		$part_slug  = $part_slug['slug'];
+
+	} else {
+		// Get current part index
+		$part_index = $GLOBALS['WDS_Page_Builder']->get_parts_index();
+	}
+
 	$post_id = $post_id ? $post_id : get_the_ID();
 	$meta    = get_post_meta( $post_id, '_wds_builder_template', 1 );
 
-	foreach ( (array) $meta as $group ) {
-		if ( $part_slug == $group['template_group'] ) {
-			return isset( $group[ $meta_key ] ) ? $group[ $meta_key ] : null;
-		}
+	if (
+		// if index exists and the template_group index is there
+		isset( $meta[ $part_index ][ 'template_group' ] )
+		// and the template group is rthe same we're looking for
+		&& $part_slug == $meta[ $part_index ][ 'template_group' ]
+		// And we have the meta_key they're looking for
+		&& isset( $meta[ $part_index ][ $meta_key ] )
+	) {
+		// Send it back.
+		return $meta[ $part_index ][ $meta_key ];
 	}
 
 	return null;

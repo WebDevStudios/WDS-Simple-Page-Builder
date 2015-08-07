@@ -14,6 +14,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 	class WDS_Page_Builder {
 
 		public $part_slug;
+		protected $parts_index = 0;
 		protected $builder_js_required = false;
 		protected $cmb = null;
 		protected $data_fields = null;
@@ -336,7 +337,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			// loop through each part and load the template parts
 			if ( is_array( $parts ) && ! $this->templates_loaded ) {
 				do_action( 'wds_page_builder_before_load_parts' );
-				foreach( $parts as $part ) {
+				foreach( $parts as $this->parts_index => $part ) {
 					$this->load_template_part( $part, $container, $class );
 				}
 				do_action( 'wds_page_builder_after_load_parts' );
@@ -383,6 +384,15 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' );
 			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug );
 
+		}
+
+		/**
+		 * Get the current parts index class variable
+		 * @since  1.5
+		 * @return string The current value of index
+		 */
+		public function get_parts_index() {
+			return $this->parts_index;
 		}
 
 		/**
