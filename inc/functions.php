@@ -372,16 +372,16 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->set_part( $part['template_group'] );
 			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
 
-			$in_child = false;
 			$filename = trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php';
+			$filepath = trailingslashit( get_template_directory() ) . $filename;
 
 			// bail if the file doesn't exist
-			if ( ! file_exists( trailingslashit( get_template_directory() ) . $filename ) ) {
+			if ( ! file_exists( $filepath ) ) {
 				return;
 			}
 
 			do_action( 'wds_page_builder_before_load_template', $container, $classes );
-			load_template( get_template_directory() . '/' . wds_page_builder_template_parts_dir() . '/' . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php' );
+			load_template( $filepath, false );
 			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug );
 
 		}
