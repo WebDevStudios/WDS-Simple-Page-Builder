@@ -31,6 +31,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->directory_url  = wds_page_builder()->directory_url;
 			$this->part_slug      = '';
 			$this->templates_loaded = false;
+			$this->area           = '';
 
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
