@@ -397,6 +397,15 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		/**
+		 * Set the current parts index class variable
+		 *
+		 * @param $index The index value to set.
+		 */
+		public function set_parts_index( $index ) {
+			$this->parts_index = $index;
+		}
+
+		/**
 		 * Get the current part_slug class variable
 		 * @since  1.5
 		 * @return string The current value of part_slug
