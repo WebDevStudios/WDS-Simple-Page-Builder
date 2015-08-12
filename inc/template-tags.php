@@ -334,11 +334,9 @@ function wds_page_builder_area( $area = '', $post_id = 0 ) {
 	$parts = get_page_builder_area( $area, $post_id );
 
 	if ( $parts ) {
-		do_action( 'wds_page_builder_before_load_parts' );
-		foreach( $parts as $part ) {
-			wds_page_builder_load_part( $part );
-		}
-		do_action( 'wds_page_builder_after_load_parts' );
+		do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
+		wds_page_builder_load_parts( $parts, '', '', $area );
+		do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
 	} else {
 		wds_page_builder_load_parts( $area );
 	}
