@@ -286,7 +286,8 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
  * @param  string $class     Optional. Custom container class to wrap around individual parts
  * @return null
  */
-function wds_page_builder_load_parts( $parts = '', $container = '', $class = '' ) {
+function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
+	$GLOBALS['WDS_Page_Builder']->set_area( $area );
 	if ( ! is_array( $parts ) ) {
 		do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
 		return;
