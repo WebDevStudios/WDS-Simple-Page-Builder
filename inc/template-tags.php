@@ -284,6 +284,8 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
  *                           display
  * @param  string $container Optional. Container HTML element.
  * @param  string $class     Optional. Custom container class to wrap around individual parts
+ * @param  string $area      Optional. The area which these parts belong to.
+ *                           
  * @return null
  */
 function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
