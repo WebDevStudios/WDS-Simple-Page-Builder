@@ -533,8 +533,10 @@ function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
 		$part_index = $GLOBALS['WDS_Page_Builder']->get_parts_index();
 	}
 
+	$area = $GLOBALS['WDS_Page_Builder']->get_area();
+	$area_key = $area ? $area . '_' : '';
 	$post_id = $post_id ? $post_id : get_the_ID();
-	$meta    = get_post_meta( $post_id, '_wds_builder_template', 1 );
+	$meta    = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', 1 );
 
 	if (
 		// if index exists and the template_group index is there
