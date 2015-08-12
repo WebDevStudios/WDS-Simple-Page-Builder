@@ -285,7 +285,7 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
  * @param  string $container Optional. Container HTML element.
  * @param  string $class     Optional. Custom container class to wrap around individual parts
  * @param  string $area      Optional. The area which these parts belong to.
- *                           
+ *
  * @return null
  */
 function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
@@ -296,7 +296,8 @@ function wds_page_builder_load_parts( $parts = '', $container = '', $class = '',
 	}
 
 	// parts are specified by their slugs, we pass them to the load_part function which uses the load_template_part method in the WDS_Page_Builder class
-	foreach ( $parts as $part ) {
+	foreach ( $parts as $index => $part ) {
+		$GLOBALS['WDS_Page_Builder']->set_parts_index( $index );
 		wds_page_builder_load_part( $part );
 	}
 
