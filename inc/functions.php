@@ -414,6 +414,24 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		/**
+		 * Get the current area variable
+		 *
+		 * @return string The area slug.
+		 */
+		public function get_area() {
+			return $this->area;
+		}
+
+		/**
+		 * Set the current area variable
+		 *
+		 * @param $area The slug of the area you are setting.
+		 */
+		public function set_area ( $area ) {
+			$this->area = $area;
+		}
+
+		/**
 		 * Returns an array of all the page builder template part slugs on the current page
 		 * @since  1.5
 		 * @return array The page builder part slugs
