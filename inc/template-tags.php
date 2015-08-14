@@ -267,7 +267,7 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 	if ( get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true ) ) {
 		$templates = get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true );
 		foreach( $templates as $template ) {
-			$out[] = $template['_page_builder_area-' . $area];
+			$out[] = $template['template_group'];
 		}
 
 		return $out;

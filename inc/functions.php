@@ -239,7 +239,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				)
 			) );
 
-			foreach ( $this->get_group_fields( '_page_builder_area-' . $area ) as $field ) {
+			foreach ( $this->get_group_fields() as $field ) {
 				$this->cmb->add_group_field( $$area_group_field_id, $field );
 			}
 		}
