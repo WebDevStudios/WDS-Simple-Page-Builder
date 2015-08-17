@@ -254,7 +254,7 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 	}
 
 	// if the area we're looking for doesn't exist, bail
-	if ( ! isset( $areas[$area] ) ) {
+	if ( ! array_key_exists( $area, $areas ) ) {
 		return;
 	}
 
