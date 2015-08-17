@@ -427,7 +427,13 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @param string $part Sets a new value for the part_slug class variable
 		 */
 		public function set_part( $part ) {
-			$this->part_slug = $part;
+
+			/**
+			 * Filter to change the part slug of a part. Could be used to allow multiple
+			 * instances of the same part to be loaded on a page.
+			 */
+			$this->part_slug = apply_filters( 'wds_page_builder_set_part', $part );
+
 		}
 
 		/**
