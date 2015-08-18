@@ -377,6 +377,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				return;
 			}
 
+			// bail if the filter returns false
+			if ( ! (bool) apply_filters( 'wds_page_builder_load_template_part', true, $part, $container, $class ) ) {
+				return;
+			}
+
 			$this->set_part( $part['template_group'] );
 			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
 
