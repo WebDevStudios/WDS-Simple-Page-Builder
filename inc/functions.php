@@ -80,7 +80,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		/**
 		 * Build our meta boxes
 		 */
-		public function do_meta_boxes( $meta_boxes ) {
+		public function do_meta_boxes() {
 
 			$object_types = ( wds_page_builder_get_option( 'post_types' ) ) ? wds_page_builder_get_option( 'post_types' ) : array( 'page' );
 
