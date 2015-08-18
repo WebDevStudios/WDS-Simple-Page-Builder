@@ -33,7 +33,9 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->templates_loaded = false;
 			$this->area           = '';
 
-			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
+			if ( is_admin() ) {
+				add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
+			}
 			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
