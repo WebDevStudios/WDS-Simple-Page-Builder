@@ -82,38 +82,40 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function do_meta_boxes() {
 
-			$option = wds_page_builder_get_option( 'post_types' );
-			$object_types = $option ? $option : array( 'page' );
+			if ( is_admin() ) {
+				$option       = wds_page_builder_get_option( 'post_types' );
+				$object_types = $option ? $option : array( 'page' );
 
-			$this->cmb = new_cmb2_box( array(
-				'id'           => 'wds_simple_page_builder',
-				'title'        => __( 'Page Builder', 'wds-simple-page-builder' ),
-				'object_types' => $object_types,
-				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
-			) );
+				$this->cmb = new_cmb2_box( array(
+					'id'           => 'wds_simple_page_builder',
+					'title'        => __( 'Page Builder', 'wds-simple-page-builder' ),
+					'object_types' => $object_types,
+					'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
+				) );
 
-			$this->cmb->add_field( array(
-				'id'           => $this->prefix . 'template_group_title',
-				'type'         => 'title',
-				'name'         => __( 'Content Area Templates', 'wds-simple-page-builder' )
-			) );
+				$this->cmb->add_field( array(
+					'id'   => $this->prefix . 'template_group_title',
+					'type' => 'title',
+					'name' => __( 'Content Area Templates', 'wds-simple-page-builder' )
+				) );
 
-			$group_field_id = $this->cmb->add_field( array(
-				'id'           => $this->prefix . 'template',
-				'type'         => 'group',
-				'options'      => array(
-					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
-					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
-					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
-					'sortable'      => true
-				)
-			) );
+				$group_field_id = $this->cmb->add_field( array(
+					'id'      => $this->prefix . 'template',
+					'type'    => 'group',
+					'options' => array(
+						'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
+						'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
+						'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+						'sortable'      => true
+					)
+				) );
 
-			foreach ( $this->get_group_fields() as $field ) {
-				$this->cmb->add_group_field( $group_field_id, $field );
+				foreach ( $this->get_group_fields() as $field ) {
+					$this->cmb->add_group_field( $group_field_id, $field );
+				}
+
+				$this->register_all_area_fields();
 			}
-
-			$this->register_all_area_fields();
 		}
 
 		/**
