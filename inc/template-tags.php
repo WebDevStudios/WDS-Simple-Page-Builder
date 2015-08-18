@@ -250,22 +250,21 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 
 	// if no post ID was passed, try to get one
 	if ( 0 == $post_id ) {
-		$post_id = get_the_ID();
+		$post_id = get_queried_object_id();
 	}
 
 	// if the area we're looking for doesn't exist, bail
-	if ( ! array_key_exists( $area, $areas ) ) {
+	if ( ! isset( $areas[$area] ) ) {
 		return;
 	}
 
 	// if it's not singular -- like an archive or a 404 or something -- you can only add template
 	// parts by registering the area
-	if ( ! is_singular() ) {
+	if ( ! is_singular() && ( ! is_home() && ! $post_id ) ) {
 		return $areas[$area]['template_group'];
 	}
 
-	if ( get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true ) ) {
-		$templates = get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true );
+	if ( $templates = get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true ) ) {
 		foreach( $templates as $template ) {
 			$out[] = $template['template_group'];
 		}
@@ -537,7 +536,7 @@ function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
 
 	$area = $GLOBALS['WDS_Page_Builder']->get_area();
 	$area_key = $area ? $area . '_' : '';
-	$post_id = $post_id ? $post_id : get_the_ID();
+	$post_id = $post_id ? $post_id : get_queried_object_id();
 	$meta    = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', 1 );
 
 	if (
