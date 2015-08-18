@@ -82,7 +82,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function do_meta_boxes() {
 
-			$object_types = ( wds_page_builder_get_option( 'post_types' ) ) ? wds_page_builder_get_option( 'post_types' ) : array( 'page' );
+			$option = wds_page_builder_get_option( 'post_types' );
+			$object_types = $option ? $option : array( 'page' );
 
 			$this->cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder',
