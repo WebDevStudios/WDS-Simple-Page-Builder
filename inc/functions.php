@@ -51,7 +51,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function load_admin_css( $hook ) {
 			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
-				wp_enqueue_style( 'admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
+				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
 			}
 		}
 
@@ -267,7 +267,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return null
 		 */
 		public function enqueue_builder_js() {
-			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
+			wp_enqueue_script( 'wds-simple-page-builder', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
 		}
 
 		/**
