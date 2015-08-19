@@ -2,20 +2,24 @@
 /**
  * Add an options page. We want to define a template parts directory and a
  * file prefix that identifies template parts as such.
+ * @package WDS Simple Page Builder
  */
 
+/**
+ * Options page class
+ */
 class WDS_Page_Builder_Options {
 
 	/**
- 	 * Option key, and option page slug
- 	 * @var string
- 	 */
+	 * Option key, and option page slug
+	 * @var string
+	 */
 	private $key = 'wds_page_builder_options';
 
 	/**
- 	 * Options page metabox id
- 	 * @var string
- 	 */
+	 * Options page metabox id
+	 * @var string
+	 */
 	private $metabox_id = 'wds_page_builder_option_metabox';
 
 	/**
@@ -31,66 +35,28 @@ class WDS_Page_Builder_Options {
 	protected $options_page = '';
 
 	/**
+	 * The options from the DB
+	 * @var null|array
+	 */
+	protected $options = null;
+
+	/**
 	 * Constructor
 	 * @since 0.1.0
 	 */
 	public function __construct() {
-		// Set our title
+		// Set our title.
 		$this->title   = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );
-		$this->options = $this->get_page_builder_options();
 
 		add_action( 'admin_init', array( $this, 'init' ) );
-		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
-		add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
 		add_action( 'wds_register_page_builder_options', array( $this, 'register_settings' ) );
 		add_action( 'wds_page_builder_add_theme_support', array( $this, 'add_theme_support' ) );
-	}
 
-	/**
-	 * Load the admin js
-	 * @param  string $hook The admin page we're on
-	 * @return void
-	 */
-	public function load_scripts( $hook ) {
-		if ( 'settings_page_wds_page_builder_options' == $hook ) {
-			wp_enqueue_script( 'admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
+		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+
+		if ( is_admin() ) {
+			add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
 		}
-	}
-
-	/**
-	 * Registers the settings via wds_register_page_builder_options
-	 * @since  1.5
-	 * @param  array  $args The options to update/register
-	 * @return void
-	 */
-	public function register_settings( $args = array() ) {
-		if ( ! empty( $args ) ) {
-			wp_cache_delete( 'alloptions', 'options' );
-			$old_options = get_option( 'wds_page_builder_options' );
-
-			$new_options = wp_parse_args( $args, array(
-				'hide_options'    => false,
-				'parts_dir'       => 'parts',
-				'parts_prefix'    => 'part',
-				'use_wrap'        => 'on',
-				'container'       => 'section',
-				'container_class' => 'pagebuilder-part',
-				'post_types'      => array( 'page' ),
-				'parts_global_templates' => $old_options['parts_global_templates'],
-				'parts_saved_layouts'    => $old_options['parts_saved_layouts'],
-			) );
-
-			update_option( 'wds_page_builder_options', $new_options );
-		}
-	}
-
-	/**
-	 * Helper function to get the current Page Builder Options
-	 * @since  1.5
-	 * @return array The Page Builder options array
-	 */
-	public function get_page_builder_options() {
-		return get_option( 'wds_page_builder_options' );
 	}
 
 	/**
@@ -99,8 +65,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function init() {
 		register_setting( $this->key, $this->key );
-		add_filter( 'pre_update_option_wds_page_builder_options', array( $this, 'prevent_blank_templates' ), 10, 2 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+		add_filter( "pre_update_option_{$this->key}", array( $this, 'prevent_blank_templates' ), 10, 2 );
 	}
 
 	/**
@@ -115,15 +80,47 @@ class WDS_Page_Builder_Options {
 	public function prevent_blank_templates( $new_value, $old_value ) {
 		$saved_layouts = $new_value['parts_saved_layouts'];
 		$i = 0;
-		foreach( $saved_layouts as $layout ) {
-			$layout['template_group'] = array_diff( $layout['template_group'], array('none'));
-			$saved_layouts[$i] = $layout;
+		foreach ( $saved_layouts as $layout ) {
+			$layout['template_group'] = array_diff( $layout['template_group'], array( 'none' ) );
+			$saved_layouts[ $i ] = $layout;
 			$i++;
 		}
 		$new_value['parts_saved_layouts'] = $saved_layouts;
 		return $new_value;
 	}
 
+	/**
+	 * Registers the settings via wds_register_page_builder_options
+	 * @since  1.5
+	 * @param  array $options The options to update/register
+	 * @return void
+	 */
+	public function register_settings( $options = array() ) {
+		if ( empty( $options ) ) {
+			return;
+		}
+
+		wp_cache_delete( 'alloptions', 'options' );
+
+		$old_options = $this->get_all();
+
+		$new_options = wp_parse_args( $options, array(
+			'hide_options'           => false,
+			'parts_dir'              => 'parts',
+			'parts_prefix'           => 'part',
+			'use_wrap'               => 'on',
+			'container'              => 'section',
+			'container_class'        => 'pagebuilder-part',
+			'post_types'             => array( 'page' ),
+			'parts_global_templates' => isset( $old_options['parts_global_templates'] ) ? $old_options['parts_global_templates'] : '',
+			'parts_saved_layouts'    => isset( $old_options['parts_saved_layouts'] ) ? $old_options['parts_saved_layouts'] : '',
+		) );
+
+		update_option( $this->key, $new_options );
+
+		// Reset options array.
+		$this->get_all( true );
+	}
 
 	/**
 	 * Support WordPress add_theme_support feature
@@ -145,6 +142,9 @@ class WDS_Page_Builder_Options {
 	 */
 	public function add_options_page() {
 		$this->options_page = add_submenu_page( 'options-general.php', $this->title, $this->title, 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
+
+		// Include CMB CSS in the head to avoid FOUT.
+		add_action( "admin_print_styles-{$this->options_page}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 	}
 
 	/**
@@ -152,6 +152,9 @@ class WDS_Page_Builder_Options {
 	 * @since  0.1.0
 	 */
 	public function admin_page_display() {
+		// Enqueue our JS in the footer.
+		wp_enqueue_script( 'wds-simple-page-builder-admin', wds_page_builder()->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
+
 		?>
 		<div class="wrap cmb2_options_page <?php echo $this->key; ?>">
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
@@ -166,15 +169,18 @@ class WDS_Page_Builder_Options {
 	 */
 	function add_options_page_metabox() {
 
-		$disabled = ( 'disabled' == $this->options['hide_options'] ) ? array( 'disabled' => '' ) : array();
+		$disabled = 'disabled' == $this->get( 'hide_options' )
+			? array( 'disabled' => 'disabled' )
+			: array();
 
 		$cmb = new_cmb2_box( array(
-			'id'      => $this->metabox_id,
-			'hookup'  => false,
-			'show_on' => array(
+			'id'         => $this->metabox_id,
+			'hookup'     => false,
+			'cmb_styles' => false,
+			'show_on'    => array(
 				// These are important, don't remove
 				'key'   => 'options-page',
-				'value' => array( $this->key, )
+				'value' => array( $this->key ),
 			),
 		) );
 
@@ -253,8 +259,8 @@ class WDS_Page_Builder_Options {
 				'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
 				'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
 				'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
-				'sortable'      => true
-			)
+				'sortable'      => true,
+			),
 		) );
 
 		$cmb->add_group_field( $group_field_id, array(
@@ -262,7 +268,7 @@ class WDS_Page_Builder_Options {
 			'id'           => 'template_group',
 			'type'         => 'select',
 			'options'      => wds_page_builder_get_parts(),
-			'default'      => 'none'
+			'default'      => 'none',
 		) );
 
 		$layouts_group_id = $cmb->add_field( array(
@@ -274,8 +280,8 @@ class WDS_Page_Builder_Options {
 				'group_title'   => __( 'Layout {#}', 'wds-simple-page-builder' ),
 				'add_button'    => __( 'Add another layout', 'wds-simple-page-builder' ),
 				'remove_button' => __( 'Remove layout', 'wds-simple-page-builder' ),
-				'sortable'      => true
-			)
+				'sortable'      => true,
+			),
 		) );
 
 		$cmb->add_group_field( $layouts_group_id, array(
@@ -283,7 +289,7 @@ class WDS_Page_Builder_Options {
 			'desc'         => __( 'This should be a unique name used to identify this layout.', 'wds-simple-page-builder' ),
 			'id'           => 'layouts_name',
 			'type'         => 'text_medium',
-			// 'attributes'   => array( 'required' => 'required' )
+			// 'attributes'   => array( 'required' => 'required' ),
 		) );
 
 		$cmb->add_group_field( $layouts_group_id, array(
@@ -291,7 +297,7 @@ class WDS_Page_Builder_Options {
 			'desc'         => __( 'If you\'d like to use this layout as the default layout for all posts of a type, check the post type to make this layout the default for. If you do not want to set this as the default layout for any post type, leave all types unchecked. The layout can still be called manually in the <code>do_action</code>.', 'wds-simple-page-builder' ),
 			'id'           => 'default_layout',
 			'type'         => 'multicheck',
-			'options'      => $this->get_post_types()
+			'options'      => $this->get_post_types(),
 		) );
 
 		$cmb->add_group_field( $layouts_group_id, array(
@@ -315,11 +321,107 @@ class WDS_Page_Builder_Options {
 		$post_types = apply_filters( 'wds_page_builder_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
 
 		foreach ( $post_types as $post_type ) {
-			$types[$post_type->name] = $post_type->labels->name;
+			$types[ $post_type->name ] = $post_type->labels->name;
 		}
 
 		return $types;
+	}
 
+	/**
+	 * CMB2 show_on callback function for parts_dir option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
+	public function show_parts_dir() {
+		return $this->check_if_show( 'parts_dir' );
+	}
+
+	/**
+	 * CMB2 show_on callback function for parts_prefix option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
+	public function show_parts_prefix() {
+		return $this->check_if_show( 'parts_prefix' );
+	}
+
+	/**
+	 * CMB2 show_on callback function for use_wrap option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
+	public function show_use_wrap() {
+		return $this->check_if_show( 'use_wrap' );
+	}
+
+	/**
+	 * CMB2 show_on callback function for container option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
+	public function show_container() {
+		return $this->check_if_show( 'container' );
+	}
+
+	/**
+	 * CMB2 show_on callback function for container_class option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
+	public function show_container_class() {
+		return $this->check_if_show( 'container_class' );
+	}
+
+	/**
+	 * CMB2 show_on callback function for post_types option.
+	 * @since  1.5
+	 * @return bool Whether to show or hide the option.
+	 */
+	public function show_post_types() {
+		return $this->check_if_show( 'post_types' );
+	}
+
+	/**
+	 * Helper proxy method for the CMB2 show_on callbacks.
+	 * @since  1.5
+	 * @param  string $check Key to check for show_on_cb
+	 * @return bool          Whether to show or hide the option.
+	 */
+	protected function check_if_show( $check ) {
+		if ( 'disabled' === $this->get( 'hide_options' ) ) {
+			return true;
+		}
+
+		$hide = $this->get( 'hide_options' ) && $this->get( $check );
+
+		return ! $hide;
+	}
+
+	/**
+	 * Helper function to get the Page Builder options
+	 * @since  1.5
+	 * @return array The Page Builder options array
+	 */
+	public function get_all( $reset = false ) {
+		if ( ! is_null( $this->options ) && ! $reset ) {
+			return $this->options;
+		}
+
+		$this->options = get_option( $this->key );
+		return $this->options;
+	}
+
+	/**
+	 * Get an option from the option array
+	 * @since  1.6
+	 * @param  string $key     The option to get from the array.
+	 * @param  mixed  $default Optional. Default value to return if the option does not exist.
+	 * @return mixed           The option value or false.
+	 */
+	public function get( $key, $default = false ) {
+		$options = $this->get_all();
+		$option = array_key_exists( $key, $options ) ? $options[ $key ] : false;
+		return false !== $option ? $option : $default;
 	}
 
 	/**
@@ -337,84 +439,6 @@ class WDS_Page_Builder_Options {
 		throw new Exception( 'Invalid property: ' . $field );
 	}
 
-	/**
-	 * CMB2 show_on callback function for parts_dir option.
-	 * @since  1.5
-	 * @return bool Whether to show or hide the option.
-	 */
-	public function show_parts_dir() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
-			return true;
-		}
-
-		return ! ( $this->options['hide_options'] && isset( $this->options['parts_dir'] ) );
-	}
-
-	/**
-	 * CMB2 show_on callback function for parts_prefix option.
-	 * @since  1.5
-	 * @return bool Whether to show or hide the option.
-	 */
-	public function show_parts_prefix() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
-			return true;
-		}
-
-		return ! ( $this->options['hide_options'] && isset( $this->options['parts_prefix'] ) );
-	}
-
-	/**
-	 * CMB2 show_on callback function for use_wrap option.
-	 * @since  1.5
-	 * @return bool Whether to show or hide the option.
-	 */
-	public function show_use_wrap() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
-			return true;
-		}
-
-		return ! ( $this->options['hide_options'] && isset( $this->options['use_wrap'] ) );
-	}
-
-	/**
-	 * CMB2 show_on callback function for container option.
-	 * @since  1.5
-	 * @return bool Whether to show or hide the option.
-	 */
-	public function show_container() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
-			return true;
-		}
-
-		return ! ( $this->options['hide_options'] && isset( $this->options['container'] ) );
-	}
-
-	/**
-	 * CMB2 show_on callback function for container_class option.
-	 * @since  1.5
-	 * @return bool Whether to show or hide the option.
-	 */
-	public function show_container_class() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
-			return true;
-		}
-
-		return ! ( $this->options['hide_options'] && isset( $this->options['container_class'] ) );
-	}
-
-	/**
-	 * CMB2 show_on callback function for post_types option.
-	 * @since  1.5
-	 * @return bool Whether to show or hide the option.
-	 */
-	public function show_post_types() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
-			return true;
-		}
-
-		return ! ( $this->options['hide_options'] && isset( $this->options['post_types'] ) );
-	}
-
 }
 
 /**
@@ -422,8 +446,9 @@ class WDS_Page_Builder_Options {
  * @since  0.1.0
  * @return WDS_Page_Builder_Options object
  */
-function WDS_Page_Builder_Options() {
+function wds_page_builder_options() {
 	static $object = null;
+
 	if ( is_null( $object ) ) {
 		$object = new WDS_Page_Builder_Options();
 	}
@@ -432,13 +457,13 @@ function WDS_Page_Builder_Options() {
 }
 
 /**
- * Wrapper function around cmb2_get_option
+ * Wrapper function around WDS_Page_Builder_Options::get
  * @since  0.1.0
  * @param  string  $key Options array key
  * @return mixed        Option value
  */
-function wds_page_builder_get_option( $key = '' ) {
-	return cmb2_get_option( WDS_Page_Builder_Options()->key, $key );
+function wds_page_builder_get_option( $key = '', $default = false ) {
+	return wds_page_builder_options()->get( $key, $default );
 }
 
 /**
@@ -446,7 +471,7 @@ function wds_page_builder_get_option( $key = '' ) {
  * @return string The template part prefix (without the hyphen)
  */
 function wds_page_builder_template_part_prefix() {
-	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
+	$prefix = wds_page_builder_get_option( 'parts_prefix', 'part' );
 	return apply_filters( 'wds_page_builder_parts_prefix', $prefix );
 }
 
@@ -455,7 +480,7 @@ function wds_page_builder_template_part_prefix() {
  * @return string The template part directory name
  */
 function wds_page_builder_template_parts_dir() {
-	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';
+	$directory = wds_page_builder_get_option( 'parts_dir', 'parts' );
 	return apply_filters( 'wds_page_builder_parts_directory', $directory );
 }
 
@@ -464,7 +489,7 @@ function wds_page_builder_template_parts_dir() {
  * @return string The class name
  */
 function wds_page_builder_container_class() {
-	$class = ( wds_page_builder_get_option( 'container_class' ) ) ? wds_page_builder_get_option( 'container_class' ) : 'pagebuilder-part';
+	$class = wds_page_builder_get_option( 'container_class', 'pagebuilder-part' );
 	return sanitize_title( apply_filters( 'wds_page_builder_container_class', $class ) );
 }
 
@@ -473,7 +498,7 @@ function wds_page_builder_container_class() {
  * @return string The container type
  */
 function wds_page_builder_container() {
-	$container = ( wds_page_builder_get_option( 'container' ) ) ? wds_page_builder_get_option( 'container' ) : 'section';
+	$container = wds_page_builder_get_option( 'container', 'section' );
 	return sanitize_title( apply_filters( 'wds_page_builder_container', $container ) );
 }
 
@@ -491,9 +516,9 @@ function wds_page_builder_get_parts() {
 	// add a generic 'none' option
 	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
 
-	foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
+	foreach ( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
 		$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
-		$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
+		$parts[ $part_slug ] = ucwords( str_replace( '-', ' ', $part_slug ) );
 	}
 
 	if ( empty( $parts ) ) {
@@ -504,4 +529,4 @@ function wds_page_builder_get_parts() {
 }
 
 // Get it started
-WDS_Page_Builder_Options();
+wds_page_builder_options();

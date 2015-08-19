@@ -1,4 +1,11 @@
 <?php
+/**
+ * WDS Simple Page Builder template tags
+ * @todo move all layout/area option handling to their own classes
+ * @todo Remove uses of wp_cache_delete ( 'alloptions', 'options' ) or comment why they exist
+ * @todo Decouple registration of layouts/areas/etc from the DB. Should work like register_post_type
+ * @package WDS Simple Page Builder
+ */
 
 /**
  * Function to register a new layout programmatically
@@ -16,12 +23,13 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		return false;
 	}
 
+	// @TODO Why are we calling this? delete/update option handles resetting cache for you
 	wp_cache_delete ( 'alloptions', 'options' );
 
 	// if allow edit is true, add the template to the same options group as the other templates. this will enable users to update the layout after it's registered.
 	if ( $allow_edit ) {
 
-		$old_options = get_option( 'wds_page_builder_options' );
+		$old_options = wds_page_builder_options()->get_all();
 		$new_options = $old_options;
 		$new_options['parts_saved_layouts'][] = array(
 			'layouts_name'   => esc_attr( $name ),
@@ -35,6 +43,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 		// if the layout doesn't exist already, add it. this allows that layout to be edited
 		if ( ! $layout_exists ) {
+			// @TODO Why aren't we using wds_register_page_builder_options??
 			update_option( 'wds_page_builder_options', $new_options );
 		}
 
@@ -101,7 +110,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 	}
 
 	if ( $editable ) {
-		$options          = get_option( 'wds_page_builder_options' );
+		$options          = wds_page_builder_options()->get_all();
 		$existing_layouts = isset( $options['parts_saved_layouts'] ) ? $options['parts_saved_layouts'] : array();
 		$layout_exists    = false;
 
@@ -145,6 +154,7 @@ function unregister_page_builder_layout( $name = '' ) {
 		return;
 	}
 
+	// @TODO Why are we calling this? delete/update option handles resetting cache for you
 	wp_cache_delete ( 'alloptions', 'options' );
 
 	// if 'all' is passed, delete the option entirely
@@ -446,7 +456,7 @@ function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
  */
 function wds_register_page_builder_options( $args = array() ) {
 	$defaults = array(
-		'hide_options'    => true,
+		'hide_options' => true,
 	);
 
 	$args = wp_parse_args( $args, $defaults );

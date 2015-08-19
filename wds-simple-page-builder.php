@@ -26,9 +26,29 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		const VERSION = '1.6';
 
 		/**
+		 * Single insteance of this class
+		 *
+		 * @var null|WDS_Simple_Page_Builder
+		 */
+		protected static $single_instance = null;
+
+		/**
+		 * Creates or returns an instance of this class.
+		 * @since  0.1.0
+		 * @return WDS_Simple_Page_Builder A single instance of this class.
+		 */
+		public static function get_instance() {
+			if ( null === self::$single_instance ) {
+				self::$single_instance = new self();
+			}
+
+			return self::$single_instance;
+		}
+
+		/**
 		 * Construct function to get things started.
 		 */
-		public function __construct() {
+		protected function __construct() {
 			// Setup some base variables for the plugin
 			$this->basename       = plugin_basename( __FILE__ );
 			$this->directory_path = plugin_dir_path( __FILE__ );
@@ -81,14 +101,15 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			}
 		}
 
-	}
+	} // end WDS_Simple_Page_Builder class
 
-	$GLOBALS['WDS_Simple_Page_Builder'] = new WDS_Simple_Page_Builder;
-}
+} // end class_exists check
 
 /**
  * Public wrapper function
  */
 function wds_page_builder() {
-	return new WDS_Simple_Page_Builder;
+	return WDS_Simple_Page_Builder::get_instance();
 }
+
+wds_page_builder();
