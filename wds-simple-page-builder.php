@@ -77,6 +77,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		 * @return  null
 		 */
 		function plugin_classes() {
+			$this->options = new WDS_Page_Builder_Admin( $this );
 			$this->options = new WDS_Page_Builder_Options( $this );
 			$this->builder = new WDS_Page_Builder( $this );
 			$GLOBALS['WDS_Page_Builder'] = $this->builder;
