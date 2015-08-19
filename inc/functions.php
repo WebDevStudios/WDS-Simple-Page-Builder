@@ -24,15 +24,20 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		/**
 		 * Construct function to get things started.
 		 */
-		public function __construct() {
+		public function __construct( $plugin ) {
+			$this->plugin = $plugin;
+			$this->hooks();
+
 			// Setup some base variables for the plugin
-			$this->basename       = wds_page_builder()->basename;
-			$this->directory_path = wds_page_builder()->directory_path;
-			$this->directory_url  = wds_page_builder()->directory_url;
+			$this->basename       = $plugin->basename;
+			$this->directory_path = $plugin->directory_path;
+			$this->directory_url  = $plugin->directory_url;
 			$this->part_slug      = '';
 			$this->templates_loaded = false;
 			$this->area           = '';
+		}
 
+		public function hooks() {
 			if ( is_admin() ) {
 				add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
 			}
@@ -40,7 +45,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
-
 		}
 
 		/**
@@ -267,7 +271,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return null
 		 */
 		public function enqueue_builder_js() {
-			wp_enqueue_script( 'wds-simple-page-builder', wds_page_builder()->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
+			wp_enqueue_script( 'wds-simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
 		}
 
 		/**
@@ -541,5 +545,4 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 	}
 
-	$GLOBALS['WDS_Page_Builder'] = new WDS_Page_Builder;
 }

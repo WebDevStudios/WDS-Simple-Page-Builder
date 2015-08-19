@@ -26,6 +26,28 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		const VERSION = '1.6';
 
 		/**
+		 * Singleton instance of plugin
+		 *
+		 * @var
+		 * @since  0.1.0
+		 */
+		protected static $single_instance = null;
+
+		/**
+		 * Creates or returns an instance of this class.
+		 *
+		 * @since  0.1.0
+		 * @return A single instance of this class.
+		 */
+		public static function get_instance() {
+			if ( null === self::$single_instance ) {
+				self::$single_instance = new self();
+			}
+
+			return self::$single_instance;
+		}
+
+		/**
 		 * Construct function to get things started.
 		 */
 		public function __construct() {
@@ -35,6 +57,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
 			// Include any required files
+			require_once( $this->directory_path . '/inc/class-wds-page-builder-options.php' );
 			require_once( $this->directory_path . '/inc/options.php' );
 			require_once( $this->directory_path . '/inc/functions.php' );
 			require_once( $this->directory_path . '/inc/template-tags.php' );
@@ -42,12 +65,43 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			// CMB2 takes care of figuring out which version to run internally
 			require_once( $this->directory_path . '/inc/cmb2/init.php' );
 
-			// Load Textdomain
-			load_plugin_textdomain( 'wds-simple-page-builder', false, dirname( $this->basename ) . '/languages' );
+			$this->plugin_classes();
+			$this->hooks();
+		}
+
+		/**
+		 * Attach other plugin classes to the base plugin class.
+		 *
+		 * @since 0.1.0
+		 * @return  null
+		 */
+		function plugin_classes() {
+			$this->options = new WDS_Page_Builder_Options( $this );
+			$this->builder = new WDS_Page_Builder( $this );
+			$GLOBALS['WDS_Page_Builder'] = $this->builder;
+		}
+
+		/**
+		 * Add hooks and filters
+		 *
+		 * @return null
+		 */
+		public function hooks() {
+			add_action( 'init', array( $this, 'init' ) );
 
 			// Make sure we have our requirements, and disable the plugin if we do not have them.
 			add_action( 'admin_notices', array( $this, 'maybe_disable_plugin' ) );
+		}
 
+		/**
+		 * Init hooks
+		 *
+		 * @since  0.1.0
+		 * @return null
+		 */
+		public function init() {
+			// Load Textdomain
+			load_plugin_textdomain( 'wds-simple-page-builder', false, dirname( $this->basename ) . '/languages' );
 		}
 
 		/**
@@ -90,5 +144,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
  * Public wrapper function
  */
 function wds_page_builder() {
-	return new WDS_Simple_Page_Builder;
+	return WDS_Simple_Page_Builder::get_instance();
 }
+wds_page_builder();
