@@ -4,6 +4,12 @@
  * file prefix that identifies template parts as such.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class WDS_Page_Builder_Options {
 
 	/**
