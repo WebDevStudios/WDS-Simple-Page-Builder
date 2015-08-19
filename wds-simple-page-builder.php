@@ -57,13 +57,14 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
 			// Include any required files
-			require_once( $this->directory_path . '/inc/class-wds-page-builder-options.php' );
-			require_once( $this->directory_path . '/inc/options.php' );
-			require_once( $this->directory_path . '/inc/functions.php' );
-			require_once( $this->directory_path . '/inc/template-tags.php' );
+			require_once( $this->directory_path . 'inc/class-wds-page-builder-options.php' );
+			require_once( $this->directory_path . 'inc/class-wds-page-builder-admin.php' );
+			require_once( $this->directory_path . 'inc/options.php' );
+			require_once( $this->directory_path . 'inc/functions.php' );
+			require_once( $this->directory_path . 'inc/template-tags.php' );
 
 			// CMB2 takes care of figuring out which version to run internally
-			require_once( $this->directory_path . '/inc/cmb2/init.php' );
+			require_once( $this->directory_path . 'inc/cmb2/init.php' );
 
 			$this->plugin_classes();
 			$this->hooks();
