@@ -14,7 +14,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 
 		public $part_slug;
 		protected $parts_index = 0;
-		protected $parts = array();
 
 		/**
 		 * Construct function to get things started.
@@ -301,20 +300,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
 			echo "</$container>";
 			echo ( $class ) ? '<!-- .' . sanitize_title( $class ) . ' -->' : '';
-		}
-
-		/**
-		 * Wrapper for wds_page_builder_get_parts which stores it's result
-		 * @since  1.6
-		 * @return array  Array of parts options
-		 */
-		public function get_parts() {
-			if ( ! empty( $this->parts ) ) {
-				return $this->parts;
-			}
-
-			$this->parts = wds_page_builder_get_parts();
-			return $this->parts;
 		}
 
 	}

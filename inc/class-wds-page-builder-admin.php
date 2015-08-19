@@ -10,6 +10,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 
 		public $part_slug;
 		protected $parts_index = 0;
+		protected $parts = array();
 		protected $builder_js_required = false;
 		protected $cmb = null;
 		protected $data_fields = null;
