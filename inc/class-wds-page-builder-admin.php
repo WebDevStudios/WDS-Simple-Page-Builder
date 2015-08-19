@@ -22,7 +22,6 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 */
 		public function __construct( $plugin ) {
 			$this->plugin = $plugin;
-			$this->hooks();
 
 			$this->basename       = $plugin->basename;
 			$this->directory_path = $plugin->directory_path;

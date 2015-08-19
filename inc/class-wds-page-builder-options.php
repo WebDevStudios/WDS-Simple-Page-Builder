@@ -36,7 +36,6 @@ class WDS_Page_Builder_Options {
 	 */
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
-		$this->hooks();
 
 		// Set our title
 		$this->title   = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );

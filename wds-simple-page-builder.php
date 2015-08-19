@@ -77,7 +77,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		 * @return  null
 		 */
 		function plugin_classes() {
-			$this->options = new WDS_Page_Builder_Admin( $this );
+			$this->admin = new WDS_Page_Builder_Admin( $this );
 			$this->options = new WDS_Page_Builder_Options( $this );
 			$this->builder = new WDS_Page_Builder( $this );
 			$GLOBALS['WDS_Page_Builder'] = $this->builder;
@@ -93,6 +93,10 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 
 			// Make sure we have our requirements, and disable the plugin if we do not have them.
 			add_action( 'admin_notices', array( $this, 'maybe_disable_plugin' ) );
+			// Run our options hooks
+			$this->options->hooks();
+			// Run our admin hooks
+			$this->admin->hooks();
 		}
 
 		/**
