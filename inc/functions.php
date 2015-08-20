@@ -174,7 +174,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		public function load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-			$this->set_area( $area );
+//			$this->set_area( $area );
 			if ( ! is_array( $parts ) ) {
 				do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
 				return;
@@ -268,7 +268,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return null
 		 */
 		public function before_parts( $container = '', $class = '' ) {
-			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+			$container = ( ! $container ) ? $this->page_builder_container() : sanitize_title( $container );
 			$classes = get_the_page_builder_classes( $class );
 			$before = "<$container class=\"$classes\">";
 
@@ -293,9 +293,18 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return null
 		 */
 		public function after_parts( $container = '', $class = '' ) {
-			$container = ( ! $container ) ? wds_page_builder_container() : sanitize_title( $container );
+			$container = ( ! $container ) ? wds_page_builder_container() : esc_attr( $container );
 			echo "</$container>";
-			echo ( $class ) ? '<!-- .' . sanitize_title( $class ) . ' -->' : '';
+			echo ( $class ) ? '<!-- .' . esc_attr( $class ) . ' -->' : '';
+		}
+
+		/**
+		 * Helper function to return the main page builder container element
+		 * @return string The container type
+		 */
+		public function page_builder_container() {
+			$container = ( $this->plugin->options->options['container'] ) ? $this->plugin->options->options['container']  : 'section';
+			return esc_attr( apply_filters( 'wds_page_builder_container', $container ) );
 		}
 
 	}
