@@ -121,26 +121,12 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 					'name'       => __( 'Template', 'wds-simple-page-builder' ),
 					'id'         => $id,
 					'type'       => 'select',
-					'options'    => $this->get_parts(),
+					'options'    => $this->plugin->options->get_parts_select(),
 					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
 				),
 			);
 
 			return array_merge( $fields, $this->get_data_fields() );
-		}
-
-		/**
-		 * Wrapper for wds_page_builder_get_parts which stores it's result
-		 * @since  1.6
-		 * @return array  Array of parts options
-		 */
-		public function get_parts() {
-			if ( ! empty( $this->parts ) ) {
-				return $this->parts;
-			}
-
-			$this->parts = wds_page_builder_get_parts();
-			return $this->parts;
 		}
 
 		/**
@@ -155,7 +141,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 
 			$this->data_fields = array();
 
-			foreach ( $this->get_parts() as $part_slug => $part_value ) {
+			foreach ( $this->plugin->options->get_parts() as $part_slug => $part ) {
 				$new_fields = apply_filters( "wds_page_builder_fields_$part_slug", array() );
 
 				if ( ! empty( $new_fields ) && is_array( $new_fields ) ) {
