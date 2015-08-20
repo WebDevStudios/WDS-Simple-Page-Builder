@@ -28,7 +28,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->directory_url  = $plugin->directory_url;
 			$this->part_slug      = '';
 			$this->templates_loaded = false;
-			$this->area           = '';
 		}
 
 		public function hooks() {
@@ -140,7 +139,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @param array $part A template part array from either the global option or the
 		 *                    post meta for the current page.
 		 */
-		public function load_template_part( $part = array(), $container = '', $class = '' ) {
+		public function load_part( $part = array(), $container = '', $class = '' ) {
 
 			// bail if nothing was passed
 			if ( empty( $part ) ) {
@@ -172,6 +171,22 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			load_template( $filepath, false );
 			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug );
 
+		}
+
+		public function load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
+			$this->set_area( $area );
+			if ( ! is_array( $parts ) ) {
+				do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
+				return;
+			}
+
+			// parts are specified by their slugs, we pass them to the load_part function which uses the load_template_part method in the WDS_Page_Builder class
+			foreach ( $parts as $index => $part ) {
+				$this->set_parts_index( $index );
+				$this->load_part( array( 'template_group' => $part ) );
+			}
+
+			return;
 		}
 
 		/**
@@ -214,24 +229,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			 */
 			$this->part_slug = apply_filters( 'wds_page_builder_set_part', $part );
 
-		}
-
-		/**
-		 * Get the current area variable
-		 *
-		 * @return string The area slug.
-		 */
-		public function get_area() {
-			return $this->area;
-		}
-
-		/**
-		 * Set the current area variable
-		 *
-		 * @param $area The slug of the area you are setting.
-		 */
-		public function set_area ( $area ) {
-			$this->area = $area;
 		}
 
 		/**
