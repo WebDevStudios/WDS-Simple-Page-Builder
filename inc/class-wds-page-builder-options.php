@@ -325,7 +325,8 @@ class WDS_Page_Builder_Options {
 			'name'         => __( 'Template', 'wds-simple-page-builder' ),
 			'id'           => 'template_group',
 			'type'         => 'select',
-			'options'      => array_merge( $this->get_parts_select(), array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ) ),
+			'options'      => $this->get_parts_select(),
+			'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ),
 			'default'      => 'none',
 			'repeatable'   => true,
 		) );
@@ -396,6 +397,7 @@ class WDS_Page_Builder_Options {
 		foreach ( $parts as $key => $part ) {
 			$options[$key] = $part['name'];
 		}
+
 		return $options;
 	}
 
