@@ -260,34 +260,7 @@ function get_page_builder_areas() {
  * @return void
  */
 function get_page_builder_area( $area = '', $post_id = 0 ) {
-	// first, get the page builder areas
-	$area_data = wds_page_builder()->areas->get_registered_area( $area );
-
-	// if there were no page builder areas, bail
-	if ( ! $area_data ) {
-		return;
-	}
-
-	// if no post ID was passed, try to get one
-	if ( 0 == $post_id ) {
-		$post_id = get_queried_object_id();
-	}
-
-	// if it's not singular -- like an archive or a 404 or something -- you can only add template
-	// parts by registering the area
-	if ( ! is_singular() && ( ! is_home() && ! $post_id ) ) {
-		return $area_data['template_group'];
-	}
-
-	if ( $templates = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area ) . '_template', true ) ) {
-		foreach( $templates as $template ) {
-			$out[] = $template['template_group'];
-		}
-
-		return $out;
-	}
-
-	return;
+	wds_page_builder()->areas->get_area( $area, $post_id );
 }
 
 /**
@@ -298,20 +271,7 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
  * @return void
  */
 function wds_page_builder_area( $area = '', $post_id = 0 ) {
-	// bail if no area was specified
-	if ( '' == $area ) {
-		return;
-	}
-
-	$parts = get_page_builder_area( $area, $post_id );
-
-	if ( $parts ) {
-		do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
-		wds_page_builder_load_parts( $parts, '', '', $area );
-		do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
-	} else {
-		wds_page_builder_load_parts( $area );
-	}
+	wds_page_builder()->areas->do_area( $area, $post_id );
 }
 
 /**
