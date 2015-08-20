@@ -379,6 +379,7 @@ class WDS_Page_Builder_Options {
 				$parts[ esc_attr( $slug ) ] = array(
 					'name'        => esc_attr( $data['name'] ),
 					'description' => esc_attr( $data['description'] ),
+					'path'        => esc_url( $file ),
 					'area'        => $areas,
 				);
 			}
@@ -386,6 +387,10 @@ class WDS_Page_Builder_Options {
 			$this->parts = $parts;
 		}
 		return $this->parts;
+	}
+
+	public function get_part_data( $slug ) {
+		return isset( $this->parts[$slug] ) ? $this->parts[$slug] : false;
 	}
 
 	public function get_parts_select() {
