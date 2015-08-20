@@ -159,17 +159,16 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$this->set_part( $part['template_group'] );
 			$classes = ( $class ) ? $class . ' ' . $this->part_slug : $this->part_slug;
 
-			$filename = trailingslashit( wds_page_builder_template_parts_dir() ) . wds_page_builder_template_part_prefix() . '-' . $this->part_slug . '.php';
-			$filepath = trailingslashit( get_template_directory() ) . $filename;
+			$part_data = $this->plugin->options->get_part_data( $this->part_slug );
 
-			// bail if the file doesn't exist
-			if ( ! file_exists( $filepath ) ) {
+			// bail if the part doesn't exist
+			if ( ! $part_data ) {
 				return;
 			}
 
-			do_action( 'wds_page_builder_before_load_template', $container, $classes );
-			load_template( $filepath, false );
-			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug );
+			do_action( 'wds_page_builder_before_load_template', $container, $classes, $this->part_slug, $part_data );
+			require( $part_data['path'] );
+			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug, $part_data );
 
 		}
 
