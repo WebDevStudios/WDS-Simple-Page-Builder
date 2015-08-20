@@ -344,11 +344,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				foreach( $parts as $this->parts_index => $part ) {
 
 					// check if the current part was loaded already
-					if ( $this->get_part() && $this->get_part() !== $part['template_group'] ) {
+//					if ( $this->get_part() && $this->get_part() !== $part['template_group'] ) {
 
 						$this->load_template_part( $part, $container, $class );
 
-					}
+//					}
 
 				}
 				do_action( 'wds_page_builder_after_load_parts' );
