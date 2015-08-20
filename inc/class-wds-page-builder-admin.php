@@ -69,38 +69,6 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 * Build our meta boxes
 		 */
 		public function do_meta_boxes() {
-
-			$option = wds_page_builder_get_option( 'post_types' );
-			$object_types = $option ? $option : array( 'page' );
-
-			$this->cmb = new_cmb2_box( array(
-				'id'           => 'wds_simple_page_builder',
-				'title'        => __( 'Page Builder', 'wds-simple-page-builder' ),
-				'object_types' => $object_types,
-				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
-			) );
-
-			$this->cmb->add_field( array(
-				'id'           => $this->prefix . 'template_group_title',
-				'type'         => 'title',
-				'name'         => __( 'Content Area Templates', 'wds-simple-page-builder' )
-			) );
-
-			$group_field_id = $this->cmb->add_field( array(
-				'id'           => $this->prefix . 'template',
-				'type'         => 'group',
-				'options'      => array(
-					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
-					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
-					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
-					'sortable'      => true
-				)
-			) );
-
-			foreach ( $this->get_group_fields() as $field ) {
-				$this->cmb->add_group_field( $group_field_id, $field );
-			}
-
 			$this->register_all_area_fields();
 		}
 
@@ -210,16 +178,24 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 
 			$this->area = $area;
 
-			$area_group_field_id = $area . '_group_field_id';
+			if ( 'page_builder_default' == $area ) {
+				$area_key = '';
+			} else {
+				$area_key = $area . '_';
+			}
 
-			$this->cmb->add_field( array(
-				'id'       => $this->prefix . $area . '_' . 'title',
-				'type'     => 'title',
-				'name'     => sprintf( __( '%s Area Templates', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+			$option = $this->plugin->options->options['post_types'];
+			$object_types = $option ? $option : array( 'page' );
+
+			$cmb = new_cmb2_box( array(
+				'id'           => 'wds_simple_page_builder_' . $area,
+				'title'        => sprintf( __( '%s Area Page Builder Templates', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+				'object_types' => $object_types,
+				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
 			) );
 
-			$$area_group_field_id = $this->cmb->add_field( array(
-				'id'       => $this->prefix . $area . '_' . 'template',
+			$group_field = $cmb->add_field( array(
+				'id'       => $this->prefix . $area_key . 'template',
 				'type'     => 'group',
 				'options'  => array(
 					'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), ucfirst( $area ) ),
@@ -230,7 +206,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 			) );
 
 			foreach ( $this->get_group_fields() as $field ) {
-				$this->cmb->add_group_field( $$area_group_field_id, $field );
+				$cmb->add_group_field( $group_field, $field );
 			}
 		}
 
