@@ -143,7 +143,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 
 	}
 
-	$GLOBALS['WDS_Simple_Page_Builder'] = new WDS_Simple_Page_Builder;
 }
 
 /**
