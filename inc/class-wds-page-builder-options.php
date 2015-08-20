@@ -113,6 +113,16 @@ class WDS_Page_Builder_Options {
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 	}
 
+	public function get_parts_dir() {
+		$directory = isset( $this->options['parts_dir'] ) ? $this->options['parts_dir'] : 'parts';
+		return apply_filters( 'wds_page_builder_parts_directory', $directory );
+	}
+
+	public function get_parts_prefix() {
+		$prefix = isset( $this->options['parts_prefix'] ) ? $this->options['parts_prefix'] : 'part';
+		return apply_filters( 'wds_page_builder_parts_prefix', $prefix );
+	}
+
 	/**
 	 * Hooks to pre_update_option_{option name} to prevent empty templates from being saved
 	 * to the Saved Layouts
@@ -315,12 +325,6 @@ class WDS_Page_Builder_Options {
 
 	}
 
-
-	public function get_parts() {
-
-		return array();
-	}
-
 	/**
 	 * Get an array of post types for the options page multicheck array
 	 * @uses   get_post_types
@@ -336,6 +340,30 @@ class WDS_Page_Builder_Options {
 
 		return $types;
 
+	}
+
+	public function get_parts() {
+		$parts        = array();
+		$parts_dir    = trailingslashit( get_template_directory() ) . wds_page_builder_template_parts_dir();
+		$parts_prefix = wds_page_builder_template_part_prefix();
+
+		// add a generic 'none' option
+		$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
+
+		foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
+			$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
+			$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
+		}
+
+		if ( empty( $parts ) ) {
+			return __( 'No template parts found', 'wds-simple-page-builder' );
+		}
+
+		return $parts;
+	}
+
+	public function get_parts_data( $part ) {
+		$parts glob( $this->get_parts_dir() . '/' . $this->get_parts_prefix() . '-*.php' )
 	}
 
 	/**
