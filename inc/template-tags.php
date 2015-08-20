@@ -13,7 +13,7 @@
  * @return null
  */
 function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-	wds_page_builder()->builder->load_parts( $parts, $container, $class, $area )
+	wds_page_builder()->builder->load_parts( $parts, $container, $class, $area );
 }
 
 /**
