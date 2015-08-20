@@ -34,8 +34,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function hooks() {
 			if ( is_admin() ) {
 				add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
+				add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
+				add_filter( 'wds_page_builder_area_parts_select', array( $this, 'limit_part_to_area' ), 10, 3 );
 			}
-			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
 		}
 
@@ -115,13 +116,12 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 * @return array    A list CMB2 field types
 		 */
 		public function get_group_fields( $id = 'template_group' ) {
-
 			$fields = array(
 				array(
 					'name'       => __( 'Template', 'wds-simple-page-builder' ),
 					'id'         => $id,
 					'type'       => 'select',
-					'options'    => $this->plugin->options->get_parts_select(),
+					'options'    => apply_filters( 'wds_page_builder_area_parts_select', $this->plugin->options->get_parts_select(), $this->plugin->options->get_parts(), $this->area ),
 					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
 				),
 			);
@@ -208,6 +208,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 */
 		public function register_area_fields( $area ) {
 
+			$this->area = $area;
+
 			$area_group_field_id = $area . '_group_field_id';
 
 			$this->cmb->add_field( array(
@@ -253,6 +255,25 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 */
 		public function enqueue_builder_js() {
 			wp_enqueue_script( 'wds-simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
+		}
+
+		/**
+		 * Used to filter the drop-down options for areas and to limit a part to only working in declared areas.
+		 *
+		 * @param $options
+		 * @param $parts
+		 * @param $area
+		 *
+		 * @return mixed
+		 */
+		public function limit_part_to_area( $options, $parts, $area ) {
+			foreach ( $parts as $slug => $part ) {
+				if ( ! in_array( $area, $part['area'] ) ) {
+					unset( $options[$slug] );
+				}
+			}
+
+			return $options;
 		}
 
 	}
