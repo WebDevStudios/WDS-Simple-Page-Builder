@@ -16,6 +16,16 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			$this->registered_areas = array();
 			$this->current_area = '';
+
+			$this->hooks();
+		}
+
+		public function hooks() {
+			add_action( 'init', array( $this, 'register_default_area' ) );
+		}
+
+		public function register_default_area() {
+			$this->register_area( 'page_builder_default', __( 'Default Page Builder Area', 'wds-simple-page-builder' ) );
 		}
 
 		public function register_area( $slug, $name = '', $templates = array() ) {
