@@ -241,9 +241,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			$the_files  = array();
 			foreach ( $some_files as $file ) {
 				$the_files[] = stripslashes( str_replace( array(
-					get_template_directory(),
-					wds_page_builder_template_parts_dir(),
-					wds_page_builder_template_part_prefix() . '-',
+					$this->plugin->options->get_parts_path(),
+					$this->plugin->options->get_parts_prefix() . '-',
 					'.php',
 					'//'
 				), '', $file ) );
