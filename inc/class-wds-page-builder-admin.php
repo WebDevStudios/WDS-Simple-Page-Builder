@@ -244,6 +244,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 */
 		public function limit_part_to_area( $options, $parts, $area ) {
 			foreach ( $parts as $slug => $part ) {
+				if ( ! $part['area'] ) {
+					continue;
+				}
 				if ( ! in_array( $area, $part['area'] ) ) {
 					unset( $options[$slug] );
 				}

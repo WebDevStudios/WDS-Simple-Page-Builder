@@ -372,9 +372,12 @@ class WDS_Page_Builder_Options {
 					'description' => 'Description',
 					'area'        => 'Area',
 				) );
-				$areas                      = explode( ',', $data['area'] );
-				$areas                      = array_map( 'trim', $areas );
-				$areas                      = array_map( 'esc_attr', $areas );
+				$areas = array();
+				if ( $data['area'] ) {
+					$areas = explode( ',', $data['area'] );
+					$areas = array_map( 'trim', $areas );
+					$areas = array_map( 'esc_attr', $areas );
+				}
 				$slug                       = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
 				$parts[ esc_attr( $slug ) ] = array(
 					'name'        => esc_attr( $data['name'] ),
