@@ -283,7 +283,7 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 		foreach( $templates as $template ) {
 			$out[] = $template['template_group'];
 		}
-var_dump($out);
+
 		return $out;
 	}
 
