@@ -36,6 +36,8 @@ class WDS_Page_Builder_Options {
 	 */
 	protected $options_page = '';
 
+	public $parts = array();
+
 	/**
 	 * Constructor
 	 * @since 0.1.0
@@ -116,6 +118,11 @@ class WDS_Page_Builder_Options {
 	public function get_parts_dir() {
 		$directory = isset( $this->options['parts_dir'] ) ? $this->options['parts_dir'] : 'parts';
 		return apply_filters( 'wds_page_builder_parts_directory', $directory );
+	}
+
+	public function get_parts_path() {
+		$path = get_stylesheet_directory() . '/' . $this->get_parts_dir() . '/';
+		return apply_filters( 'wds_page_builder_parts_path', $path );
 	}
 
 	public function get_parts_prefix() {
@@ -281,7 +288,7 @@ class WDS_Page_Builder_Options {
 			'name'         => __( 'Template', 'wds-simple-page-builder' ),
 			'id'           => 'template_group',
 			'type'         => 'select',
-			'options'      => $this->get_parts(),
+			'options'      => $this->get_parts_select(),
 			'default'      => 'none'
 		) );
 
@@ -318,7 +325,7 @@ class WDS_Page_Builder_Options {
 			'name'         => __( 'Template', 'wds-simple-page-builder' ),
 			'id'           => 'template_group',
 			'type'         => 'select',
-			'options'      => array_merge( $this->get_parts(), array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ) ),
+			'options'      => array_merge( $this->get_parts_select(), array( 'add_row_text' => __( 'Add another template part', 'wds-simple-page-builder' ) ) ),
 			'default'      => 'none',
 			'repeatable'   => true,
 		) );
@@ -342,28 +349,54 @@ class WDS_Page_Builder_Options {
 
 	}
 
-	public function get_parts() {
-		$parts        = array();
-		$parts_dir    = trailingslashit( get_template_directory() ) . wds_page_builder_template_parts_dir();
-		$parts_prefix = wds_page_builder_template_part_prefix();
-
-		// add a generic 'none' option
-		$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
-
-		foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
-			$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
-			$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
-		}
-
-		if ( empty( $parts ) ) {
-			return __( 'No template parts found', 'wds-simple-page-builder' );
-		}
+	/**
+	 * Get an array of the locations of the parts in the parts directory.
+	 *
+	 * @return array An array of all parts found in the parts directory.
+	 */
+	public function get_part_files() {
+		$parts = glob( $this->get_parts_path() . $this->get_parts_prefix() . '-*.php' );
 
 		return $parts;
 	}
 
-	public function get_parts_data( $part ) {
-		$parts glob( $this->get_parts_dir() . '/' . $this->get_parts_prefix() . '-*.php' )
+	public function get_parts( ) {
+		if ( ! $this->parts ) {
+			$files = $this->get_part_files();
+
+			$parts = array();
+			foreach ( $files as $file ) {
+				$data                       = get_file_data( $file, array(
+					'name'        => 'Part Name',
+					'description' => 'Description',
+					'area'        => 'Area',
+				) );
+				$areas                      = explode( ',', $data['area'] );
+				$areas                      = array_map( 'trim', $areas );
+				$areas                      = array_map( 'esc_attr', $areas );
+				$slug                       = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
+				$parts[ esc_attr( $slug ) ] = array(
+					'name'        => esc_attr( $data['name'] ),
+					'description' => esc_attr( $data['description'] ),
+					'area'        => $areas,
+				);
+			}
+
+			$this->parts = $parts;
+		}
+		return $this->parts;
+	}
+
+	public function get_parts_select() {
+		$parts = $this->get_parts();
+		$options = array(
+			// add a generic 'none' option
+			'none' => __( '- No Template Parts -', 'wds-simple-page-builder' ),
+		);
+		foreach ( $parts as $key => $part ) {
+			$options[$key] = $part['name'];
+		}
+		return $options;
 	}
 
 	/**
