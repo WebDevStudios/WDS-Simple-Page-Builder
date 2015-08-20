@@ -16,8 +16,7 @@ function wds_page_builder_get_option( $key = '' ) {
  * @return string The template part prefix (without the hyphen)
  */
 function wds_page_builder_template_part_prefix() {
-	$prefix = ( wds_page_builder_get_option( 'parts_prefix' ) ) ? wds_page_builder_get_option( 'parts_prefix' ) : 'part';
-	return apply_filters( 'wds_page_builder_parts_prefix', $prefix );
+	return wds_page_builder()->options->get_parts_prefix();
 }
 
 /**
@@ -33,7 +32,8 @@ function wds_page_builder_template_parts_dir() {
  * @return string The class name
  */
 function wds_page_builder_container_class() {
-	return wds_page_builder()->options->get_parts_prefix();
+	$class = ( wds_page_builder_get_option( 'container_class' ) ) ? wds_page_builder_get_option( 'container_class' ) : 'pagebuilder-part';
+	return sanitize_title( apply_filters( 'wds_page_builder_container_class', $class ) );
 }
 
 /**
