@@ -52,21 +52,7 @@ function wds_page_builder_container() {
  * @return array An array of template parts
  */
 function wds_page_builder_get_parts() {
-	$parts        = array();
-	$parts_dir    = trailingslashit( get_template_directory() ) . wds_page_builder_template_parts_dir();
-	$parts_prefix = wds_page_builder_template_part_prefix();
-
-	// add a generic 'none' option
-	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
-
-	foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
-		$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
-		$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
-	}
-
-	if ( empty( $parts ) ) {
-		return __( 'No template parts found', 'wds-simple-page-builder' );
-	}
+	$parts = wds_page_builder()->options->get_parts();
 
 	return $parts;
 }
