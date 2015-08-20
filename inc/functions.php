@@ -173,7 +173,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		}
 
 		public function load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-//			$this->set_area( $area );
+			$this->plugin->areas->set_current_area( $area );
 			if ( ! is_array( $parts ) ) {
 				do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
 				return;
