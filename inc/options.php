@@ -25,8 +25,7 @@ function wds_page_builder_template_part_prefix() {
  * @return string The template part directory name
  */
 function wds_page_builder_template_parts_dir() {
-	$directory = ( wds_page_builder_get_option( 'parts_dir' ) ) ? wds_page_builder_get_option( 'parts_dir' ) : 'parts';
-	return apply_filters( 'wds_page_builder_parts_directory', $directory );
+	return wds_page_builder()->options->get_parts_dir();
 }
 
 /**
@@ -34,8 +33,7 @@ function wds_page_builder_template_parts_dir() {
  * @return string The class name
  */
 function wds_page_builder_container_class() {
-	$class = ( wds_page_builder_get_option( 'container_class' ) ) ? wds_page_builder_get_option( 'container_class' ) : 'pagebuilder-part';
-	return sanitize_title( apply_filters( 'wds_page_builder_container_class', $class ) );
+	return wds_page_builder()->options->get_parts_prefix();
 }
 
 /**
