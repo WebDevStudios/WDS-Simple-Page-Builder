@@ -415,7 +415,7 @@ function wds_page_builder_theme_support( $args = array() ) {
 function wds_page_builder_get_this_part_data( $meta_key ) {
 
 	// Add method exists check just in case global was modified.
-	$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
+	$part_slug = wds_page_builder()->builder->get_part();
 
 	if ( $part_slug ) {
 		return wds_page_builder_get_part_data( $part_slug, $meta_key );
@@ -453,11 +453,14 @@ function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
 
 	} else {
 		// Get current part index
-		$part_index = $GLOBALS['WDS_Page_Builder']->get_parts_index();
+		$part_index = wds_page_builder()->builder->get_parts_index();
 	}
 
-	$area = $GLOBALS['WDS_Page_Builder']->get_area();
+	$area = wds_page_builder()->areas->get_current_area();
 	$area_key = $area ? $area . '_' : '';
+	if ( 'page_builder_default' == $area ) {
+		$area_key = '';
+	}
 	$post_id = $post_id ? $post_id : get_queried_object_id();
 	$meta    = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', 1 );
 
