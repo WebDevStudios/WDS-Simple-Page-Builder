@@ -25,13 +25,25 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		}
 
 		public function register_default_area() {
-			$this->register_area( 'page_builder_default', __( 'Default Page Builder Area', 'wds-simple-page-builder' ) );
+			$this->register_area(
+				'page_builder_default',
+				array(
+					'name'        => __( 'Default Page Builder Area', 'wds-simple-page-builder' ),
+					'description' => __( 'This is the default area. Place the template tag page_builder_area() in your theme file to display. You can also create custom areas.', 'wds-simple-page-builder' ),
+				)
+			);
 		}
 
-		public function register_area( $slug, $name = '', $templates = array() ) {
+		public function register_area( $slug, $args = array(), $templates = array() ) {
+			$defaults = array(
+				'name'        => ucwords( str_replace( '-', ' ', $slug ) ),
+				'description' => '',
+			);
+			$args = wp_parse_args( $args, $defaults );
 			$this->registered_areas[ $slug ] = array(
-				'name'      => $name ? esc_attr( $name ) : ucwords( str_replace( '-', ' ', esc_attr( $slug ) ) ),
-				'templates' => $templates
+				'name'        => esc_attr( $args['name'] ),
+				'description' => esc_html( $args['description'] ),
+				'templates'   => $templates,
 			);
 		}
 
