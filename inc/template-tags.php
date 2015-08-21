@@ -43,7 +43,6 @@ function get_page_builder_parts() {
 	return wds_page_builder()->builder->page_builder_parts();
 }
 
-
 /**
  * Function to register a new layout programmatically
  * @since  1.3
@@ -217,8 +216,6 @@ function unregister_page_builder_layout( $name = '' ) {
 
 }
 
-
-
 /**
  * Function to register a new page builder "area"
  *
@@ -251,7 +248,6 @@ function get_page_builder_areas() {
 	return $areas;
 }
 
-
 /**
  * Function that can be used to return a specific page builder area
  * @param  string  $area    The area by slug/name
@@ -275,59 +271,6 @@ function wds_page_builder_area( $area = '', $post_id = 0 ) {
 }
 
 /**
- * Display the classes for the template part wrapper
- * @since  1.5
- * @param  string|array $class     One or more classes to add to the class list
- * @return null
- */
-function page_builder_class( $class = '' ) {
-	echo 'class="' . get_the_page_builder_classes( $class ) . '"';
-}
-
-/**
- * Return the classes for the template part wrapper
- * @since  1.5
- * @param  string|array $class     One or more classes to add to the class list
- * @return string       A parsed list of classes as they would appear in a div class attribute
- */
-function get_the_page_builder_classes( $class = '' ) {
-	// Separates classes with a single space, collates classes for template part wrapper DIV
-	$classes = join( ' ', get_page_builder_class( $class ) );
-
-	/**
-	 * Filter the list of CSS classes
-	 * @since  1.5
-	 * @param  array  $classes   An array of pagebuilder part classes
-	 */
-	return apply_filters( 'page_builder_classes', $classes );
-}
-
-/**
- * Retrieve the class names for the template part as an array
- *
- * Based on post_class, but we're not getting as much information as post_class.
- * We just want to return a generic class, the current template part slug, and any
- * custom class names that were passed to the function.
- *
- * @param  string|array $class     One or more classes to add to the class list
- * @return array                   Array of classes.
- */
-function get_page_builder_class( $class = '' ) {
-
-	if ( $class ) {
-		if ( ! is_array( $class ) ) {
-		        $class = preg_split( '#\s+#', $class );
-		}
-		$classes = array_map( 'esc_attr', $class );
-	}
-
-	$classes[] = wds_page_builder_container_class();
-
-	return array_unique( $classes );
-
-}
-
-/**
  * Helper function to display page builder with a full wrap.
  *
  * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll
@@ -339,7 +282,7 @@ function get_page_builder_class( $class = '' ) {
  * @return void
  */
 function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
-	$page_builder = new WDS_Page_Builder;
+	$page_builder = wds_page_builder()->builder;
 	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
 	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
 
@@ -398,11 +341,6 @@ function wds_page_builder_theme_support( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 	do_action( 'wds_page_builder_add_theme_support', $args );
 }
-
-
-
-
-
 
 /**
  * Grabs the value of the current template part's meta key.

@@ -268,7 +268,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 */
 		public function before_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? $this->page_builder_container() : sanitize_title( $container );
-			$classes = get_the_page_builder_classes( $class );
+			$classes = esc_attr( get_classes( $class ) );
 			$before = "<$container class=\"$classes\">";
 
 			/**
@@ -282,6 +282,43 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			 * @param string $before The full opening container markup
 			 */
 			echo apply_filters( 'wds_page_builder_wrapper', $before );
+		}
+
+		/**
+		 * Retrieve the class names for the template part as an array
+		 *
+		 * Based on post_class, but we're not getting as much information as post_class.
+		 * We just want to return a generic class, the current template part slug, and any
+		 * custom class names that were passed to the function.
+		 *
+		 * @param  string|array $class     One or more classes to add to the class list
+		 * @return array                   Array of classes.
+		 */
+		public function get_class( $class = '' ) {
+
+			if ( $class ) {
+				if ( ! is_array( $class ) ) {
+					$class = preg_split( '#\s+#', $class );
+				}
+				$classes = array_map( 'esc_attr', $class );
+			}
+
+			$classes[] = $this->plugin->options->get( 'container_class' );
+
+			return array_unique( $classes );
+
+		}
+
+		public function get_classes( $class = '' ) {
+			// Separates classes with a single space, collates classes for template part wrapper DIV
+			$classes = join( ' ', $this->get_class( $class ) );
+
+			/**
+			 * Filter the list of CSS classes
+			 * @since  1.5
+			 * @param  array  $classes   An array of pagebuilder part classes
+			 */
+			return apply_filters( 'page_builder_classes', $classes );
 		}
 
 		/**

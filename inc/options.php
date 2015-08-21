@@ -7,7 +7,7 @@
  * @return mixed        Option value
  */
 function wds_page_builder_get_option( $key = '', $default = false ) {
-	return wds_page_builder_options()->get( $key, $default );
+	return wds_page_builder()->options->get( $key, $default );
 }
 
 /**
