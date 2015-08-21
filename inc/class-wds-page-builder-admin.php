@@ -195,6 +195,14 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
 			) );
 
+			if ( $area_data['description'] ) {
+				$cmb->add_field( array(
+					'id' => $this->prefix . $area_key . 'description',
+					'type' => 'title',
+					'desc' => esc_html( $area_data['description'] ),
+				) );
+			}
+
 			$group_field = $cmb->add_field( array(
 				'id'       => $this->prefix . $area_key . 'template',
 				'type'     => 'group',
