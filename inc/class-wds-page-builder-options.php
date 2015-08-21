@@ -386,7 +386,7 @@ class WDS_Page_Builder_Options {
 					'area'        => $areas,
 				);
 			}
-var_dump($parts);
+
 			$this->parts = $parts;
 		}
 		return $this->parts;
