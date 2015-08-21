@@ -61,7 +61,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-admin.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-areas.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-data.php' );
-			require_once( $this->directory_path . 'inc/options.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-functions.php' );
 
 			require_once( $this->directory_path . 'inc/template-tags.php' );
