@@ -62,7 +62,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-areas.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-data.php' );
 			require_once( $this->directory_path . 'inc/options.php' );
-			require_once( $this->directory_path . 'inc/functions.php' );
+			require_once( $this->directory_path . 'inc/class-wds-page-builder-functions.php' );
 
 			require_once( $this->directory_path . 'inc/template-tags.php' );
 
@@ -82,7 +82,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		function plugin_classes() {
 			$this->admin = new WDS_Page_Builder_Admin( $this );
 			$this->options = new WDS_Page_Builder_Options( $this );
-			$this->builder = new WDS_Page_Builder( $this );
+			$this->functions = new WDS_Page_Builder_Functions( $this );
 			$this->areas = new WDS_Page_Builder_Areas( $this );
 			$this->data = new WDS_Page_Builder_Data( $this );
 		}

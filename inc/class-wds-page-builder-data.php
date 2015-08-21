@@ -30,7 +30,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
 
 			} else {
 				// Get current part index
-				$part_index = wds_page_builder()->builder->get_parts_index();
+				$part_index = wds_page_builder()->functions->get_parts_index();
 				$part_slug  = $part;
 			}
 

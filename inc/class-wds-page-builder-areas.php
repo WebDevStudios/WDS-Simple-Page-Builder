@@ -127,10 +127,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			if ( $parts ) {
 				do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
-				$this->plugin->builder->load_parts( $parts, '', '', $area );
+				$this->plugin->functions->load_parts( $parts, '', '', $area );
 				do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
 			} else {
-				$this->plugin->builder->load_parts( $area );
+				$this->plugin->functions->load_parts( $area );
 			}
 		}
 

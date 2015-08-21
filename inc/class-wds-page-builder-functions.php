@@ -8,9 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Page_Builder' ) ) {
+if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 
-	class WDS_Page_Builder {
+	class WDS_Page_Builder_Functions {
 
 		public $part_slug;
 		protected $parts_index = 0;

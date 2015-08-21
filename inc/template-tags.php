@@ -13,7 +13,7 @@
  * @return null
  */
 function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-	wds_page_builder()->builder->load_parts( $parts, $container, $class, $area );
+	wds_page_builder()->functions->load_parts( $parts, $container, $class, $area );
 }
 
 /**
@@ -28,7 +28,7 @@ function wds_page_builder_load_part( $part = '' ) {
 		return;
 	}
 
-	wds_page_builder()->builder->load_part( array( 'template_group' => $part ) );
+	wds_page_builder()->functions->load_part( array( 'template_group' => $part ) );
 }
 
 /**
@@ -40,7 +40,7 @@ function wds_page_builder_load_part( $part = '' ) {
  * @return array An array of template parts in use on the page
  */
 function get_page_builder_parts() {
-	return wds_page_builder()->builder->page_builder_parts();
+	return wds_page_builder()->functions->page_builder_parts();
 }
 
 /**
@@ -282,7 +282,7 @@ function wds_page_builder_area( $area = '', $post_id = 0 ) {
  * @return void
  */
 function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
-	$page_builder = wds_page_builder()->builder;
+	$page_builder = wds_page_builder()->functions;
 	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
 	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
 
@@ -351,7 +351,7 @@ function wds_page_builder_theme_support( $args = array() ) {
  * @return mixed|null       Null on failure or the value of the meta key on success.
  */
 function wds_page_builder_get_this_part_data( $meta_key ) {
-	$part_slug = wds_page_builder()->builder->get_part();
+	$part_slug = wds_page_builder()->functions->get_part();
 
 	if ( $part_slug ) {
 		return wds_page_builder_get_part_data( $part_slug, $meta_key );
