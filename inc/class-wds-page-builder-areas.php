@@ -30,7 +30,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 		public function register_area( $slug, $name = '', $templates = array() ) {
 			$this->registered_areas[ $slug ] = array(
-				'name'      => esc_attr( $name ),
+				'name'      => $name ? esc_attr( $name ) : ucwords( str_replace( '-', ' ', esc_attr( $slug ) ) ),
 				'templates' => $templates
 			);
 		}
