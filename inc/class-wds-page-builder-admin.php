@@ -177,6 +177,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function register_area_fields( $area ) {
 
 			$this->area = $area;
+			$area_data = $this->plugin->areas->get_registered_area( $area );
 
 			if ( 'page_builder_default' == $area ) {
 				$area_key = '';
@@ -189,7 +190,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_' . $area,
-				'title'        => sprintf( __( '%s Area Page Builder Templates', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+				'title'        => sprintf( __( '%s Page Builder Templates', 'wds-simple-page-builder' ), esc_html( $area_data['name'] ) ),
 				'object_types' => $object_types,
 				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
 			) );
