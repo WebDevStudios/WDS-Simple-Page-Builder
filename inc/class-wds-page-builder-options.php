@@ -380,7 +380,7 @@ class WDS_Page_Builder_Options {
 				}
 				$slug                       = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
 				$parts[ esc_attr( $slug ) ] = array(
-					'name'        => $data['name'] ? esc_attr( $data['name'] ) : ucwords( esc_attr( $slug ) ),
+					'name'        => $data['name'] ? esc_attr( $data['name'] ) : ucwords( str_replace( '-', ' ',  esc_attr( $slug ) ) ),
 					'description' => esc_attr( $data['description'] ),
 					'path'        => esc_url( $file ),
 					'area'        => $areas,
