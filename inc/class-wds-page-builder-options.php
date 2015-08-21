@@ -399,7 +399,11 @@ class WDS_Page_Builder_Options {
 					$areas = array_map( 'trim', $areas );
 					$areas = array_map( 'esc_attr', $areas );
 				}
-				$slug                       = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
+				$slug = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
+				$prefix = $this->get_parts_prefix() . '-';
+				if ( substr( $slug, 0, strlen( $prefix ) ) == $prefix ) {
+					$slug = substr( $slug, strlen( $prefix ) );
+				}
 				$parts[ esc_attr( $slug ) ] = array(
 					'name'        => $data['name'] ? esc_attr( $data['name'] ) : ucwords( str_replace( '-', ' ',  esc_attr( $slug ) ) ),
 					'description' => esc_attr( $data['description'] ),
@@ -414,7 +418,8 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function get_part_data( $slug ) {
-		return isset( $this->parts[$slug] ) ? $this->parts[$slug] : false;
+		$parts = $this->get_parts();
+		return isset( $parts[$slug] ) ? $parts[$slug] : false;
 	}
 
 	public function get_parts_select() {
