@@ -380,13 +380,13 @@ class WDS_Page_Builder_Options {
 				}
 				$slug                       = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
 				$parts[ esc_attr( $slug ) ] = array(
-					'name'        => esc_attr( $data['name'] ),
+					'name'        => $data['name'] ? esc_attr( $data['name'] ) : ucwords( esc_attr( $slug ) ),
 					'description' => esc_attr( $data['description'] ),
 					'path'        => esc_url( $file ),
 					'area'        => $areas,
 				);
 			}
-
+var_dump($parts);
 			$this->parts = $parts;
 		}
 		return $this->parts;
