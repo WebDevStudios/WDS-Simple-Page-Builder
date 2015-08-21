@@ -50,7 +50,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		/**
 		 * Construct function to get things started.
 		 */
-		public function __construct() {
+		protected function __construct() {
 			// Setup some base variables for the plugin
 			$this->basename       = plugin_basename( __FILE__ );
 			$this->directory_path = plugin_dir_path( __FILE__ );
