@@ -231,7 +231,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				'name'     => sprintf( __( '%s Area Templates', 'wds-simple-page-builder' ), ucfirst( $area ) ),
 			) );
 
-			$$area_group_field_id = $this->cmb->add_field( array(
+			$area_group_field_id = $this->cmb->add_field( array(
 				'id'       => $this->prefix . $area . '_' . 'template',
 				'type'     => 'group',
 				'options'  => array(
@@ -243,7 +243,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			) );
 
 			foreach ( $this->get_group_fields() as $field ) {
-				$this->cmb->add_group_field( $$area_group_field_id, $field );
+				$this->cmb->add_group_field( $area_group_field_id, $field );
 			}
 		}
 
