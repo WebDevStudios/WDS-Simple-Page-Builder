@@ -1,14 +1,13 @@
 <?php
 
 /**
- * Wrapper function around cmb2_get_option
+ * Wrapper function around WDS_Page_Builder_Options::get()
  * @since  0.1.0
  * @param  string  $key Options array key
  * @return mixed        Option value
  */
-function wds_page_builder_get_option( $key = '' ) {
-//	return cmb2_get_option( WDS_Page_Builder_Options()->key, $key );
-	return array();
+function wds_page_builder_get_option( $key = '', $default = false ) {
+	return wds_page_builder_options()->get( $key, $default );
 }
 
 /**
@@ -28,12 +27,21 @@ function wds_page_builder_template_parts_dir() {
 }
 
 /**
+ * Helper function to return the main page builder container element
+ * @return string The class name
+ */
+function wds_page_builder_container() {
+	$container = wds_page_builder_get_option( 'container' );
+	return esc_attr( apply_filters( 'wds_page_builder_container_class', $container ) );
+}
+
+/**
  * Helper function to return the main page builder container class
  * @return string The class name
  */
 function wds_page_builder_container_class() {
-	$class = ( wds_page_builder_get_option( 'container_class' ) ) ? wds_page_builder_get_option( 'container_class' ) : 'pagebuilder-part';
-	return sanitize_title( apply_filters( 'wds_page_builder_container_class', $class ) );
+	$class = wds_page_builder_get_option( 'container_class' );
+	return esc_attr( apply_filters( 'wds_page_builder_container_class', $class ) );
 }
 
 /**

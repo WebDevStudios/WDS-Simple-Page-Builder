@@ -185,8 +185,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 				$area_key = $area . '_';
 			}
 
-			$option = $this->plugin->options->options['post_types'];
-			$object_types = $option ? $option : array( 'page' );
+			$object_types = $this->plugin->options->get( 'post_types', array( 'page' ) );
 
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_' . $area,
