@@ -110,6 +110,19 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				return;
 			}
 
+			// if no post ID was passed, try to get one
+			if ( 0 == $post_id ) {
+				$post_id = get_queried_object_id();
+			}
+
+			/**
+			 * Filer allowing you to short-circuit and not display the area.
+			 */
+			$do = apply_filters( 'wds_page_builder_do_area', true, $area, $post_id );
+			if ( ! $do ) {
+				return;
+			}
+
 			$parts = $this->get_area( $area, $post_id );
 
 			if ( $parts ) {
