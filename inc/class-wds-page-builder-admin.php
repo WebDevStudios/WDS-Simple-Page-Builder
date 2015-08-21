@@ -34,7 +34,6 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function hooks() {
 			if ( is_admin() ) {
 				add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
-				add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 				add_filter( 'wds_page_builder_area_parts_select', array( $this, 'limit_part_to_area' ), 10, 3 );
 			}
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
@@ -49,19 +48,6 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function load_admin_css( $hook ) {
 			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) && in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
 				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
-			}
-		}
-
-		/**
-		 * If we've set the option to use a wrapper around the page builder parts, add the actions
-		 * to display those parts
-		 * @since  1.5
-		 * @return void
-		 */
-		public function wrapper_init() {
-			if ( wds_page_builder_get_option( 'use_wrap' ) ) {
-				add_action( 'wds_page_builder_before_load_template', array( $this, 'before_parts' ), 10, 2 );
-				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ), 10, 2 );
 			}
 		}
 

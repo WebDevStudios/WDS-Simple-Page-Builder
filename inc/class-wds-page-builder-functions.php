@@ -33,6 +33,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		public function hooks() {
 			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
 			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
+			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 		}
 
 		/**
@@ -268,7 +269,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		 */
 		public function before_parts( $container = '', $class = '' ) {
 			$container = ( ! $container ) ? $this->page_builder_container() : sanitize_title( $container );
-			$classes = esc_attr( get_classes( $class ) );
+			$classes = esc_attr( $this->get_classes( $class ) );
 			$before = "<$container class=\"$classes\">";
 
 			/**
@@ -329,7 +330,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		 * @return null
 		 */
 		public function after_parts( $container = '', $class = '' ) {
-			$container = ( ! $container ) ? wds_page_builder_container() : esc_attr( $container );
+			$container = ( ! $container ) ? $this->page_builder_container() : esc_attr( $container );
 			echo "</$container>";
 			echo ( $class ) ? '<!-- .' . esc_attr( $class ) . ' -->' : '';
 		}
@@ -339,8 +340,21 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		 * @return string The container type
 		 */
 		public function page_builder_container() {
-			$container = ( $this->plugin->options->options['container'] ) ? $this->plugin->options->options['container']  : 'section';
+			$container = ( $this->plugin->options->get( 'container' ) ) ? $this->plugin->options->get( 'container' )  : 'section';
 			return esc_attr( apply_filters( 'wds_page_builder_container', $container ) );
+		}
+
+		/**
+		 * If we've set the option to use a wrapper around the page builder parts, add the actions
+		 * to display those parts
+		 * @since  1.5
+		 * @return void
+		 */
+		public function wrapper_init() {
+			if ( $this->plugin->options->get( 'use_wrap' ) ) {
+				add_action( 'wds_page_builder_before_load_template', array( $this, 'before_parts' ), 10, 2 );
+				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ), 10, 2 );
+			}
 		}
 
 	}
