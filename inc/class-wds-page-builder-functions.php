@@ -123,7 +123,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 					// check if the current part was loaded already
 					if ( $this->get_part() && $this->get_part() !== $part['template_group'] ) {
 
-						$this->load_template_part( $part, $container, $class );
+						$this->load_part( $part, $container, $class );
 
 					}
 
