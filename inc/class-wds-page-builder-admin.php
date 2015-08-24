@@ -192,7 +192,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 				'id'       => $this->prefix . $area_key . 'template',
 				'type'     => 'group',
 				'options'  => array(
-					'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), ucfirst( $area ) ),
+					'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), esc_html( $area_data['name'] ) ),
 					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
 					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
 					'sortable'      => true,
