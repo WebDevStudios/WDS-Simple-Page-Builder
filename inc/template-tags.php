@@ -93,7 +93,7 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
  * @param  integer $post_id Optional. The post id.
  * @return void
  */
-function wds_page_builder_area( $area = '', $post_id = 0 ) {
+function wds_page_builder_area( $area = 'page_builder_default', $post_id = 0 ) {
 	wds_page_builder()->areas->do_area( $area, $post_id );
 }
 

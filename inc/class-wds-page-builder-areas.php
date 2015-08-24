@@ -93,7 +93,12 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				return $area_data['template_group'];
 			}
 
-			if ( $templates = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area ) . '_template', true ) ) {
+			$area_key = $area ? $area . '_' : '';
+			if ( 'page_builder_default' == $area ) {
+				$area_key = '';
+			}
+
+			if ( $templates = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', true ) ) {
 				foreach( $templates as $template ) {
 					$out[] = isset( $template['template_group'] ) ? $template['template_group'] : '';
 				}
