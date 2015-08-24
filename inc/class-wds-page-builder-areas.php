@@ -95,7 +95,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			if ( $templates = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area ) . '_template', true ) ) {
 				foreach( $templates as $template ) {
-					$out[] = $template['template_group'];
+					$out[] = isset( $template['template_group'] ) ? $template['template_group'] : '';
 				}
 
 				return $out;
