@@ -166,7 +166,7 @@ class WDS_Page_Builder_Options {
 	 */
 	function add_options_page_metabox() {
 
-		$disabled = ( 'disabled' == $this->options['hide_options'] ) ? array( 'disabled' => '' ) : array();
+		$disabled = ( isset( $this->options['hide_options'] && 'disabled' == $this->options['hide_options'] ) ? array( 'disabled' => '' ) : array();
 
 		$cmb = new_cmb2_box( array(
 			'id'      => $this->metabox_id,
@@ -343,7 +343,7 @@ class WDS_Page_Builder_Options {
 	 * @return bool Whether to show or hide the option.
 	 */
 	public function show_parts_dir() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
+		if ( ! isset( $this->options['hide_options'] ) || 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -356,7 +356,7 @@ class WDS_Page_Builder_Options {
 	 * @return bool Whether to show or hide the option.
 	 */
 	public function show_parts_prefix() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
+		if ( ! isset( $this->options['hide_options'] ) || 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -369,7 +369,7 @@ class WDS_Page_Builder_Options {
 	 * @return bool Whether to show or hide the option.
 	 */
 	public function show_use_wrap() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
+		if ( ! isset( $this->options['hide_options'] ) || 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -382,7 +382,7 @@ class WDS_Page_Builder_Options {
 	 * @return bool Whether to show or hide the option.
 	 */
 	public function show_container() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
+		if ( ! isset( $this->options['hide_options'] ) || 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -395,7 +395,7 @@ class WDS_Page_Builder_Options {
 	 * @return bool Whether to show or hide the option.
 	 */
 	public function show_container_class() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
+		if ( ! isset( $this->options['hide_options'] ) || 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
@@ -408,7 +408,7 @@ class WDS_Page_Builder_Options {
 	 * @return bool Whether to show or hide the option.
 	 */
 	public function show_post_types() {
-		if ( 'disabled' === $this->options['hide_options'] ) {
+		if ( ! isset( $this->options['hide_options'] ) || 'disabled' === $this->options['hide_options'] ) {
 			return true;
 		}
 
