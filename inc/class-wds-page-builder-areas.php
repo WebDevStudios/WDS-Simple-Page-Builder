@@ -90,7 +90,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			// if it's not singular -- like an archive or a 404 or something -- you can only add template
 			// parts by registering the area
 			if ( ! is_singular() && ( ! is_home() && ! $post_id ) ) {
-				return $area_data['template_group'];
+				return isset( $area_data['template_group'] ) ? $area_data['template_group'] : false;
 			}
 
 			$area_key = $area ? $area . '_' : '';
