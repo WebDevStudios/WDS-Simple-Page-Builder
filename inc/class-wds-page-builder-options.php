@@ -215,7 +215,7 @@ class WDS_Page_Builder_Options {
 	 */
 	function add_options_page_metabox() {
 
-		$disabled = ( 'disabled' == $this->get( 'hide_options' ) ) ? array( 'disabled' => '' ) : array();
+		$disabled = ( ! isset( $this->options['hide_options'] ) || 'disabled' == $this->options['hide_options'] ) ? array( 'disabled' => '' ) : array();
 
 		$cmb = new_cmb2_box( array(
 			'id'         => $this->metabox_id,
