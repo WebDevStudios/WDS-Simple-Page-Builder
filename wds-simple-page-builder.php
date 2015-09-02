@@ -62,7 +62,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-areas.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-data.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-functions.php' );
-
+			require_once( $this->directory_path . 'inc/class-wds-page-builder-layouts.php' );
 			require_once( $this->directory_path . 'inc/template-tags.php' );
 
 			// CMB2 takes care of figuring out which version to run internally
@@ -83,6 +83,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			$this->options = new WDS_Page_Builder_Options( $this );
 			$this->functions = new WDS_Page_Builder_Functions( $this );
 			$this->areas = new WDS_Page_Builder_Areas( $this );
+			$this->layouts = new WDS_Page_Builder_Layouts( $this );
 			$this->data = new WDS_Page_Builder_Data( $this );
 		}
 
@@ -100,6 +101,8 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			$this->options->hooks();
 			// Run our admin hooks
 			$this->admin->hooks();
+			// Run layouts hooks
+			$this->layouts->hooks();
 		}
 
 		/**
