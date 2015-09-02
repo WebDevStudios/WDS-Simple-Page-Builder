@@ -48,7 +48,7 @@ class WDS_Page_Builder_Options {
 		$this->plugin = $plugin;
 
 		// Set our title
-		$this->title   = apply_filters( 'wds_page_builder_options_title', __( 'Page Builder Options', 'wds-simple-page-builder' ) );
+		$this->title   = apply_filters( 'wds_page_builder_options_title', __( 'Options', 'wds-simple-page-builder' ) );
 	}
 
 	/**
@@ -189,7 +189,8 @@ class WDS_Page_Builder_Options {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		$this->options_page = add_submenu_page( 'options-general.php', $this->title, $this->title, 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
+		add_menu_page( __( 'Page Builder', 'wds-simple-page-builder' ), __( 'Page Builder', 'wds-simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_saved_layouts', '', 'dashicons-list-view'  );
+		$this->options_page = add_submenu_page( 'edit.php?post_type=wds_pb_saved_layouts', $this->title, $this->title, 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
 		// Include CMB CSS in the head to avoid FOUT.
 		add_action( "admin_print_styles-{$this->options_page}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 	}

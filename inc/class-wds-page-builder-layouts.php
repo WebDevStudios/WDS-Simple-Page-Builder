@@ -43,25 +43,26 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 				'singular_name'      => _x( 'Saved Layout', 'post type singular name', 'wds-simple-page-builder' ),
 				'menu_name'          => _x( 'Saved Layouts', 'admin menu', 'wds-simple-page-builder' ),
 				'name_admin_bar'     => _x( 'Saved Layout', 'add new on admin bar', 'wds-simple-page-builder' ),
-				'add_new'            => _x( 'Add New', 'page builder layout', 'wds-simple-page-builder' ),
+				'add_new'            => _x( 'Add New Layout', 'page builder layout', 'wds-simple-page-builder' ),
 				'add_new_item'       => __( 'Add New Layout', 'wds-simple-page-builder' ),
 				'new_item'           => __( 'New Layout', 'wds-simple-page-builder' ),
 				'edit_item'          => __( 'Edit Layout', 'wds-simple-page-builder' ),
 				'view_item'          => __( 'View Layout', 'wds-simple-page-builder' ),
-				'all_items'          => __( 'All Layouts', 'wds-simple-page-builder' ),
+				'all_items'          => __( 'Saved Layouts', 'wds-simple-page-builder' ),
 				'search_items'       => __( 'Search Layouts', 'wds-simple-page-builder' ),
 				'not_found'          => __( 'No layouts found.', 'wds-simple-page-builder' ),
 				'not_found_in_trash' => __( 'No layouts found in Trash.', 'wds-simple-page-builder' )
 			);
 			$args = array(
-				'labels'       => $labels,
-				'public'       => false,
-				'show_ui'      => true,
-				'has_archive'  => false,
-				'hierarchical' => false,
-				'supports'     => array( 'title' ),
+				'labels'        => $labels,
+				'public'        => false,
+				'show_ui'       => true,
+				'has_archive'   => false,
+				'hierarchical'  => false,
+				'supports'      => array( 'title' ),
+				'show_in_menu' => 'edit.php?post_type=wds_pb_saved_layouts',
 			);
-			register_post_type( 'wds_pb_saved_layout', $args );
+			register_post_type( 'wds_pb_saved_layouts', $args );
 		}
 	}
 
