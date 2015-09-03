@@ -165,6 +165,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 			$this->area = $area;
 			$area_data = $this->plugin->areas->get_registered_area( $area );
 
+			if ( false === $area_data['edit_on_page'] ) {
+				return;
+			}
+
 			if ( 'page_builder_default' == $area ) {
 				$area_key = '';
 			} else {

@@ -36,14 +36,16 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 		public function register_area( $slug, $args = array(), $templates = array() ) {
 			$defaults = array(
-				'name'        => ucwords( str_replace( '-', ' ', $slug ) ),
-				'description' => '',
+				'name'         => ucwords( str_replace( '-', ' ', $slug ) ),
+				'description'  => '',
+				'edit_on_page' => true,
 			);
 			$args = wp_parse_args( $args, $defaults );
 			$this->registered_areas[ $slug ] = array(
-				'name'        => esc_attr( $args['name'] ),
-				'description' => esc_html( $args['description'] ),
-				'templates'   => $templates,
+				'name'         => esc_attr( $args['name'] ),
+				'description'  => esc_html( $args['description'] ),
+				'templates'    => $templates,
+				'edit_on_page' => $args['edit_on_page'],
 			);
 		}
 
