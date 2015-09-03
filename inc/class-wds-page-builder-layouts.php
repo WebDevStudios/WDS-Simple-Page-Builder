@@ -103,18 +103,36 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 					'value' => array( $this->plugin->options->key )
 				)
 			) );
-			$registered_areas = $this->plugin->areas->get_registered_areas(); var_dump($registered_areas);
+			$registered_areas = $this->plugin->areas->get_registered_areas();
 			foreach ( $registered_areas as $key => $area ) {
 				$cmb->add_field( array(
-					'name' => __( 'Test', 'wds-simple-page-builder' ),
-					'id'   => 'test' . $key,
-					'type' => 'text_small',
+					'name'             => esc_html( $area['name'] ),
+					'id'               => $key,
+					'type'             => 'select',
+					'show_option_none' => true,
+					'options'          => $this->get_saved_layouts(),
 				) );
 			}
 		}
-		
-		public function get_saved_layouts() {
 
+		public function get_saved_layouts() {
+			$args = array(
+				'post_type'      => 'wds_pb_layouts',
+				'posts_per_page' => 9999,
+				'post_status'    => 'publish',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'no_found_rows' => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			);
+			$layouts = new WP_Query( $args );
+			$return = array();
+			while ( $layouts->have_posts() ) : $layouts->the_post();
+				$return[get_the_ID()] = get_the_title();
+			endwhile; wp_reset_postdata();
+
+			return $return;
 		}
 
 	}
