@@ -60,9 +60,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 				'has_archive'   => false,
 				'hierarchical'  => false,
 				'supports'      => array( 'title' ),
-				'show_in_menu' => 'edit.php?post_type=wds_pb_saved_layouts',
+				'show_in_menu' => 'edit.php?post_type=wds_pb_layouts',
 			);
-			register_post_type( 'wds_pb_saved_layouts', $args );
+			register_post_type( 'wds_pb_layouts', $args );
 		}
 	}
 
