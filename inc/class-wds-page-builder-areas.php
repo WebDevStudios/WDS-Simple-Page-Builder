@@ -130,13 +130,25 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			$parts = $this->get_area( $area, $post_id );
 
-			if ( $parts ) {
-				do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
-				$this->plugin->functions->load_parts( $parts, '', '', $area );
-				do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
-			} else {
-				$this->plugin->functions->load_parts( $area );
+			// If the area's parts are not set, use the default layout.
+			if ( ! $parts || 'none' == $parts[0] ) {
+				$option = get_option( $this->plugin->options->key . '_default_area_layouts' );
+				if ( ! isset( $option[$area] ) ) {
+					return false;
+				}
+				$metas = get_post_meta( $option[$area], '_wds_builder_layout_template', true );
+				if ( ! $metas ) {
+					return false;
+				}
+				$parts = array();
+				foreach ( $metas as $meta ) {
+					$parts[] = $meta['template_group'];
+				}
 			}
+
+			do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
+			$this->plugin->functions->load_parts( $parts, '', '', $area );
+			do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
 		}
 
 	}
