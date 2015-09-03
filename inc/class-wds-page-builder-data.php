@@ -42,6 +42,11 @@ if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
 			$post_id = $post_id ? $post_id : get_queried_object_id();
 			$meta    = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', 1 );
 
+			if ( ! $meta || 'none' == $meta[0]['template_group'] ) {
+				// Get default layout for this area.
+				$option = get_option( $this->plugin->options->key . '_default_area_layouts' );
+				$meta = get_post_meta( $option[$area], '_wds_builder_layout_template', true );
+			}
 			if (
 				// if index exists and the template_group index is there
 				isset( $meta[ $part_index ]['template_group'] )
