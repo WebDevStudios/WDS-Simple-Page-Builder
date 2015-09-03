@@ -226,6 +226,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function enqueue_builder_js() {
 			wp_enqueue_script( 'wds-simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
 			$areas = $this->plugin->areas->get_registered_areas();
+			// Fake layouts as an area, so JS loads for the Layouts CPT.
+			$areas['layout'] = '';
 			$data = array();
 			foreach ( $areas as $key => $area ) {
 				$data[] = $key;

@@ -35,6 +35,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 
 		public function hooks() {
 			add_action( 'init', array( $this, 'layouts_cpt') );
+			add_action( 'cmb2_init', array( $this, 'register_fields' ) );
 		}
 
 		public function layouts_cpt() {
@@ -63,6 +64,30 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 				'show_in_menu' => 'edit.php?post_type=wds_pb_layouts',
 			);
 			register_post_type( 'wds_pb_layouts', $args );
+		}
+
+		public function register_fields() {
+			$cmb = new_cmb2_box( array(
+				'id'           => 'wds_simple_page_builder_layout',
+				'title'        => __( 'Page Builder Templates', 'wds-simple-page-builder' ),
+				'object_types' => array( 'wds_pb_layouts' ),
+				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
+			) );
+
+			$group_field = $cmb->add_field( array(
+				'id'       => '_wds_builder_layout_template',
+				'type'     => 'group',
+				'options'  => array(
+					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
+					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
+					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+					'sortable'      => true,
+				)
+			) );
+
+			foreach ( $this->plugin->admin->get_group_fields() as $field ) {
+				$cmb->add_group_field( $group_field, $field );
+			}
 		}
 	}
 
