@@ -202,10 +202,24 @@ class WDS_Page_Builder_Options {
 	public function admin_page_display() {
 		// Enqueue our JS in the footer.
 		wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
+		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 		?>
 		<div class="wrap cmb2_options_page <?php echo $this->key; ?>">
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-			<?php cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
+
+			<h3 class="nav-tab-wrapper">
+				<a href="<?php echo esc_url( remove_query_arg( 'tab' ) ); ?>" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'wds-simple-page-builder' ); ?></a>
+				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'default-area-layouts' ) ) ); ?>" class="nav-tab <?php echo $tab == 'default-area-layouts' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Default Area Layouts', 'wds-simple-page-builder' ); ?></a>
+			</h3>
+			<?php
+			if ( 'settings' === $tab ) {
+				cmb2_metabox_form( $this->metabox_id, $this->key );
+			}
+			if ( 'default-area-layouts' === $tab ) {
+				cmb2_metabox_form( $this->metabox_id . '_default_area_layouts', $this->key . '_default_area_layouts' );
+			}
+			?>
+
 		</div>
 	<?php
 	}
