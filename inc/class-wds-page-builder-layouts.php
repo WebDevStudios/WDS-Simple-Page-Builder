@@ -35,7 +35,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 
 		public function hooks() {
 			add_action( 'init', array( $this, 'layouts_cpt') );
-			add_action( 'cmb2_init', array( $this, 'register_fields' ) );
+			if ( is_admin() ) {
+				add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
+				add_action( 'cmb2_init', array( $this, 'register_fields' ) );
+			}
 		}
 
 		public function layouts_cpt() {
@@ -89,6 +92,31 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 				$cmb->add_group_field( $group_field, $field );
 			}
 		}
+
+		function add_options_page_metabox() {
+			$cmb = new_cmb2_box( array(
+				'id'         => $this->plugin->options->metabox_id . '_default_area_layouts',
+				'hookup'     => false,
+				'cmb_styles' => false,
+				'show_on'    => array(
+					'key'   => 'options-page',
+					'value' => array( $this->plugin->options->key )
+				)
+			) );
+			$registered_areas = $this->plugin->areas->get_registered_areas(); var_dump($registered_areas);
+			foreach ( $registered_areas as $key => $area ) {
+				$cmb->add_field( array(
+					'name' => __( 'Test', 'wds-simple-page-builder' ),
+					'id'   => 'test' . $key,
+					'type' => 'text_small',
+				) );
+			}
+		}
+		
+		public function get_saved_layouts() {
+
+		}
+
 	}
 
 }
