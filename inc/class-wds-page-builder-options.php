@@ -351,6 +351,7 @@ class WDS_Page_Builder_Options {
 					'name'        => 'Part Name',
 					'description' => 'Description',
 					'area'        => 'Area',
+					'area'        => 'Areas',
 				) );
 				$areas = array();
 				if ( $data['area'] ) {
