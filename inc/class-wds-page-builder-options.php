@@ -336,52 +336,95 @@ class WDS_Page_Builder_Options {
 	 * @return array An array of all parts found in the parts directory.
 	 */
 	public function get_part_files() {
-		$parts = glob( $this->get_parts_path() . $this->get_parts_prefix() . '-*.php' );
+
+		$parts = [];
+		$stack = spb_get_template_stack();
+
+		array_push( $stack , $this->get_parts_path() );
+
+		foreach ( $stack as $item ) {
+			array_push( $parts, glob( $item . $this->get_parts_prefix() . '-*.php' ) );
+		}
+
+		$parts = call_user_func_array( 'array_merge', $parts );
 
 		return $parts;
 	}
 
+
+	/**
+	 * get_parts function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function get_parts( ) {
+
 		if ( ! $this->parts ) {
 			$files = $this->get_part_files();
 
 			$parts = array();
 			foreach ( $files as $file ) {
-				$data                       = get_file_data( $file, array(
+
+				$data = get_file_data( $file, array(
 					'name'        => 'Part Name',
 					'description' => 'Description',
 					'area'        => 'Area',
 					'area'        => 'Areas',
 				) );
+
+
 				$areas = array();
+
 				if ( $data['area'] ) {
 					$areas = explode( ',', $data['area'] );
 					$areas = array_map( 'trim', $areas );
 					$areas = array_map( 'esc_attr', $areas );
 				}
-				$slug = str_replace( array( $this->get_parts_path(), '.php' ), '', $file );
-				$prefix = $this->get_parts_prefix() . '-';
-				if ( substr( $slug, 0, strlen( $prefix ) ) == $prefix ) {
-					$slug = substr( $slug, strlen( $prefix ) );
-				}
-				$parts[ esc_attr( $slug ) ] = array(
+
+				$slug = explode( '/', str_replace( '.php', '', $file ) );
+				$slug = end( $slug );
+				$slug = explode( '-', $slug );
+
+				$parts[ esc_attr( $slug[1] ) ] = array(
 					'name'        => $data['name'] ? esc_attr( $data['name'] ) : ucwords( str_replace( '-', ' ',  esc_attr( $slug ) ) ),
 					'description' => esc_attr( $data['description'] ),
 					'path'        => esc_url( $file ),
 					'area'        => $areas,
 				);
+
+				if( empty($data['name']) ) {
+					unset( $parts[$file] );
+				}
+
 			}
 
 			$this->parts = $parts;
+
 		}
 		return $this->parts;
 	}
 
+
+	/**
+	 * get_part_data function.
+	 *
+	 * @access public
+	 * @param mixed $slug
+	 * @return void
+	 */
 	public function get_part_data( $slug ) {
 		$parts = $this->get_parts();
 		return isset( $parts[$slug] ) ? $parts[$slug] : false;
 	}
 
+
+	/**
+	 * get_parts_select function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function get_parts_select() {
 		$parts = $this->get_parts();
 		$options = array(

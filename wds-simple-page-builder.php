@@ -114,6 +114,8 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		public function init() {
 			// Load Textdomain
 			load_plugin_textdomain( 'wds-simple-page-builder', false, dirname( $this->basename ) . '/languages' );
+
+			do_action('spb_init');
 		}
 
 		/**

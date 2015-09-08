@@ -433,3 +433,73 @@ function unregister_page_builder_layout( $name = '' ) {
 	return;
 
 }
+
+
+/**
+ * spb_register_template_stack function.
+ *
+ * @access public
+ * @param string $location_callback (default: '')
+ * @param int $priority (default: 10)
+ * @return void
+ */
+function spb_register_template_stack( $location_callback = '', $priority = 10 ) {
+
+	// Bail if no location, or function/method is not callable
+	if ( empty( $location_callback ) || ! is_callable( $location_callback ) ) {
+		return false;
+	}
+
+	// Add location callback to template stack
+	return add_filter( 'spb_template_stack', $location_callback, (int) $priority );
+}
+
+
+/**
+ * spb_get_template_stack function.
+ *
+ * @access public
+ * @return array
+ */
+function spb_get_template_stack() {
+	global $wp_filter, $merged_filters, $wp_current_filter;
+
+	// Setup some default variables
+	$tag  = 'spb_template_stack';
+	$args = $stack = array();
+
+	// Add 'spb_template_stack' to the current filter array
+	$wp_current_filter[] = $tag;
+
+	// Sort
+	if ( ! isset( $merged_filters[ $tag ] ) ) {
+		ksort( $wp_filter[$tag] );
+		$merged_filters[ $tag ] = true;
+	}
+
+	// Ensure we're always at the beginning of the filter array
+	reset( $wp_filter[ $tag ] );
+
+	// Loop through 'spb_template_stack' filters, and call callback functions
+	do {
+		foreach( (array) current( $wp_filter[$tag] ) as $the_ ) {
+			if ( ! is_null( $the_['function'] ) ) {
+				$args[1] = $stack;
+				$stack[] = call_user_func_array( $the_['function'], array_slice( $args, 1, (int) $the_['accepted_args'] ) );
+			}
+		}
+	} while ( next( $wp_filter[$tag] ) !== false );
+
+	// Remove 'spb_template_stack' from the current filter array
+	array_pop( $wp_current_filter );
+
+	// Remove empties and duplicates
+	$stack = array_unique( array_filter( $stack ) );
+
+	/**
+	 * Filters the "template stack" list of registered directories where templates can be found.
+	 *
+	 * @param array $stack Array of registered directories for template locations.
+	 */
+	return (array) apply_filters( 'spb_get_template_stack', $stack ) ;
+}
