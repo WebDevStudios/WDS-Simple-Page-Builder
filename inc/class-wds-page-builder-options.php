@@ -394,7 +394,7 @@ class WDS_Page_Builder_Options {
 				);
 
 				if( empty($data['name']) ) {
-					unset( $parts[$file] );
+					unset( $parts[ esc_attr( $slug[1] ) ] );
 				}
 
 			}
