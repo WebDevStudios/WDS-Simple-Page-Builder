@@ -340,8 +340,6 @@ class WDS_Page_Builder_Options {
 		$parts = [];
 		$stack = spb_get_template_stack();
 
-		array_push( $stack , $this->get_parts_path() );
-
 		foreach ( $stack as $item ) {
 			array_push( $parts, glob( $item . $this->get_parts_prefix() . '-*.php' ) );
 		}
@@ -372,7 +370,6 @@ class WDS_Page_Builder_Options {
 					'area'        => 'Area',
 					'area'        => 'Areas',
 				) );
-
 
 				$areas = array();
 

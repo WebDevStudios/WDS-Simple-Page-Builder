@@ -360,3 +360,35 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 	}
 
 }
+
+
+
+/**
+ * page_builder_get_theme_compat_dir function.
+ *
+ * @access public
+ * @return void
+ */
+function page_builder_get_theme_compat_dir() {
+
+	$WDS_Page_Builder_Options = new WDS_Page_Builder_Options( wds_page_builder() );
+
+	/**
+	 * Filters the absolute path of the teamplate locations.
+	 *
+	 * @param string $dir The absolute path of the template package in use.
+	 */
+	return apply_filters( 'page_builder_get_theme_compat_dir', $WDS_Page_Builder_Options->get_parts_path() );
+}
+
+
+/**
+ * page_builder_set_theme_compat_dir function.
+ *
+ * @access public
+ * @return void
+ */
+function page_builder_set_theme_compat_dir() {
+	spb_register_template_stack( 'page_builder_get_theme_compat_dir', 10 );
+}
+add_action( 'spb_init', 'page_builder_set_theme_compat_dir' );
