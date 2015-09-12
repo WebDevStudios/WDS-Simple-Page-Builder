@@ -337,14 +337,25 @@ class WDS_Page_Builder_Options {
 	 */
 	public function get_part_files() {
 
-		$parts = [];
 		$stack = spb_get_template_stack();
 
+		// if in admin refresh glob transient
+		if( is_admin() ) delete_transient( 'spb_part_glob' );
+
+		// check for glob transient and if return instead of re-glob
+		if( $parts = get_transient( 'spb_part_glob' ) ) return $parts;
+
+		$parts = [];
+
+		// loop through stack and gobble up the templates, yum!
 		foreach ( $stack as $item ) {
 			array_push( $parts, glob( $item . $this->get_parts_prefix() . '-*.php', GLOB_NOSORT ) );
 		}
 
 		$parts = call_user_func_array( 'array_merge', $parts );
+
+		// stash glob results in a transient
+		set_transient( 'spb_part_glob', $parts, 365 * DAY_IN_SECONDS );
 
 		return $parts;
 	}
