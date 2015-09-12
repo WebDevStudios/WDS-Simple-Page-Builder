@@ -341,7 +341,7 @@ class WDS_Page_Builder_Options {
 		$stack = spb_get_template_stack();
 
 		foreach ( $stack as $item ) {
-			array_push( $parts, glob( $item . $this->get_parts_prefix() . '-*.php' ) );
+			array_push( $parts, glob( $item . $this->get_parts_prefix() . '-*.php', GLOB_NOSORT ) );
 		}
 
 		$parts = call_user_func_array( 'array_merge', $parts );
