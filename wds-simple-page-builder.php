@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'PAGEBUILDER_VERSION', 1.6 );
+
 if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 
 	class WDS_Simple_Page_Builder {
@@ -23,7 +25,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		 * @var   string
 		 * @since 1.5
 		 */
-		const VERSION = '1.6';
+		const VERSION = PAGEBUILDER_VERSION;
 
 		/**
 		 * Singleton instance of plugin

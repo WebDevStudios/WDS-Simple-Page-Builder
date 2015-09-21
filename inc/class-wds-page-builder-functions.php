@@ -167,8 +167,19 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 				return;
 			}
 
+			/**
+			* the template part output
+			*
+			*/
 			do_action( 'wds_page_builder_before_load_template', $container, $classes, $this->part_slug, $part_data );
-			require( $part_data['path'] );
+
+			// backpat for versions less than 1.6
+			if( PAGEBUILDER_VERSION < 1.6 ) {
+				require( $part_data['path'] );
+			} else {
+				require( spb_locate_template( $part_data['path'] ) );
+			}
+
 			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug, $part_data );
 
 		}
@@ -396,3 +407,73 @@ function page_builder_set_theme_compat_dir() {
 	spb_register_template_stack( 'page_builder_get_theme_compat_dir', 10 );
 }
 add_action( 'spb_init', 'page_builder_set_theme_compat_dir' );
+
+
+
+/**
+ * spb_locate_template function.
+ *
+ * checks through all locatons to find a template then return its path.
+ *
+ * @access public
+ * @param mixed $template_names
+ * @param bool $load (default: false)
+ * @param bool $require_once (default: true)
+ * @return string
+ */
+function spb_locate_template( $template_names, $load = false, $require_once = true ) {
+
+	// No file found yet
+	$located            = false;
+	$template_locations = spb_get_template_stack();
+
+	// Try to find a template file
+	foreach ( (array) $template_names as $template_name ) {
+
+		$template_name = explode( '/', $template_name );
+
+		// Continue if template is empty
+		if ( empty( $template_name ) ) {
+			continue;
+		}
+
+		// Trim off any slashes from the template name
+		$template_name  = ltrim( end( $template_name ), '/' );
+
+		// Loop through template stack
+		foreach ( (array) $template_locations as $template_location ) {
+
+			// Continue if $template_location is empty
+			if ( empty( $template_location ) ) {
+				continue;
+			}
+
+			// Check child theme first
+			if ( file_exists( trailingslashit( get_stylesheet_directory() ) . 'pagebuilder/' . $template_name ) ) {
+				$located = trailingslashit( get_stylesheet_directory() ) . 'pagebuilder/' . $template_name;
+				break 2;
+
+			// Check parent theme next
+			} elseif ( file_exists( trailingslashit( get_template_directory() ) . 'pagebuilder/' . $template_name ) ) {
+				$located = trailingslashit( get_template_directory() ) . 'pagebuilder/' . $template_name;
+				break 2;
+
+			// Check template stack last
+			} elseif ( file_exists( trailingslashit( $template_location ) . $template_name ) ) {
+				$located = trailingslashit( $template_location ) . $template_name;
+				break 2;
+			}
+		}
+	}
+
+	do_action( 'spb_locate_template', $located, $template_name, $template_names, $template_locations, $load, $require_once );
+
+	// Maybe load the template if one was located
+	$use_themes = defined( 'WP_USE_THEMES' ) && WP_USE_THEMES;
+	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+	if ( ( $use_themes || $doing_ajax ) && ( true == $load ) && ! empty( $located ) ) {
+		load_template( $located, $require_once );
+	}
+
+	return $located;
+}
