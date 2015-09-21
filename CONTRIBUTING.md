@@ -1,6 +1,6 @@
 # What is this file?
 
-This document is a _living document_ -- that is, it will constantly be changed as the project evolves and develops. The date below will be updated whenever new changes have been made to this document. The goal of this document is to give contributors and potential contributors a quick overview of the project and how they can contribute. Be sure to check here before branching, committing or submitting pull requests.
+> This document is a _living document_ -- that is, it will constantly be changed as the project evolves and develops. The date below will be updated whenever new changes have been made to this document. The goal of this document is to give contributors and potential contributors a quick overview of the project and how they can contribute. Be sure to check here before branching, committing or submitting pull requests.
 
 ### Last updated 9/21/2015
 
