@@ -366,8 +366,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 /**
  * page_builder_get_theme_compat_dir function.
  *
+ * add_filter callback returns path to spb_register_template_stack()
+ *
  * @access public
- * @return void
+ * @return string
  */
 function page_builder_get_theme_compat_dir() {
 
@@ -384,6 +386,8 @@ function page_builder_get_theme_compat_dir() {
 
 /**
  * page_builder_set_theme_compat_dir function.
+ *
+ * Adds the template folder option directory to template stack
  *
  * @access public
  * @return void
