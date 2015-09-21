@@ -251,6 +251,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
 			$the_files  = array();
 			foreach ( $some_files as $file ) {
+				$file = basename( $file );
 				$the_files[] = stripslashes( str_replace( array(
 					$this->plugin->options->get_parts_path(),
 					'.php',
