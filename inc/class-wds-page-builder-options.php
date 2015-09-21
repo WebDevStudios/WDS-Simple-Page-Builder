@@ -103,6 +103,15 @@ class WDS_Page_Builder_Options {
 		$this->get_all( true );
 	}
 
+
+	/**
+	 * get_parts_dir function.
+	 *
+	 * set up parts paths
+
+	 * @access public
+	 * @return string
+	 */
 	public function get_parts_dir() {
 		$directory = $this->get( 'parts_dir', 'parts' );
 		return apply_filters( 'wds_page_builder_parts_directory', $directory );
@@ -245,25 +254,30 @@ class WDS_Page_Builder_Options {
 			),
 		) );
 
-		$cmb->add_field( array(
-			'name'       => __( 'Template Parts Directory', 'wds-simple-page-builder' ),
-			'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'wds-simple-page-builder' ),
-			'id'         => 'parts_dir',
-			'type'       => 'text_small',
-			'default'    => 'parts',
-			'show_on_cb' => array( $this, 'show_parts_dir' ),
-			'attributes' => $disabled,
-		) );
+		// @todo depricate this
+		if ( PAGEBUILDER_VERSION < 1.6 ) {
 
-		$cmb->add_field( array(
-			'name'       => __( 'Template Parts Prefix', 'wds-simple-page-builder' ),
-			'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'wds-simple-page-builder' ),
-			'id'         => 'parts_prefix',
-			'type'       => 'text_small',
-			'default'    => 'part',
-			'show_on_cb' => array( $this, 'show_parts_prefix' ),
-			'attributes' => $disabled,
-		) );
+			$cmb->add_field( array(
+				'name'       => __( 'Template Parts Directory', 'wds-simple-page-builder' ),
+				'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'wds-simple-page-builder' ),
+				'id'         => 'parts_dir',
+				'type'       => 'text_small',
+				'default'    => 'parts',
+				'show_on_cb' => array( $this, 'show_parts_dir' ),
+				'attributes' => $disabled,
+			) );
+
+			$cmb->add_field( array(
+				'name'       => __( 'Template Parts Prefix', 'wds-simple-page-builder' ),
+				'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'wds-simple-page-builder' ),
+				'id'         => 'parts_prefix',
+				'type'       => 'text_small',
+				'default'    => 'part',
+				'show_on_cb' => array( $this, 'show_parts_prefix' ),
+				'attributes' => $disabled,
+			) );
+
+		}
 
 		$cmb->add_field( array(
 			'name'       => __( 'Use Wrapper', 'wds-simple-page-builder' ),
@@ -349,10 +363,12 @@ class WDS_Page_Builder_Options {
 
 		// loop through stack and gobble up the templates, yum!
 		foreach ( $stack as $item ) {
-			array_push( $parts, glob( $item . $this->get_parts_prefix() . '-*.php', GLOB_NOSORT ) );
+			array_push( $parts, glob( $item . '*.php', GLOB_NOSORT ) );
 		}
 
 		$parts = call_user_func_array( 'array_merge', $parts );
+
+			var_dump($parts);
 
 		// stash glob results in a transient
 		set_transient( 'spb_part_glob', $parts, 365 * DAY_IN_SECONDS );
