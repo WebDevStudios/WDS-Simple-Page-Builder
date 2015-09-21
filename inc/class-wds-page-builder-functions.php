@@ -175,9 +175,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 
 			// backpat for versions less than 1.6
 			if( PAGEBUILDER_VERSION < 1.6 ) {
-				require( $part_data['path'] );
+				load_template( $part_data['path'] );
 			} else {
-				require( spb_locate_template( $part_data['path'] ) );
+				load_template( spb_locate_template( $part_data['path'] ) );
 			}
 
 			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug, $part_data );
@@ -497,3 +497,4 @@ function spb_locate_template( $template_names, $load = false, $require_once = tr
 
 	return $located;
 }
+

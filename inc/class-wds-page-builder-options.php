@@ -107,7 +107,7 @@ class WDS_Page_Builder_Options {
 	/**
 	 * get_parts_dir function.
 	 *
-	 * set up parts paths
+	 * set up parts dir
 
 	 * @access public
 	 * @return string

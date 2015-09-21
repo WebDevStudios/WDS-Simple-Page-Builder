@@ -148,6 +148,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				}
 			}
 
+			do_action( 'wds_page_builder_load_parts', $parts, $area, $post_id );
+
 			do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
 			$this->plugin->functions->load_parts( $parts, '', '', $area );
 			do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );

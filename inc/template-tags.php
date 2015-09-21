@@ -503,3 +503,33 @@ function spb_get_template_stack() {
 	 */
 	return (array) apply_filters( 'spb_get_template_stack', $stack ) ;
 }
+
+
+/**
+ * page_builder_has_part function.
+ *
+ * pass template slug returns true if loaded on page
+ *
+ * @access public
+ * @param mixed $template (default: null)
+ * @return boolean
+ */
+function page_builder_has_part( $template = null ){
+	global $spbtemplate;
+
+	$spbtemplate = $template;
+
+	add_action( 'wds_page_builder_load_parts', function( $parts, $area, $post_id ) {
+		global $spbtemplate;
+
+		if( in_array( $spbtemplate, $parts ) ) {
+			return true;
+		}
+
+		return;
+
+	}, 10, 3 );
+
+
+
+}
