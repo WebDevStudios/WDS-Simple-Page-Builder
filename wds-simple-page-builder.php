@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'PAGEBUILDER_VERSION', 1.6 );
+define( 'PAGEBUILDER_VERSION_PATH', plugin_dir_path( __FILE__ ) );
 
 if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 

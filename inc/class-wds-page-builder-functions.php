@@ -377,7 +377,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 /**
  * page_builder_get_theme_compat_dir function.
  *
- * add_filter callback returns path to spb_register_template_stack()
+ * add_filter callback returns theme path to spb_register_template_stack()
  *
  * @access public
  * @return string
@@ -396,6 +396,25 @@ function page_builder_get_theme_compat_dir() {
 
 
 /**
+ * page_builder_get_plugin_compat_dir function.
+ *
+ * add_filter callback returns plugin path to spb_register_template_stack()
+ *
+ * @access public
+ * @return string
+ */
+function page_builder_get_plugin_compat_dir() {
+
+	/**
+	 * Filters the absolute path of the teamplate locations.
+	 *
+	 * @param string $dir The absolute path of the template package in use.
+	 */
+	return apply_filters( 'page_builder_get_plugin_compat_dir', PAGEBUILDER_VERSION_PATH . 'templates/pagebuilder/' );
+}
+
+
+/**
  * page_builder_set_theme_compat_dir function.
  *
  * Adds the template folder option directory to template stack
@@ -405,6 +424,7 @@ function page_builder_get_theme_compat_dir() {
  */
 function page_builder_set_theme_compat_dir() {
 	spb_register_template_stack( 'page_builder_get_theme_compat_dir', 10 );
+	spb_register_template_stack( 'page_builder_get_plugin_compat_dir', 10 );
 }
 add_action( 'spb_init', 'page_builder_set_theme_compat_dir' );
 
