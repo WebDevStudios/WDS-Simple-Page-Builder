@@ -109,7 +109,7 @@ class WDS_Page_Builder_Options {
 	}
 
 	public function get_parts_path() {
-		$path = get_stylesheet_directory() . '/' . $this->get_parts_dir() . '/';
+		$path = get_template_directory() . '/' . $this->get_parts_dir() . '/';
 		return apply_filters( 'wds_page_builder_parts_path', $path );
 	}
 
