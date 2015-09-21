@@ -530,6 +530,4 @@ function page_builder_has_part( $template = null ){
 
 	}, 10, 3 );
 
-
-
 }

@@ -368,8 +368,6 @@ class WDS_Page_Builder_Options {
 
 		$parts = call_user_func_array( 'array_merge', $parts );
 
-			var_dump($parts);
-
 		// stash glob results in a transient
 		set_transient( 'spb_part_glob', $parts, 365 * DAY_IN_SECONDS );
 
