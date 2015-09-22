@@ -514,20 +514,30 @@ function spb_get_template_stack() {
  * @param mixed $template (default: null)
  * @return boolean
  */
-function page_builder_has_part( $template = null ){
-	global $spbtemplate;
+function page_builder_has_part( $template = null ) {
 
-	$spbtemplate = $template;
+	$parts = wds_page_builder()->areas->parts;
 
-	add_action( 'wds_page_builder_load_parts', function( $parts, $area, $post_id ) {
-		global $spbtemplate;
+	if( in_array( $template, $parts ) ) {
+		return true;
+	}
 
-		if( in_array( $spbtemplate, $parts ) ) {
-			return true;
-		}
+	return;
 
-		return;
+}
 
-	}, 10, 3 );
+
+
+/**
+ * is_page_builder_page function.
+ *
+ * @access public
+ * @return string
+ */
+function is_page_builder_page() {
+
+	if( wds_page_builder()->areas->area ) return wds_page_builder()->areas->area;
+
+	return;
 
 }

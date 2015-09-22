@@ -16,6 +16,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			$this->registered_areas = array();
 			$this->current_area = '';
+			$this->parts = array();
+			$this->area = '';
 
 			$this->hooks();
 		}
@@ -29,7 +31,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				'page_builder_default',
 				array(
 					'name'        => __( 'Default Page Builder Area', 'wds-simple-page-builder' ),
-					'description' => __( 'This is the default area. Place the template tag page_builder_area() in your theme file to display. You can also create custom areas.', 'wds-simple-page-builder' ),
+					'description' => __( 'This is the default area. Place the template tag wds_page_builder_area() in your theme file to display. You can also create custom areas.', 'wds-simple-page-builder' ),
 				)
 			);
 		}
@@ -147,6 +149,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 					$parts[] = $meta['template_group'];
 				}
 			}
+
+			$this->parts = $parts;
+			$this->area = $area;
 
 			do_action( 'wds_page_builder_load_parts', $parts, $area, $post_id );
 
