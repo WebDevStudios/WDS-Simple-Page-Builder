@@ -522,7 +522,7 @@ function has_page_builder_part( $template = null ) {
 		return true;
 	}
 
-	return;
+	return false;
 
 }
 
@@ -538,6 +538,6 @@ function is_page_builder_page() {
 
 	if( wds_page_builder()->areas->area ) return wds_page_builder()->areas->area;
 
-	return;
+	return false;
 
 }
