@@ -506,7 +506,7 @@ function spb_get_template_stack() {
 
 
 /**
- * page_builder_has_part function.
+ * has_page_builder_part function.
  *
  * pass template slug returns true if loaded on page
  *
@@ -514,7 +514,7 @@ function spb_get_template_stack() {
  * @param mixed $template (default: null)
  * @return boolean
  */
-function page_builder_has_part( $template = null ) {
+function has_page_builder_part( $template = null ) {
 
 	$parts = wds_page_builder()->areas->parts;
 
