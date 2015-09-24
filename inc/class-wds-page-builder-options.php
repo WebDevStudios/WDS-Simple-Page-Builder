@@ -217,7 +217,7 @@ class WDS_Page_Builder_Options {
 
 			<h3 class="nav-tab-wrapper">
 				<a href="<?php echo esc_url( remove_query_arg( 'tab' ) ); ?>" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'wds-simple-page-builder' ); ?></a>
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'default-area-layouts' ) ) ); ?>" class="nav-tab <?php echo $tab == 'default-area-layouts' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Default Area Layouts', 'wds-simple-page-builder' ); ?></a>
+				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'default-area-layouts' ) ) ); ?>" class="nav-tab <?php echo $tab == 'default-area-layouts' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Global Area Layouts', 'wds-simple-page-builder' ); ?></a>
 			</h3>
 			<?php
 			if ( 'settings' === $tab ) {
