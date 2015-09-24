@@ -91,6 +91,30 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 			foreach ( $this->plugin->admin->get_group_fields() as $field ) {
 				$cmb->add_group_field( $group_field, $field );
 			}
+
+			$advanced = new_cmb2_box( array(
+				'id'           => 'wds_simple_page_builder_layout_advanced',
+				'title'        => __( 'Layout Defaults', 'wds-simple-page-builder' ),
+				'object_types' => array( 'wds_pb_layouts' ),
+				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
+			) );
+
+			$advanced->add_field( array(
+				'id'      => '_wds_builder_default_post_type',
+				'name'    => __( 'Post Type', 'wds-simple-page-builder' ),
+				'desc'    => __( 'Set this layout as the default layout for the these post types.', 'wds-simple-page-builder' ),
+				'type'    => 'multicheck',
+				'options' => $this->plugin->options->get_post_types(),
+			) );
+
+			$advanced->add_field( array(
+				'id'      => '_wds_builder_default_area',
+				'name'    => __( 'Area', 'wds-simple-page-builder' ),
+				'desc'    => __( 'If the layout is set as a default layout for a post type, select what area the layout should be the default in.', 'wds-simple-page-builder' ),
+				'type'    => 'radio',
+				'default' => 'page_builder_default',
+				'options' => $this->get_area_list(),
+			) );
 		}
 
 		function add_options_page_metabox() {
