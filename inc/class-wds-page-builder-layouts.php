@@ -136,6 +136,15 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 			return $return;
 		}
 
+		public function get_area_list() {
+			$areas = $this->plugin->areas->get_registered_areas();
+
+			foreach ( $areas as $key => $values ) {
+				$output[ $key ] = $values['name'];
+			}
+
+			return $output;
+		}
 	}
 
 }
