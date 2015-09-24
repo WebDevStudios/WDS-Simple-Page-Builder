@@ -38,7 +38,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 		public function register_area( $slug, $args = array(), $templates = array() ) {
 			$defaults = array(
-				'name'         => ucwords( str_replace( '-', ' ', $slug ) ),
+				'name'         => ucwords( str_replace( array( '-', '_' ), ' ', $slug ) ),
 				'description'  => '',
 				'edit_on_page' => true,
 			);
