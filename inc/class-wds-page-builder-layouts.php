@@ -139,14 +139,21 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 			}
 		}
 
-		public function get_saved_layouts() {
+		/**
+		 * Returns an array of saved layout ids/titles
+		 * @param  array  $meta_query Optional. You can pass WP_Query meta query args to
+		 *                            filter your results by post type or area (or both).
+		 * @return array              An array that's ready for a CMB2 field.
+		 */
+		public function get_saved_layouts( $meta_query = array() ) {
 			$args = array(
 				'post_type'      => 'wds_pb_layouts',
 				'posts_per_page' => 9999,
 				'post_status'    => 'publish',
 				'orderby'        => 'title',
 				'order'          => 'ASC',
-				'no_found_rows' => true,
+				'no_found_rows'  => true,
+				'meta_query'     => array( $meta_query ),
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
 			);
