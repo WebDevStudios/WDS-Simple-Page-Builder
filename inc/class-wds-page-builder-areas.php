@@ -56,7 +56,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		}
 
 		public function get_registered_area( $slug ) {
-			$area = isset( $this->registered_areas[$slug] ) ? $this->registered_areas[$slug] : false;
+			$area = isset( $this->registered_areas[ $slug ] ) ? $this->registered_areas[ $slug ] : false;
 			return $area;
 		}
 

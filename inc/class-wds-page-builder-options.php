@@ -108,7 +108,6 @@ class WDS_Page_Builder_Options {
 	 * get_parts_dir function.
 	 *
 	 * set up parts dir
-
 	 * @access public
 	 * @return string
 	 */
@@ -160,8 +159,8 @@ class WDS_Page_Builder_Options {
 	/**
 	 * Hooks to pre_update_option_{option name} to prevent empty templates from being saved
 	 * to the Saved Layouts
-	 * @param  mixed $new_value The new value
-	 * @param  mixed $old_value The old value
+	 * @param  mixed $new_value The new value.
+	 * @param  mixed $old_value The old value.
 	 * @return mixed            The filtered setting
 	 * @link   https://codex.wordpress.org/Plugin_API/Filter_Reference/pre_update_option_(option_name)
 	 * @since  1.4.1
@@ -171,7 +170,7 @@ class WDS_Page_Builder_Options {
 		$i = 0;
 		foreach ( $saved_layouts as $layout ) {
 			$layout['template_group'] = array_diff( $layout['template_group'], array( 'none' ) );
-			$saved_layouts[$i] = $layout;
+			$saved_layouts[ $i ] = $layout;
 			$i++;
 		}
 		$new_value['parts_saved_layouts'] = $saved_layouts;
@@ -183,7 +182,7 @@ class WDS_Page_Builder_Options {
 	 * Support WordPress add_theme_support feature
 	 * @since  1.5
 	 * @uses   current_theme_supports
-	 * @param  array $args            Array of Page Builder options to set
+	 * @param  array $args            Array of Page Builder options to set.
 	 * @link   http://justintadlock.com/archives/2010/11/01/theme-supported-features
 	 */
 	public function add_theme_support( $args ) {
@@ -198,7 +197,7 @@ class WDS_Page_Builder_Options {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		add_menu_page( __( 'Page Builder', 'wds-simple-page-builder' ), __( 'Page Builder', 'wds-simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_layouts', '', 'dashicons-list-view'  );
+		add_menu_page( __( 'Page Builder', 'wds-simple-page-builder' ), __( 'Page Builder', 'wds-simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_layouts', '', 'dashicons-list-view' );
 		$this->options_page = add_submenu_page( 'edit.php?post_type=wds_pb_layouts', $this->title, __( 'Page Builder Options', 'wds-simple-page-builder' ), 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
 		// Include CMB CSS in the head to avoid FOUT.
 		add_action( "admin_print_styles-{$this->options_page}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -226,7 +225,7 @@ class WDS_Page_Builder_Options {
 			}
 			if ( 'default-area-layouts' === $tab ) {
 				?>
-				<p><?php _e( 'Select a default layout to display for each area.  This will display if no area is selected on a per-page basis or if the area is restrictd so it can not be changed on pages.', 'wds-simpe-page-builder' ); ?></p>
+				<p><?php esc_html_e( 'Select a default layout to display for each area.  This will display if no area is selected on a per-page basis or if the area is restrictd so it can not be changed on pages.', 'wds-simpe-page-builder' ); ?></p>
 				<?php
 				cmb2_metabox_form( $this->metabox_id . '_default_area_layouts', $this->key . '_default_area_layouts' );
 			}
@@ -250,7 +249,7 @@ class WDS_Page_Builder_Options {
 			'cmb_styles' => false,
 			'show_on'    => array(
 				'key'   => 'options-page',
-				'value' => array( $this->key )
+				'value' => array( $this->key ),
 			),
 		) );
 
@@ -337,7 +336,7 @@ class WDS_Page_Builder_Options {
 		$post_types = apply_filters( 'wds_page_builder_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
 
 		foreach ( $post_types as $post_type ) {
-			$types[$post_type->name] = $post_type->labels->name;
+			$types[ $post_type->name ] = $post_type->labels->name;
 		}
 
 		return $types;

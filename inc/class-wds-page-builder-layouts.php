@@ -100,8 +100,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 				'cmb_styles' => false,
 				'show_on'    => array(
 					'key'   => 'options-page',
-					'value' => array( $this->plugin->options->key )
-				)
+					'value' => array( $this->plugin->options->key ),
+				),
 			) );
 			$registered_areas = $this->plugin->areas->get_registered_areas();
 			foreach ( $registered_areas as $key => $area ) {
@@ -129,8 +129,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 			$layouts = new WP_Query( $args );
 			$return = array();
 			while ( $layouts->have_posts() ) : $layouts->the_post();
-				$return[get_the_ID()] = get_the_title();
-			endwhile; wp_reset_postdata();
+				$return[ get_the_ID() ] = get_the_title();
+			endwhile;
+			wp_reset_postdata();
 
 			return $return;
 		}
