@@ -176,6 +176,29 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 
 			return $output;
 		}
+
+		/**
+		 * Function to return the layout object by a passed slug.
+		 * @param  string $layout_name The slug of the layout.
+		 * @return object              The WP_Post object for the layout post.
+		 */
+		public function get_saved_layout( $layout_name = '' ) {
+			if ( ! $layout_name ) {
+				return false;
+			}
+
+			$layout = get_page_by_path( $layout_name, OBJECT, 'wds_pb_layouts' );
+
+			return $layout;
+		}
+
+		public function get_default_layouts_for_post_type( $post_type = '' ) {
+			if ( ! $post_type ) {
+				return false;
+			}
+
+
+		}
 	}
 
 }
