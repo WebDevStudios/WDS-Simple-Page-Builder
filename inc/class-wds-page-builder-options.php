@@ -225,7 +225,7 @@ class WDS_Page_Builder_Options {
 			}
 			if ( 'default-area-layouts' === $tab ) {
 				?>
-				<p><?php esc_html_e( 'Select a default layout to display for each area.  This will display if no area is selected on a per-page basis or if the area is restrictd so it can not be changed on pages.', 'wds-simpe-page-builder' ); ?></p>
+				<p><?php esc_html_e( 'Select a global default layout to display as a fallback for each area.', 'wds-simpe-page-builder' ); ?></p>
 				<?php
 				cmb2_metabox_form( $this->metabox_id . '_default_area_layouts', $this->key . '_default_area_layouts' );
 			}
