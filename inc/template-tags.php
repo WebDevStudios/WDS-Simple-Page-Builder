@@ -541,3 +541,15 @@ function is_page_builder_page() {
 	return false;
 
 }
+
+
+/**
+ * Get all the page builder part files across all Pagebuilder-based plugins/themes.
+ * @return array An array of Pagebuilder template parts.
+ */
+function get_page_builder_part_files() {
+	if ( wds_page_builder()->options->get_part_files() ) {
+		return wds_page_builder()->options->get_part_files();
+	}
+	return false;
+}
