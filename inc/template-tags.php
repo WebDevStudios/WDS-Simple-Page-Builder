@@ -16,7 +16,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		return false;
 	}
 
-	wp_cache_delete ( 'alloptions', 'options' );
+	wp_cache_delete( 'alloptions', 'options' );
 
 	// if allow edit is true, add the template to the same options group as the other templates. this will enable users to update the layout after it's registered.
 	if ( $allow_edit ) {
@@ -26,7 +26,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		$new_options['parts_saved_layouts'][] = array(
 			'layouts_name'   => esc_attr( $name ),
 			'default_layout' => false,
-			'template_group' => $templates
+			'template_group' => $templates,
 		);
 
 		// check existing layouts for the one we're trying to add to see if it exists
@@ -51,7 +51,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	$updated_options = false;
 	if ( is_array( $options ) ) {
 		$i = 0;
-		foreach( $options as $layout ) {
+		foreach ( $options as $layout ) {
 			if ( saved_page_builder_layout_exists( esc_attr( $name ), false ) ) {
 				// check if the group has changed. if it hasn't, this layout exists
 				if ( $templates !== $layout['template_group'] ) {
@@ -59,9 +59,9 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 				} else {
 					// if the group is different, delete the option, then insert the new templates into the template group
 					delete_option( 'wds_page_builder_layouts' );
-					unset( $options[$i] );
-					$options[$i]['layouts_name']   = esc_attr( $name );
-					$options[$i]['template_group'] = $templates;
+					unset( $options[ $i ] );
+					$options[ $i ]['layouts_name']   = esc_attr( $name );
+					$options[ $i ]['template_group'] = $templates;
 					$updated_options = true;
 				}
 			}
@@ -74,8 +74,8 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	} else {
 		$new_options = $options;
 		$new_options[] = array(
-			'layouts_name'   =>  esc_attr( $name ),
-			'template_group' => $templates
+			'layouts_name'   => esc_attr( $name ),
+			'template_group' => $templates,
 		);
 	}
 
@@ -109,7 +109,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 			return $layout_exists;
 		}
 
-		foreach( $existing_layouts as $layout ) {
+		foreach ( $existing_layouts as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
 			}
@@ -122,7 +122,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 			return $layout_exists;
 		}
 
-		foreach( $options as $layout ) {
+		foreach ( $options as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
 			}
@@ -145,7 +145,7 @@ function unregister_page_builder_layout( $name = '' ) {
 		return;
 	}
 
-	wp_cache_delete ( 'alloptions', 'options' );
+	wp_cache_delete( 'alloptions', 'options' );
 
 	// if 'all' is passed, delete the option entirely
 	if ( 'all' == $name ) {
@@ -156,7 +156,7 @@ function unregister_page_builder_layout( $name = '' ) {
 	$old_options = ( is_array( get_option( 'wds_page_builder_layouts' ) ) ) ? get_option( 'wds_page_builder_layouts' ) : false;
 
 	if ( $old_options ) {
-		foreach( $old_options as $layout ) {
+		foreach ( $old_options as $layout ) {
 			// check for the passed layout name. save the layout as long as it does NOT match.
 			if ( esc_attr( $name ) !== $layout['layouts_name'] ) {
 				$new_options[] = $layout;
@@ -194,9 +194,9 @@ function register_page_builder_area( $name = '', $templates = array() ) {
 	// check existing layouts for the one we're trying to add to see if it exists
 	if ( is_array( $old_options ) ) {
 
-		if ( isset( $old_options[$name] ) ) {
-			unset( $old_options[$name]['template_group'] );
-			unset( $old_options[$name] );
+		if ( isset( $old_options[ $name ] ) ) {
+			unset( $old_options[ $name ]['template_group'] );
+			unset( $old_options[ $name ] );
 		}
 
 		$new_options = $old_options;
@@ -204,7 +204,6 @@ function register_page_builder_area( $name = '', $templates = array() ) {
 		if ( ! in_array( sanitize_title( $name ), $old_options ) ) {
 			$update_options = true;
 		}
-
 	} else {
 		$update_options = true;
 	}
@@ -254,18 +253,18 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 	}
 
 	// if the area we're looking for doesn't exist, bail
-	if ( ! isset( $areas[$area] ) ) {
+	if ( ! isset( $areas[ $area ] ) ) {
 		return;
 	}
 
 	// if it's not singular -- like an archive or a 404 or something -- you can only add template
 	// parts by registering the area
 	if ( ! is_singular() && ( ! is_home() && ! $post_id ) ) {
-		return $areas[$area]['template_group'];
+		return $areas[ $area ]['template_group'];
 	}
 
 	if ( $templates = get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true ) ) {
-		foreach( $templates as $template ) {
+		foreach ( $templates as $template ) {
 			$out[] = $template['template_group'];
 		}
 
@@ -351,7 +350,7 @@ function wds_page_builder_area( $area = '', $post_id = 0 ) {
  * @return null
  */
 function page_builder_class( $class = '' ) {
-	echo 'class="' . get_the_page_builder_classes( $class ) . '"';
+	echo 'class="' . esc_attr( get_the_page_builder_classes( $class ) ) . '"';
 }
 
 /**
@@ -541,9 +540,9 @@ function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
 
 	if (
 		// if index exists and the template_group index is there
-		isset( $meta[ $part_index ][ 'template_group' ] )
+		isset( $meta[ $part_index ]['template_group'] )
 		// and the template group is rthe same we're looking for
-		&& $part_slug == $meta[ $part_index ][ 'template_group' ]
+		&& $part_slug == $meta[ $part_index ]['template_group']
 		// And we have the meta_key they're looking for
 		&& isset( $meta[ $part_index ][ $meta_key ] )
 	) {
