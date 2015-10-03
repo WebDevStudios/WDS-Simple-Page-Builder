@@ -7,15 +7,15 @@
 class WDS_Page_Builder_Options {
 
 	/**
- 	 * Option key, and option page slug
- 	 * @var string
- 	 */
+		 * Option key, and option page slug
+		 * @var string
+		 */
 	private $key = 'wds_page_builder_options';
 
 	/**
- 	 * Options page metabox id
- 	 * @var string
- 	 */
+		 * Options page metabox id
+		 * @var string
+		 */
 	private $metabox_id = 'wds_page_builder_option_metabox';
 
 	/**
@@ -115,9 +115,9 @@ class WDS_Page_Builder_Options {
 	public function prevent_blank_templates( $new_value, $old_value ) {
 		$saved_layouts = $new_value['parts_saved_layouts'];
 		$i = 0;
-		foreach( $saved_layouts as $layout ) {
-			$layout['template_group'] = array_diff( $layout['template_group'], array('none'));
-			$saved_layouts[$i] = $layout;
+		foreach ( $saved_layouts as $layout ) {
+			$layout['template_group'] = array_diff( $layout['template_group'], array( 'none' ) );
+			$saved_layouts[ $i ] = $layout;
 			$i++;
 		}
 		$new_value['parts_saved_layouts'] = $saved_layouts;
@@ -153,7 +153,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function admin_page_display() {
 		?>
-		<div class="wrap cmb2_options_page <?php echo $this->key; ?>">
+		<div class="wrap cmb2_options_page <?php echo esc_attr( $this->key ); ?>">
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 			<?php cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
 		</div>
@@ -253,7 +253,7 @@ class WDS_Page_Builder_Options {
 				'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
 				'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
 				'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
-				'sortable'      => true
+				'sortable'      => true,
 			)
 		) );
 
@@ -262,7 +262,7 @@ class WDS_Page_Builder_Options {
 			'id'           => 'template_group',
 			'type'         => 'select',
 			'options'      => wds_page_builder_get_parts(),
-			'default'      => 'none'
+			'default'      => 'none',
 		) );
 
 		$layouts_group_id = $cmb->add_field( array(
@@ -274,7 +274,7 @@ class WDS_Page_Builder_Options {
 				'group_title'   => __( 'Layout {#}', 'wds-simple-page-builder' ),
 				'add_button'    => __( 'Add another layout', 'wds-simple-page-builder' ),
 				'remove_button' => __( 'Remove layout', 'wds-simple-page-builder' ),
-				'sortable'      => true
+				'sortable'      => true,
 			)
 		) );
 
@@ -291,7 +291,7 @@ class WDS_Page_Builder_Options {
 			'desc'         => __( 'If you\'d like to use this layout as the default layout for all posts of a type, check the post type to make this layout the default for. If you do not want to set this as the default layout for any post type, leave all types unchecked. The layout can still be called manually in the <code>do_action</code>.', 'wds-simple-page-builder' ),
 			'id'           => 'default_layout',
 			'type'         => 'multicheck',
-			'options'      => $this->get_post_types()
+			'options'      => $this->get_post_types(),
 		) );
 
 		$cmb->add_group_field( $layouts_group_id, array(
@@ -315,7 +315,7 @@ class WDS_Page_Builder_Options {
 		$post_types = apply_filters( 'wds_page_builder_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
 
 		foreach ( $post_types as $post_type ) {
-			$types[$post_type->name] = $post_type->labels->name;
+			$types[ $post_type->name ] = $post_type->labels->name;
 		}
 
 		return $types;
@@ -491,9 +491,9 @@ function wds_page_builder_get_parts() {
 	// add a generic 'none' option
 	$parts['none'] = __( '- No Template Parts -', 'wds-simple-page-builder' );
 
-	foreach( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
+	foreach ( glob( $parts_dir . '/' . $parts_prefix . '-*.php' ) as $part ) {
 		$part_slug = str_replace( array( $parts_dir . '/' . $parts_prefix . '-', '.php' ), '', $part );
-		$parts[$part_slug] = ucwords( str_replace( '-', ' ', $part_slug ) );
+		$parts[ $part_slug ] = ucwords( str_replace( '-', ' ', $part_slug ) );
 	}
 
 	if ( empty( $parts ) ) {

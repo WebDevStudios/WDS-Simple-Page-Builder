@@ -74,7 +74,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return null
 		 */
 		public function templates_loaded() {
-			if ( $this->templates_loaded === false ) {
+			if ( false === $this->templates_loaded ) {
 				$this->templates_loaded = true;
 			}
 		}
@@ -107,7 +107,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
 					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
 					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
-					'sortable'      => true
+					'sortable'      => true,
 				)
 			) );
 
@@ -205,12 +205,11 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 				return;
 			}
 
-			foreach( $areas as $area => $layout ) {
+			foreach ( $areas as $area => $layout ) {
 				// only show these meta fields if there's no defined layout for the area
 				if ( empty( $layout['template_group'] ) ) {
 					$this->register_area_fields( $area );
 				}
-
 			}
 
 		}
@@ -304,24 +303,22 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 					if ( in_array( $layout, $registered_layouts ) ) {
 						$saved_layouts = $registered_layouts;
 					}
-
 				}
 
 				// loop through the saved layouts, we'll check for the one we're looking for
-				foreach( $saved_layouts as $saved_layout ) {
+				foreach ( $saved_layouts as $saved_layout ) {
 
 					// is the layout the one that was named or one that was set for this post type?
 					if ( isset( $saved_layout['layouts_name'] ) && $layout == $saved_layout['layouts_name'] ) {
 
 						$parts = array();
-						foreach( $saved_layout['template_group'] as $template_group ) {
+						foreach ( $saved_layout['template_group'] as $template_group ) {
 							$parts[] = array( 'template_group' => $template_group );
 						}
-
 					} elseif ( isset( $saved_layout['default_layout'] ) && is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
 
 						// loop through the template parts and prepare the $parts variable for the load_template_part method
-						foreach( $saved_layout['template_group'] as $template_group ) {
+						foreach ( $saved_layout['template_group'] as $template_group ) {
 							$parts[] = array( 'template_group' => $template_group );
 						} // end template part loop
 
@@ -341,7 +338,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 			// loop through each part and load the template parts
 			if ( is_array( $parts ) && ! $this->templates_loaded ) {
 				do_action( 'wds_page_builder_before_load_parts' );
-				foreach( $parts as $this->parts_index => $part ) {
+				foreach ( $parts as $this->parts_index => $part ) {
 
 					// check if the current part was loaded already
 					if ( $this->get_part() && $this->get_part() !== $part['template_group'] ) {
@@ -349,7 +346,6 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 						$this->load_template_part( $part, $container, $class );
 
 					}
-
 				}
 				do_action( 'wds_page_builder_after_load_parts' );
 			}
@@ -468,7 +464,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return array The page builder part slugs
 		 */
 		public function page_builder_parts() {
-			$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
+			$some_files = array_filter( get_included_files(), array( $this, 'match_parts' ) );
 			$the_files  = array();
 			foreach ( $some_files as $file ) {
 				$the_files[] = stripslashes( str_replace( array(
@@ -476,8 +472,8 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 					wds_page_builder_template_parts_dir(),
 					wds_page_builder_template_part_prefix() . '-',
 					'.php',
-					'//'
-				), '', $file ) );
+					'//',
+				), '', $file ), );
 			}
 			return $the_files;
 		}
@@ -489,7 +485,7 @@ if ( ! class_exists( 'WDS_Page_Builder' ) ) {
 		 * @return bool        Whether the string was found
 		 */
 		private function match_parts($var) {
-			return strpos($var, 'part-');
+			return strpos( $var, 'part-' );
 		}
 
 		/**
