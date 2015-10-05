@@ -1,6 +1,267 @@
 <?php
 
 /**
+ * Load an array of template parts (by slug). If no array is passed, used as a wrapper
+ * for the wds_page_builder_load_parts action.
+ * @since  1.3
+ * @param  mixed  $parts     Optional. A specific layout or an array of parts to
+ *                           display
+ * @param  string $container Optional. Container HTML element.
+ * @param  string $class     Optional. Custom container class to wrap around individual parts
+ * @param  string $area      Optional. The area which these parts belong to.
+ *
+ * @return null
+ */
+function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
+	wds_page_builder()->functions->load_parts( $parts, $container, $class, $area );
+}
+
+/**
+ * Helper function for loading a single template part
+ * @since  1.3
+ * @param  string $part The part slug
+ * @return null
+ */
+function wds_page_builder_load_part( $part = '' ) {
+	// bail if no part was specified
+	if ( '' == $part ) {
+		return;
+	}
+
+	wds_page_builder()->functions->load_part( array( 'template_group' => $part ) );
+}
+
+/**
+ * Gets an array of page builder parts.
+ *
+ * Note, this function ONLY returns values AFTER the parts have been loaded, so hook into
+ * wds_page_builder_after_load_parts or later for this to be populated
+ * @since  1.5
+ * @return array An array of template parts in use on the page
+ */
+function get_page_builder_parts() {
+	return wds_page_builder()->functions->page_builder_parts();
+}
+
+/**
+ * Function to register a new page builder "area"
+ *
+ * @param  string $slug      The slug of the area
+ * @param  string $name      The descriptive name of the area
+ * @param  array  $templates You can define the templates that go in this area the same way you
+ *                           would with register_page_builder_layout
+ * @return void
+ */
+function register_page_builder_area( $slug = '', $name = '', $templates = array() ) {
+	// bail if no name was passed
+	if ( ! $slug ) {
+		return;
+	}
+
+	wds_page_builder()->areas->register_area( $slug, $name, $templates );
+}
+
+/**
+ * Gets the page builder areas
+ * @return mixed False if there are no areas or an array of layouts if there's more than one.
+ */
+function get_page_builder_areas() {
+	$areas = wds_page_builder()->areas->get_registered_areas();
+
+	if ( ! $areas ) {
+		return false;
+	}
+
+	return $areas;
+}
+
+/**
+ * Function that can be used to return a specific page builder area
+ * @param  string  $area    The area by slug/name
+ * @param  integer $post_id Optional. The post id. If none is passed, we will try to get one if
+ *                          it's necessary.
+ * @return void
+ */
+function get_page_builder_area( $area = '', $post_id = 0 ) {
+	wds_page_builder()->areas->get_area( $area, $post_id );
+}
+
+/**
+ * The function to load a specific page builder area
+ * @param  string  $area    Which area to load. If no page builder area is found, will
+ *                          look for a saved layout with the same name.
+ * @param  integer $post_id Optional. The post id.
+ * @return void
+ */
+function wds_page_builder_area( $area = 'page_builder_default', $post_id = 0 ) {
+	wds_page_builder()->areas->do_area( $area, $post_id );
+}
+
+/**
+ * Helper function to display page builder with a full wrap.
+ *
+ * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll
+ * get the page builder contents twice
+ * @param  string $container Optional. Unique container html element or use the default
+ * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way
+ *                           to change the container classes without a filter.
+ * @param  string $layout    Optional. The specific layout name to load, or the default.
+ * @return void
+ */
+function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
+	$page_builder = wds_page_builder()->functions;
+	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
+	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
+
+	// do the page builder stuff
+	wds_page_builder_load_parts( $layout, $container, $class );
+
+}
+
+/**
+ * Function to programmatically set certain Page Builder options
+ * @param  array  $args An array of arguments matching Page Builder settings in the options table.
+ *                      'parts_dir'       The directory that template parts are saved in
+ *                      'parts_prefix'    The template part prefix being used
+ *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *                      'container'       A valid HTML container type.
+ *                      'container_class' The container class
+ *                      'post_types'      A post type name as a string or array of post types
+ *                      'hide_options'    True to hide options that have been set, disabled to
+ *                                        display them as uneditable fields
+ * @return void
+ */
+function wds_register_page_builder_options( $args = array() ) {
+	$defaults = array(
+		'hide_options'    => true,
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	do_action( 'wds_register_page_builder_options', $args );
+}
+
+/**
+ * Helper function to add Page Builder theme support
+ *
+ * Because theme features are all hard-coded, we can't pass arguments directly to
+ * add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in
+ * combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct
+ * values to the Page Builder options.
+ * @since  1.5
+ * @param  array  $args An array of arguments matching Page Builder settings in the options table.
+ *                      'parts_dir'       The directory that template parts are saved in
+ *                      'parts_prefix'    The template part prefix being used
+ *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *                      'container'       A valid HTML container type.
+ *                      'container_class' The container class
+ *                      'post_types'      A post type name as a string or array of post types
+ *                      'hide_options'    True to hide options that have been set, disabled to
+ *                                        display them as uneditable fields
+ * @return void
+ */
+function wds_page_builder_theme_support( $args = array() ) {
+	$defaults = array(
+		'hide_options'    => true,
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+	do_action( 'wds_page_builder_add_theme_support', $args );
+}
+
+/**
+ * Grabs the value of the current template part's meta key.
+ *
+ * @since 1.6
+ * @param string $meta_key  The meta key to find the value of.
+ *
+ * @return mixed|null       Null on failure or the value of the meta key on success.
+ */
+function wds_page_builder_get_this_part_data( $meta_key ) {
+	$part_slug = wds_page_builder()->functions->get_part();
+
+	if ( $part_slug ) {
+		return wds_page_builder_get_part_data( $part_slug, $meta_key );
+	}
+
+	return null;
+}
+
+/**
+ * Grabs the value of specific meta keys for specific template parts.
+ *
+ * $part_slug should be the slug of the template part, for instance if the template
+ * part is `part-sample.php` where part is the prefix, the slug would be `sample` excluding
+ * the .php extension.
+ *
+ * @since 1.6
+ * @param string $part          The template part slug or index/slug array
+ * @param string $meta_key      The meta to find the value of.
+ * @param int    $post_id       The Post ID to retrieve the data for (optional)
+ *
+ * @return null|mixed           Null on failure, the stored meta value on success.
+ */
+function wds_page_builder_get_part_data( $part, $meta_key, $post_id = 0 ) {
+	return wds_page_builder()->data->get( $part, $meta_key, $post_id );
+}
+
+/**
+ * Wrapper function around WDS_Page_Builder_Options::get()
+ * @since  0.1.0
+ * @param  string  $key Options array key
+ * @return mixed        Option value
+ */
+function wds_page_builder_get_option( $key = '', $default = false ) {
+	return wds_page_builder()->options->get( $key, $default );
+}
+
+/**
+ * Helper function to get the template part prefix
+ * @return string The template part prefix (without the hyphen)
+ */
+function wds_page_builder_template_part_prefix() {
+	return wds_page_builder()->options->get_parts_prefix();
+}
+
+/**
+ * Helper function to return the template parts directory
+ * @return string The template part directory name
+ */
+function wds_page_builder_template_parts_dir() {
+	return wds_page_builder()->options->get_parts_dir();
+}
+
+/**
+ * Helper function to return the main page builder container element
+ * @return string The class name
+ */
+function wds_page_builder_container() {
+	$container = wds_page_builder_get_option( 'container' );
+	return esc_attr( apply_filters( 'wds_page_builder_container_class', $container ) );
+}
+
+/**
+ * Helper function to return the main page builder container class
+ * @return string The class name
+ */
+function wds_page_builder_container_class() {
+	$class = wds_page_builder_get_option( 'container_class' );
+	return esc_attr( apply_filters( 'wds_page_builder_container_class', $class ) );
+}
+
+/**
+ * Get a list of the template parts in the current theme, return them
+ * in an array.
+ *
+ * @return array An array of template parts
+ */
+function wds_page_builder_get_parts() {
+	$parts = wds_page_builder()->options->get_parts();
+
+	return $parts;
+}
+
+/**
  * Function to register a new layout programmatically
  * @since  1.3
  * @param  string $name       The layout name
@@ -174,381 +435,120 @@ function unregister_page_builder_layout( $name = '' ) {
 }
 
 /**
- * Function to register a new page builder "area"
- * @param  string $name      The area name
- * @param  array  $templates You can define the templates that go in this area the same way you
- *                           would with register_page_builder_layout
+ * spb_register_template_stack function.
+ *
+ * @access public
+ * @param string $location_callback (default: '')
+ * @param int $priority (default: 10)
  * @return void
  */
-function register_page_builder_area( $name = '', $templates = array() ) {
-	// bail if no name was passed
-	if ( '' == $name ) {
-		return;
-	}
+function spb_register_template_stack( $location_callback = '', $priority = 10 ) {
 
-	wp_cache_delete( 'alloptions', 'options' );
-
-	$old_options    = get_option( 'wds_page_builder_areas' );
-	$update_options = false;
-
-	// check existing layouts for the one we're trying to add to see if it exists
-	if ( is_array( $old_options ) ) {
-
-		if ( isset( $old_options[ $name ] ) ) {
-			unset( $old_options[ $name ]['template_group'] );
-			unset( $old_options[ $name ] );
-		}
-
-		$new_options = $old_options;
-
-		if ( ! in_array( sanitize_title( $name ), $old_options ) ) {
-			$update_options = true;
-		}
-	} else {
-		$update_options = true;
-	}
-
-	if ( $update_options ) {
-		$new_options[ esc_attr( $name ) ]['template_group'] = $templates;
-		delete_option( 'wds_page_builder_areas' );
-		update_option( 'wds_page_builder_areas', $new_options );
-	}
-
-}
-
-/**
- * Gets the page builder areas
- * @return mixed False if there are no areas or an array of layouts if there's more than one.
- */
-function get_page_builder_areas() {
-	$areas = get_option( 'wds_page_builder_areas' );
-
-	if ( ! $areas ) {
+	// Bail if no location, or function/method is not callable
+	if ( empty( $location_callback ) || ! is_callable( $location_callback ) ) {
 		return false;
 	}
 
-	return $areas;
+	// Add location callback to template stack
+	return add_filter( 'spb_template_stack', $location_callback, (int) $priority );
 }
 
 
 /**
- * Function that can be used to return a specific page builder area
- * @param  string  $area    The area by slug/name
- * @param  integer $post_id Optional. The post id. If none is passed, we will try to get one if
- *                          it's necessary.
- * @return void
- */
-function get_page_builder_area( $area = '', $post_id = 0 ) {
-	// first, get the page builder areas
-	$areas = get_page_builder_areas();
-
-	// if there were no page builder areas, bail
-	if ( ! $areas ) {
-		return;
-	}
-
-	// if no post ID was passed, try to get one
-	if ( 0 == $post_id ) {
-		$post_id = get_queried_object_id();
-	}
-
-	// if the area we're looking for doesn't exist, bail
-	if ( ! isset( $areas[ $area ] ) ) {
-		return;
-	}
-
-	// if it's not singular -- like an archive or a 404 or something -- you can only add template
-	// parts by registering the area
-	if ( ! is_singular() && ( ! is_home() && ! $post_id ) ) {
-		return $areas[ $area ]['template_group'];
-	}
-
-	if ( $templates = get_post_meta( $post_id, '_wds_builder_' . $area . '_template', true ) ) {
-		foreach ( $templates as $template ) {
-			$out[] = $template['template_group'];
-		}
-
-		return $out;
-	}
-
-	return;
-}
-
-/**
- * Load an array of template parts (by slug). If no array is passed, used as a wrapper
- * for the wds_page_builder_load_parts action.
- * @since  1.3
- * @param  mixed  $parts     Optional. A specific layout or an array of parts to
- *                           display
- * @param  string $container Optional. Container HTML element.
- * @param  string $class     Optional. Custom container class to wrap around individual parts
- * @param  string $area      Optional. The area which these parts belong to.
+ * spb_get_template_stack function.
  *
- * @return null
+ * @access public
+ * @return array
  */
-function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-	$GLOBALS['WDS_Page_Builder']->set_area( $area );
-	if ( ! is_array( $parts ) ) {
-		do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
-		return;
+function spb_get_template_stack() {
+	global $wp_filter, $merged_filters, $wp_current_filter;
+
+	// Setup some default variables
+	$tag  = 'spb_template_stack';
+	$args = $stack = array();
+
+	// Add 'spb_template_stack' to the current filter array
+	$wp_current_filter[] = $tag;
+
+	// Sort
+	if ( ! isset( $merged_filters[ $tag ] ) ) {
+		ksort( $wp_filter[$tag] );
+		$merged_filters[ $tag ] = true;
 	}
 
-	// parts are specified by their slugs, we pass them to the load_part function which uses the load_template_part method in the WDS_Page_Builder class
-	foreach ( $parts as $index => $part ) {
-		$GLOBALS['WDS_Page_Builder']->set_parts_index( $index );
-		wds_page_builder_load_part( $part );
-	}
+	// Ensure we're always at the beginning of the filter array
+	reset( $wp_filter[ $tag ] );
 
-	return;
-}
+	// Loop through 'spb_template_stack' filters, and call callback functions
+	do {
+		foreach( (array) current( $wp_filter[$tag] ) as $the_ ) {
+			if ( ! is_null( $the_['function'] ) ) {
+				$args[1] = $stack;
+				$stack[] = call_user_func_array( $the_['function'], array_slice( $args, 1, (int) $the_['accepted_args'] ) );
+			}
+		}
+	} while ( next( $wp_filter[$tag] ) !== false );
 
-/**
- * Helper function for loading a single template part
- * @since  1.3
- * @param  string $part The part slug
- * @return null
- */
-function wds_page_builder_load_part( $part = '' ) {
-	// bail if no part was specified
-	if ( '' == $part ) {
-		return;
-	}
+	// Remove 'spb_template_stack' from the current filter array
+	array_pop( $wp_current_filter );
 
-	$page_builder = new WDS_Page_Builder;
-	$page_builder->load_template_part( array( 'template_group' => $part ) );
-}
-
-
-/**
- * The function to load a specific page builder area
- * @param  string  $area    Which area to load. If no page builder area is found, will
- *                          look for a saved layout with the same name.
- * @param  integer $post_id Optional. The post id.
- * @return void
- */
-function wds_page_builder_area( $area = '', $post_id = 0 ) {
-	// bail if no area was specified
-	if ( '' == $area ) {
-		return;
-	}
-
-	$parts = get_page_builder_area( $area, $post_id );
-
-	if ( $parts ) {
-		do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
-		wds_page_builder_load_parts( $parts, '', '', $area );
-		do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
-	} else {
-		wds_page_builder_load_parts( $area );
-	}
-}
-
-/**
- * Display the classes for the template part wrapper
- * @since  1.5
- * @param  string|array $class     One or more classes to add to the class list
- * @return null
- */
-function page_builder_class( $class = '' ) {
-	echo 'class="' . esc_attr( get_the_page_builder_classes( $class ) ) . '"';
-}
-
-/**
- * Return the classes for the template part wrapper
- * @since  1.5
- * @param  string|array $class     One or more classes to add to the class list
- * @return string       A parsed list of classes as they would appear in a div class attribute
- */
-function get_the_page_builder_classes( $class = '' ) {
-	// Separates classes with a single space, collates classes for template part wrapper DIV
-	$classes = join( ' ', get_page_builder_class( $class ) );
+	// Remove empties and duplicates
+	$stack = array_unique( array_filter( $stack ) );
 
 	/**
-	 * Filter the list of CSS classes
-	 * @since  1.5
-	 * @param  array  $classes   An array of pagebuilder part classes
+	 * Filters the "template stack" list of registered directories where templates can be found.
+	 *
+	 * @param array $stack Array of registered directories for template locations.
 	 */
-	return apply_filters( 'page_builder_classes', $classes );
+	return (array) apply_filters( 'spb_get_template_stack', $stack ) ;
 }
 
-/**
- * Retrieve the class names for the template part as an array
- *
- * Based on post_class, but we're not getting as much information as post_class.
- * We just want to return a generic class, the current template part slug, and any
- * custom class names that were passed to the function.
- *
- * @param  string|array $class     One or more classes to add to the class list
- * @return array                   Array of classes.
- */
-function get_page_builder_class( $class = '' ) {
 
-	if ( $class ) {
-		if ( ! is_array( $class ) ) {
-		        $class = preg_split( '#\s+#', $class );
-		}
-		$classes = array_map( 'esc_attr', $class );
+/**
+ * has_page_builder_part function.
+ *
+ * pass template slug returns true if loaded on page
+ *
+ * @access public
+ * @param mixed $template (default: null)
+ * @return boolean
+ */
+function has_page_builder_part( $template = null ) {
+
+	$parts = wds_page_builder()->areas->parts;
+
+	if( in_array( $template, $parts ) ) {
+		return true;
 	}
 
-	$classes[] = wds_page_builder_container_class();
-
-	return array_unique( $classes );
+	return false;
 
 }
 
-/**
- * Gets an array of page builder parts.
- *
- * Note, this function ONLY returns values AFTER the parts have been loaded, so hook into
- * wds_page_builder_after_load_parts or later for this to be populated
- * @since  1.5
- * @return array An array of template parts in use on the page
- */
-function get_page_builder_parts() {
-	$page_builder = new WDS_Page_Builder;
-	return $page_builder->page_builder_parts();
-}
+
 
 /**
- * Helper function to display page builder with a full wrap.
+ * is_page_builder_page function.
  *
- * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll
- * get the page builder contents twice
- * @param  string $container Optional. Unique container html element or use the default
- * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way
- *                           to change the container classes without a filter.
- * @param  string $layout    Optional. The specific layout name to load, or the default.
- * @return void
+ * @access public
+ * @return string
  */
-function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
-	$page_builder = new WDS_Page_Builder;
-	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
-	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
+function is_page_builder_page() {
 
-	// do the page builder stuff
-	wds_page_builder_load_parts( $layout, $container, $class );
+	if( wds_page_builder()->areas->area ) return wds_page_builder()->areas->area;
+
+	return false;
 
 }
 
-/**
- * Function to programmatically set certain Page Builder options
- * @param  array  $args An array of arguments matching Page Builder settings in the options table.
- *                      'parts_dir'       The directory that template parts are saved in
- *                      'parts_prefix'    The template part prefix being used
- *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
- *                      'container'       A valid HTML container type.
- *                      'container_class' The container class
- *                      'post_types'      A post type name as a string or array of post types
- *                      'hide_options'    True to hide options that have been set, disabled to
- *                                        display them as uneditable fields
- * @return void
- */
-function wds_register_page_builder_options( $args = array() ) {
-	$defaults = array(
-		'hide_options'    => true,
-	);
-
-	$args = wp_parse_args( $args, $defaults );
-
-	do_action( 'wds_register_page_builder_options', $args );
-}
 
 /**
- * Helper function to add Page Builder theme support
- *
- * Because theme features are all hard-coded, we can't pass arguments directly to
- * add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in
- * combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct
- * values to the Page Builder options.
- * @since  1.5
- * @param  array  $args An array of arguments matching Page Builder settings in the options table.
- *                      'parts_dir'       The directory that template parts are saved in
- *                      'parts_prefix'    The template part prefix being used
- *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
- *                      'container'       A valid HTML container type.
- *                      'container_class' The container class
- *                      'post_types'      A post type name as a string or array of post types
- *                      'hide_options'    True to hide options that have been set, disabled to
- *                                        display them as uneditable fields
- * @return void
+ * Get all the page builder part files across all Pagebuilder-based plugins/themes.
+ * @return array An array of Pagebuilder template parts.
  */
-function wds_page_builder_theme_support( $args = array() ) {
-	$defaults = array(
-		'hide_options'    => true,
-	);
-
-	$args = wp_parse_args( $args, $defaults );
-	do_action( 'wds_page_builder_add_theme_support', $args );
-}
-
-/**
- * Grabs the value of the current template part's meta key.
- *
- * @since 1.6
- * @param string $meta_key  The meta key to find the value of.
- *
- * @return mixed|null       Null on failure or the value of the meta key on success.
- */
-function wds_page_builder_get_this_part_data( $meta_key ) {
-
-	// Add method exists check just in case global was modified.
-	$part_slug = $GLOBALS['WDS_Page_Builder']->get_part();
-
-	if ( $part_slug ) {
-		return wds_page_builder_get_part_data( $part_slug, $meta_key );
+function get_page_builder_part_files() {
+	if ( wds_page_builder()->options->get_part_files() ) {
+		return wds_page_builder()->options->get_part_files();
 	}
-
-	return null;
-}
-
-/**
- * Grabs the value of specific meta keys for specific template parts.
- *
- * $part_slug should be the slug of the template part, for instance if the template
- * part is `part-sample.php` where part is the prefix, the slug would be `sample` excluding
- * the .php extension.
- *
- * @since 1.6
- * @param string $part_slug     The template part slug or index/slug array
- * @param string $meta_key      The meta to find the value of.
- * @param int    $post_id       The Post ID to retrieve the data for (optional)
- *
- * @return null|mixed           Null on failure, the stored meta value on success.
- */
-function wds_page_builder_get_part_data( $part_slug, $meta_key, $post_id = 0 ) {
-
-	// Can specify the index if parts are used multiple times on a page
-	if ( is_array( $part_slug ) ) {
-
-		// Oops? you're doing it wrong!
-		if ( ! isset( $part_slug['index'], $part_slug['slug'] ) ) {
-			return new WP_Error( 'index_slug_defined_incorrectly', 'The index/slug array was defined incorrectly. Try array( \'index\' => 0, \'slug\' => \'slug-name\' )' );
-		}
-
-		$part_index = $part_slug['index'];
-		$part_slug  = $part_slug['slug'];
-
-	} else {
-		// Get current part index
-		$part_index = $GLOBALS['WDS_Page_Builder']->get_parts_index();
-	}
-
-	$area = $GLOBALS['WDS_Page_Builder']->get_area();
-	$area_key = $area ? $area . '_' : '';
-	$post_id = $post_id ? $post_id : get_queried_object_id();
-	$meta    = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', 1 );
-
-	if (
-		// if index exists and the template_group index is there
-		isset( $meta[ $part_index ]['template_group'] )
-		// and the template group is rthe same we're looking for
-		&& $part_slug == $meta[ $part_index ]['template_group']
-		// And we have the meta_key they're looking for
-		&& isset( $meta[ $part_index ][ $meta_key ] )
-	) {
-		// Send it back.
-		return $meta[ $part_index ][ $meta_key ];
-	}
-
-	return null;
+	return false;
 }

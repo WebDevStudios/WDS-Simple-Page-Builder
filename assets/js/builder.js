@@ -1,65 +1,69 @@
 (function(window, document, $, cmb, undefined){
 	'use strict';
 
-	var app = { $ : {} };
+	$.each( page_builder_areas, function( key, value ) {
 
-	app.cache = function() {
-		app.$.box         = $( document.getElementById( 'cmb2-metabox-wds_simple_page_builder' ) );
-		app.$.dropdowns   = app.$.box.find( '.wds-simple-page-builder-template-select' );
-		app.$.postForm    = $( document.getElementById( 'post' ) );
-		app.$.hiddenParts = app.$.box.find( '.hidden-parts-fields' );
-	};
+		var app = { $ : {} };
 
-	app.init = function() {
-		app.resetCacheAndHide();
+		app.cache = function() {
+			app.$.box         = $( document.getElementById( 'cmb2-metabox-wds_simple_page_builder_' + value ) );
+			app.$.dropdowns   = app.$.box.find( '.wds-simple-page-builder-template-select' );
+			app.$.postForm    = $( document.getElementById( 'post' ) );
+			app.$.hiddenParts = app.$.box.find( '.hidden-parts-fields' );
+		};
 
-		app.$.box
-			.on( 'change', '.wds-simple-page-builder-template-select', app.maybeUnhide );
+		app.init = function() {
+			app.resetCacheAndHide();
 
-		app.$.postForm
-			.on( 'submit', app.removeHidden );
+			app.$.box
+				.on( 'change', '.wds-simple-page-builder-template-select', app.maybeUnhide );
 
-		cmb.metabox().find( '.cmb-repeatable-group' )
-			.on( 'cmb2_shift_rows_complete', app.resetHide )
-			.on( 'cmb2_add_row cmb2_remove_row', app.resetCacheAndHide );
-	};
+			app.$.postForm
+				.on( 'submit', app.removeHidden );
 
-	app.removeHidden = function() {
-		$( '.hidden-parts-fields.hidden' ).remove();
-	};
+			cmb.metabox().find( '.cmb-repeatable-group' )
+				.on( 'cmb2_shift_rows_complete', app.resetHide )
+				.on( 'cmb2_add_row cmb2_remove_row', app.resetCacheAndHide );
+		};
 
-	app.resetCacheAndHide = function( evt, row ) {
-		app.cache();
-		app.resetHide( evt, row );
-	};
+		app.removeHidden = function() {
+			$( '.hidden-parts-fields.hidden' ).remove();
+		};
 
-	app.resetHide = function( evt, row ) {
-		if ( row ) {
-			cmb.emptyValue( evt, row );
-		}
+		app.resetCacheAndHide = function( evt, row ) {
+			app.cache();
+			app.resetHide( evt, row );
+		};
 
-		app.$.hiddenParts.addClass( 'hidden' );
+		app.resetHide = function( evt, row ) {
+			if ( row ) {
+				cmb.emptyValue( evt, row );
+			}
 
-		app.$.dropdowns.each( app.maybeUnhide );
-	};
+			app.$.hiddenParts.addClass( 'hidden' );
 
-	app.maybeUnhide = function( evt ) {
-		var $this = $(this);
-		var id    = $this.val();
-		var $row  = $this.parents( '.cmb-repeatable-grouping' );
+			app.$.dropdowns.each( app.maybeUnhide );
+		};
+
+		app.maybeUnhide = function( evt ) {
+			var $this = $(this);
+			var id    = $this.val();
+			var $row  = $this.parents( '.cmb-repeatable-grouping' );
 
 
-		if ( evt.target ) {
-			$row.find( '.hidden-parts-fields' ).addClass( 'hidden' );
-		}
+			if ( evt.target ) {
+				$row.find( '.hidden-parts-fields' ).addClass( 'hidden' );
+			}
 
-		var $hidden = $row.find( '.hidden-parts-' + id );
+			var $hidden = $row.find( '.hidden-parts-' + id );
 
-		if ( $hidden.length ) {
-			$hidden.removeClass( 'hidden' );
-		}
-	};
+			if ( $hidden.length ) {
+				$hidden.removeClass( 'hidden' );
+			}
+		};
 
-	$( app.init );
+		$( app.init );
+
+	} );
 
 })(window, document, jQuery, CMB2);
