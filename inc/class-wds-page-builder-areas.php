@@ -116,7 +116,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		public function do_area( $area = '', $post_id = 0 ) {
 			// bail if no area was specified
 			if ( '' == $area ) {
-				return;
+				return false;
 			}
 
 			// if no post ID was passed, try to get one
@@ -129,7 +129,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			 */
 			$do = apply_filters( 'wds_page_builder_do_area', true, $area, $post_id );
 			if ( ! $do ) {
-				return;
+				return false;
 			}
 
 			$parts = $this->get_area( $area, $post_id );
