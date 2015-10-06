@@ -174,7 +174,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			do_action( 'wds_page_builder_before_load_template', $container, $classes, $this->part_slug, $part_data );
 
 			// backpat for versions less than 1.6
-			if( PAGEBUILDER_VERSION < 1.6 ) {
+			if ( PAGEBUILDER_VERSION < 1.6 ) {
 				load_template( $part_data['path'] );
 			} else {
 				load_template( spb_locate_template( $part_data['path'] ) );
@@ -186,6 +186,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 
 		public function load_parts( $parts = '', $container = '', $class = '', $area = 'page_builder_default' ) {
 			$this->plugin->areas->set_current_area( $area );
+
 			if ( ! is_array( $parts ) ) {
 				do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
 				return;
