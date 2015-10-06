@@ -68,7 +68,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			$registered_layouts = get_option( 'wds_page_builder_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
-			if ( ! $parts && ! $global_parts && ! $saved_layouts && $layout == '' ) {
+			if ( ! $parts && ! $global_parts && ! $saved_layouts && '' == $layout ) {
 				return;
 			}
 
@@ -81,24 +81,22 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 					if ( in_array( $layout, $registered_layouts ) ) {
 						$saved_layouts = $registered_layouts;
 					}
-
 				}
 
 				// loop through the saved layouts, we'll check for the one we're looking for
-				foreach( $saved_layouts as $saved_layout ) {
+				foreach ( $saved_layouts as $saved_layout ) {
 
 					// is the layout the one that was named or one that was set for this post type?
 					if ( isset( $saved_layout['layouts_name'] ) && $layout == $saved_layout['layouts_name'] ) {
 
 						$parts = array();
-						foreach( $saved_layout['template_group'] as $template_group ) {
+						foreach ( $saved_layout['template_group'] as $template_group ) {
 							$parts[] = array( 'template_group' => $template_group );
 						}
-
 					} elseif ( isset( $saved_layout['default_layout'] ) && is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
 
 						// loop through the template parts and prepare the $parts variable for the load_template_part method
-						foreach( $saved_layout['template_group'] as $template_group ) {
+						foreach ( $saved_layout['template_group'] as $template_group ) {
 							$parts[] = array( 'template_group' => $template_group );
 						} // end template part loop
 
@@ -118,15 +116,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			// loop through each part and load the template parts
 			if ( is_array( $parts ) && ! $this->templates_loaded ) {
 				do_action( 'wds_page_builder_before_load_parts' );
-				foreach( $parts as $this->parts_index => $part ) {
+				foreach ( $parts as $this->parts_index => $part ) {
 
 					// check if the current part was loaded already
 					if ( $this->get_part() && $this->get_part() !== $part['template_group'] ) {
 
 						$this->load_part( $part, $container, $class );
-
 					}
-
 				}
 				do_action( 'wds_page_builder_after_load_parts' );
 			}
