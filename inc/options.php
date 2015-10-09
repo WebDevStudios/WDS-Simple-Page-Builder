@@ -420,6 +420,9 @@ class WDS_Page_Builder_Options {
 	 */
 	public function get( $key, $default = false ) {
 		$options = $this->get_all();
+		if( !is_array( $options ) ) {
+			return $default;
+		}
 		$option = array_key_exists( $key, $options ) ? $options[ $key ] : false;
 		return false !== $option ? $option : $default;
 	}
