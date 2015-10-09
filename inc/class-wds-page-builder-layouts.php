@@ -85,6 +85,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
 					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
 					'sortable'      => true,
+					'closed'		=> true,
 				)
 			) );
 
