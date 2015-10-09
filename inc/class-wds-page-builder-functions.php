@@ -173,7 +173,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			if ( PAGEBUILDER_VERSION < 1.6 ) {
 				load_template( $part_data['path'] );
 			} else {
-				load_template( spb_locate_template( $part_data['path'] ), true );
+				load_template( spb_locate_template( $part_data['path'] ), false );
 			}
 
 			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug, $part_data );
