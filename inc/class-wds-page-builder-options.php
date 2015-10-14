@@ -357,12 +357,16 @@ class WDS_Page_Builder_Options {
 		$stack = spb_get_template_stack();
 
 		// if in admin refresh glob transient
-		if( is_admin() ) delete_transient( 'spb_part_glob' );
+		if ( is_admin() ) { 
+			delete_transient( 'spb_part_glob' );
+		}
 
 		// check for glob transient and if return instead of re-glob
-		if( $parts = get_transient( 'spb_part_glob' ) ) return $parts;
+		if ( $parts = get_transient( 'spb_part_glob' ) ) {
+			return $parts;
+		}
 
-		$parts = [];
+		$parts = array();
 
 		// loop through stack and gobble up the templates, yum!
 		foreach ( $stack as $item ) {
