@@ -383,7 +383,12 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 		return false;
 	}
 
-	if ( $editable ) {
+	// Check for new saved layouts. Just see if there's any at all for this check.
+	if ( get_saved_page_builder_layout() ) {
+		return true;
+	}
+	// @todo Deprecate all this.
+	elseif ( $editable ) {
 		$options          = get_option( 'wds_page_builder_options' );
 		$existing_layouts = isset( $options['parts_saved_layouts'] ) ? $options['parts_saved_layouts'] : array();
 		$layout_exists    = false;
