@@ -350,6 +350,28 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 }
 
 /**
+ * Return a saved layout object by its slug.
+ * Note: This only works with layouts created after 1.6.
+ * @since  1.6.0
+ * @param  string $layout_name The post slug of the pagebuilder layout.
+ * @return object              The WP_Post object for the pagebuilder layout.
+ */
+function get_saved_page_builder_layout( $layout_name = '' ) {
+	if ( '' == $layout_name ) {
+		return false;
+	}
+
+	$layout = get_posts( array(
+		'post_type'      => 'wds_pb_layout',
+		'post_status'    => 'publish',
+		'posts_per_page' => 1,
+		'name'           => sanitize_title( $layout_name ),
+	) );
+
+	return $layout[0];
+}
+
+/**
  * Check if a given layout exists
  * @since  1.4.2
  * @param  string  $layout_name The name of the saved layout
