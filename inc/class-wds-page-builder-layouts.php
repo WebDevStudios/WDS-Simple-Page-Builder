@@ -174,6 +174,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 		public function get_area_list() {
 			$areas = $this->plugin->areas->get_registered_areas();
 
+			$output['page_builder_default'] = __( 'Page Builder Default', 'wds-simple-page-builder' );
 			foreach ( $areas as $key => $values ) {
 				$output[ $key ] = $values['name'];
 			}
