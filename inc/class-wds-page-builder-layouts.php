@@ -141,7 +141,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 
 		/**
 		 * Returns an array of saved layout ids/titles
-		 * @param  array  $meta_query Optional. You can pass WP_Query meta query args to
+		 * @param  array $meta_query Optional. You can pass WP_Query meta query args to
 		 *                            filter your results by post type or area (or both).
 		 * @return array              An array that's ready for a CMB2 field.
 		 */
@@ -167,6 +167,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 			return $return;
 		}
 
+		/**
+		 * Returns an array of all the areas registered.
+		 * @return array A list of registered areas and area names.
+		 */
 		public function get_area_list() {
 			$areas = $this->plugin->areas->get_registered_areas();
 
@@ -192,6 +196,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 			return $layout;
 		}
 
+
+		/**
+		 * Return the default layouts for the given post type.
+		 * @todo   This method is a stub. It's a WIP and does not do anything yet.
+		 * @param  string $post_type The post type to get layouts from.
+		 * @return mixed             An array of layouts (maybe?) or false if there are no default layouts for the post type.
+		 */
 		public function get_default_layouts_for_post_type( $post_type = '' ) {
 			if ( ! $post_type ) {
 				return false;
