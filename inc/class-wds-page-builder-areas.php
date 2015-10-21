@@ -78,6 +78,28 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			$this->current_area = $area;
 		}
 
+
+		/**
+		 * Return a saved layout object by its slug.
+		 * Note: This only works with layouts created after 1.6.
+		 * @since  1.6.0
+		 * @param  string $layout_name The post slug of the pagebuilder layout.
+		 * @return object              The WP_Post object for the pagebuilder layout.
+		 */
+		public function get_saved_layout( $layout_name = '' ) {
+			if ( '' == $layout_name ) {
+				return false;
+			}
+
+			$layout = get_posts( array(
+				'post_type'      => 'wds_pb_layout',
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'name'           => sanitize_title( $layout_name ),
+			) );
+
+			return $layout[0];
+		}
 		public function get_area( $area, $post_id = 0 ) {
 			$area_data = $this->get_registered_area( $area );
 

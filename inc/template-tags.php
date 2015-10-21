@@ -356,18 +356,9 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
  * @return object              The WP_Post object for the pagebuilder layout.
  */
 function get_saved_page_builder_layout( $layout_name = '' ) {
-	if ( '' == $layout_name ) {
-		return false;
-	}
+	return wds_page_builder()->areas_get_saved_layout( $layout_name );
+}
 
-	$layout = get_posts( array(
-		'post_type'      => 'wds_pb_layout',
-		'post_status'    => 'publish',
-		'posts_per_page' => 1,
-		'name'           => sanitize_title( $layout_name ),
-	) );
-
-	return $layout[0];
 }
 
 /**
