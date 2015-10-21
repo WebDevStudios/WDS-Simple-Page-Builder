@@ -258,7 +258,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 			global $post;
 
 			// Don't filter the parts by area if we're editing a saved layout.
-			if ( 'wds_pb_layouts' !== $post->post_type ) {
+			if ( 'wds_pb_layouts' !== $post->post_type || isset( $_GET['post_type'] ) && 'wds_pb_layouts' !== $_GET['post_type'] ) {
 				foreach ( $parts as $slug => $part ) {
 					if ( ! $part['area'] ) {
 						continue;
