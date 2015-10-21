@@ -46,14 +46,13 @@ function get_page_builder_parts() {
 /**
  * Function to register a new page builder "area"
  *
- * @param  string $slug      The slug of the area
- * @param  string $name      The descriptive name of the area
- * @param  array  $templates You can define the templates that go in this area the same way you
- *                           would with register_page_builder_layout
+ * @param  string $slug      The slug of the area.
+ * @param  string $name      The descriptive name of the area.
+ * @param  array  $templates You can define the templates that go in this area the same way you would with register_page_builder_layout.
  * @return void
  */
 function register_page_builder_area( $slug = '', $name = '', $templates = array() ) {
-	// bail if no name was passed
+	// Bail if no name was passed.
 	if ( ! $slug ) {
 		return;
 	}
