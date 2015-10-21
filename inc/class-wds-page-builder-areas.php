@@ -100,6 +100,43 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			return $layout[0];
 		}
+
+		/**
+		 * Return all the saved layouts for a given area and post type.
+		 * @since  1.6.0
+		 * @param  string  $area    The pagebuilder area to query by.
+		 * @param  integer $post_id The post ID of the post displaying the area for determining the post type.
+		 * @return array            A get_posts array of pagebuilder layouts.
+		 */
+		public function get_saved_layouts( $area, $post_id = 0 ) {
+			if ( 0 == $post_id ) {
+				$post_id = get_queried_object_id();
+			}
+
+			$post_type = get_post_type( $post_id );
+
+			$layouts = get_posts( array(
+				'post_type'      => 'wds_pb_layout',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,              // Setting this to -1 because we shouldn't be getting very many of these.
+				'meta_query'     => array(
+					'relation'   => 'AND',
+					array(
+						'key'     => '_wds_builder_default_area',
+						'value'   => $area,
+						'compare' => '=',
+					),
+					array(
+						'key'     => '_wds_builder_default_post_type',
+						'value'   => $post_type,
+						'compare' => '=',
+					),
+				),
+			) );
+
+			return $layouts;
+		}
+
 		public function get_area( $area, $post_id = 0 ) {
 			$area_data = $this->get_registered_area( $area );
 

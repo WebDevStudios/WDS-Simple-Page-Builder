@@ -359,6 +359,15 @@ function get_saved_page_builder_layout( $layout_name = '' ) {
 	return wds_page_builder()->areas_get_saved_layout( $layout_name );
 }
 
+/**
+ * Return all the saved layouts for a given area and post type.
+ * @since  1.6.0
+ * @param  string  $area    The pagebuilder area to query by.
+ * @param  integer $post_id The post ID of the post displaying the area for determining the post type.
+ * @return array            A get_posts array of pagebuilder layouts.
+ */
+function get_saved_page_builder_layouts( $area = '', $post_id = 0 ) {
+	return wds_page_builder()->areas->get_saved_layouts( $area, $post_id );
 }
 
 /**
