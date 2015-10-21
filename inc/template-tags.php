@@ -277,7 +277,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		return false;
 	}
 
-	wp_cache_delete ( 'alloptions', 'options' );
+	wp_cache_delete( 'alloptions', 'options' );
 
 	// if allow edit is true, add the template to the same options group as the other templates. this will enable users to update the layout after it's registered.
 	if ( $allow_edit ) {
@@ -287,7 +287,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 		$new_options['parts_saved_layouts'][] = array(
 			'layouts_name'   => esc_attr( $name ),
 			'default_layout' => false,
-			'template_group' => $templates
+			'template_group' => $templates,
 		);
 
 		// check existing layouts for the one we're trying to add to see if it exists
@@ -312,7 +312,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	$updated_options = false;
 	if ( is_array( $options ) ) {
 		$i = 0;
-		foreach( $options as $layout ) {
+		foreach ( $options as $layout ) {
 			if ( saved_page_builder_layout_exists( esc_attr( $name ), false ) ) {
 				// check if the group has changed. if it hasn't, this layout exists
 				if ( $templates !== $layout['template_group'] ) {
@@ -320,9 +320,9 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 				} else {
 					// if the group is different, delete the option, then insert the new templates into the template group
 					delete_option( 'wds_page_builder_layouts' );
-					unset( $options[$i] );
-					$options[$i]['layouts_name']   = esc_attr( $name );
-					$options[$i]['template_group'] = $templates;
+					unset( $options[ $i ] );
+					$options[ $i ]['layouts_name']   = esc_attr( $name );
+					$options[ $i ]['template_group'] = $templates;
 					$updated_options = true;
 				}
 			}
@@ -335,8 +335,8 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	} else {
 		$new_options = $options;
 		$new_options[] = array(
-			'layouts_name'   =>  esc_attr( $name ),
-			'template_group' => $templates
+			'layouts_name'   => esc_attr( $name ),
+			'template_group' => $templates,
 		);
 	}
 
@@ -370,7 +370,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 			return $layout_exists;
 		}
 
-		foreach( $existing_layouts as $layout ) {
+		foreach ( $existing_layouts as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
 			}
@@ -383,7 +383,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 			return $layout_exists;
 		}
 
-		foreach( $options as $layout ) {
+		foreach ( $options as $layout ) {
 			if ( esc_attr( $layout_name ) == $layout['layouts_name'] ) {
 				$layout_exists = true;
 			}
@@ -406,7 +406,7 @@ function unregister_page_builder_layout( $name = '' ) {
 		return;
 	}
 
-	wp_cache_delete ( 'alloptions', 'options' );
+	wp_cache_delete( 'alloptions', 'options' );
 
 	// if 'all' is passed, delete the option entirely
 	if ( 'all' == $name ) {
@@ -417,7 +417,7 @@ function unregister_page_builder_layout( $name = '' ) {
 	$old_options = ( is_array( get_option( 'wds_page_builder_layouts' ) ) ) ? get_option( 'wds_page_builder_layouts' ) : false;
 
 	if ( $old_options ) {
-		foreach( $old_options as $layout ) {
+		foreach ( $old_options as $layout ) {
 			// check for the passed layout name. save the layout as long as it does NOT match.
 			if ( esc_attr( $name ) !== $layout['layouts_name'] ) {
 				$new_options[] = $layout;
@@ -433,7 +433,6 @@ function unregister_page_builder_layout( $name = '' ) {
 	return;
 
 }
-
 
 /**
  * spb_register_template_stack function.
