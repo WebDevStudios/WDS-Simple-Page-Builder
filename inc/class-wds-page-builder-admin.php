@@ -51,7 +51,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 				in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
 				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
 
-				
+
 				wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
 			}
 		}
@@ -254,12 +254,17 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 * @return mixed
 		 */
 		public function limit_part_to_area( $options, $parts, $area ) {
-			foreach ( $parts as $slug => $part ) {
-				if ( ! $part['area'] ) {
-					continue;
-				}
-				if ( ! in_array( $area, $part['area'] ) ) {
-					unset( $options[$slug] );
+			global $post;
+
+			// Don't filter the parts by area if we're editing a saved layout.
+			if ( 'wds_pb_layouts' !== $post->post_type ) {
+				foreach ( $parts as $slug => $part ) {
+					if ( ! $part['area'] ) {
+						continue;
+					}
+					if ( ! in_array( $area, $part['area'] ) ) {
+						unset( $options[$slug] );
+					}
 				}
 			}
 
