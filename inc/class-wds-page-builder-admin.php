@@ -47,8 +47,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 */
 		public function load_admin_css( $hook ) {
 			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) &&
+				( 'wds_pb_layouts' == get_post_type() ||
 				is_array( wds_page_builder_get_option( 'post_types' ) ) &&
-				in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) {
+				in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
 				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
 
 
