@@ -118,7 +118,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			$layouts = get_posts( array(
 				'post_type'      => 'wds_pb_layout',
 				'post_status'    => 'publish',
-				'posts_per_page' => -1,              // Setting this to -1 because we shouldn't be getting very many of these.
+				'posts_per_page' => 1,
 				'meta_query'     => array(
 					'relation'   => 'AND',
 					array(
