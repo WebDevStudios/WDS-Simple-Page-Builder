@@ -128,7 +128,19 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				),
 			) );
 
-			return ( ! empty( $layout ) ) ? $layout[0] : false;
+			if ( ! empty( $layouts ) ) {
+				foreach ( $layouts as $layout ) {
+					// Skip over any saved layouts that aren't for the passed post type.
+					if ( ! in_array( $post_type, get_post_meta( $layout->ID, '_wds_builder_default_post_type', true ) ) ) {
+						continue;
+					}
+					// Return the first layout we come to for the correct post type.
+					return $layout;
+				}
+			}
+
+			// We don't have any layouts.
+			return false;
 		}
 
 		public function get_area( $area, $post_id = 0 ) {
