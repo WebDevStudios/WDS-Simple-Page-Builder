@@ -182,7 +182,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			$area_data = $this->get_registered_area( $area );
 
 			// If there were no page builder areas, bail.
-			if ( ! $area_data ) {
+			if ( ! $area_data && 'page_builder_default' !== $area ) {
 				return;
 			}
 
