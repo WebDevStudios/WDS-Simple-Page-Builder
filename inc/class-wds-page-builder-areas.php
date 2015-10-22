@@ -120,15 +120,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				'post_status'    => 'publish',
 				'posts_per_page' => 1,
 				'meta_query'     => array(
-					'relation'   => 'AND',
 					array(
 						'key'     => '_wds_builder_default_area',
 						'value'   => $area,
-						'compare' => '=',
-					),
-					array(
-						'key'     => '_wds_builder_default_post_type',
-						'value'   => $post_type,
 						'compare' => '=',
 					),
 				),
