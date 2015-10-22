@@ -156,8 +156,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				$post_id = get_queried_object_id();
 			}
 
-			// if it's not singular -- like an archive or a 404 or something -- you can only add template
-			// parts by registering the area
+			// Check for a saved layout.
+			$saved_layout = $this->get_saved_layout( $area, $post_id );
+			if ( $saved_layout && ! is_wp_error( $saved_layout ) ) {
+				$post_id = $saved_layout->ID;
+			}
+
+			// If it's not singular -- like an archive or a 404 or something -- you can only add template parts by registering the area.
 			if ( ! is_singular() && ( ! is_home() && ! $post_id ) ) {
 				return isset( $area_data['template_group'] ) ? $area_data['template_group'] : false;
 			}
