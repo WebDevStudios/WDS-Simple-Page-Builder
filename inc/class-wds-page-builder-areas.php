@@ -115,10 +115,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			$post_type = get_post_type( $post_id );
 
-			$layout = get_posts( array(
+			$layouts = get_posts( array(
 				'post_type'      => 'wds_pb_layouts',
 				'post_status'    => 'publish',
-				'posts_per_page' => 1,
+				'posts_per_page' => count( get_post_types() ),
 				'meta_query'     => array(
 					array(
 						'key'     => '_wds_builder_default_area',
