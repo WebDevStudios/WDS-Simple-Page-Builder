@@ -86,7 +86,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		 * @param  string $layout_name The post slug of the pagebuilder layout.
 		 * @return object              The WP_Post object for the pagebuilder layout.
 		 */
-		public function get_saved_layout( $layout_name = '' ) {
+		public function get_saved_layout_by_slug( $layout_name = '' ) {
 			if ( '' == $layout_name ) {
 				return false;
 			}

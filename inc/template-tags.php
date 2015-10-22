@@ -355,8 +355,8 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
  * @param  string $layout_name The post slug of the pagebuilder layout.
  * @return object              The WP_Post object for the pagebuilder layout.
  */
-function get_saved_page_builder_layout( $layout_name = '' ) {
-	return wds_page_builder()->areas_get_saved_layout( $layout_name );
+function get_saved_page_builder_layout_by_slug( $layout_name = '' ) {
+	return wds_page_builder()->areas->get_saved_layout_by_slug( $layout_name );
 }
 
 /**
