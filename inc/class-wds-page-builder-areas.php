@@ -1,14 +1,18 @@
 <?php
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
+	/**
+	 * Handle the logic around Page Builder Areas
+	 */
 	class WDS_Page_Builder_Areas {
 		/**
 		 * Constructor
+		 * @param object $plugin The parent plugin object.
 		 * @since 0.1.0
 		 */
 		public function __construct( $plugin ) {
@@ -22,10 +26,18 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			$this->hooks();
 		}
 
+		/**
+		 * Run our hooks
+		 * @return void
+		 */
 		public function hooks() {
 			add_action( 'init', array( $this, 'register_default_area' ) );
 		}
 
+		/**
+		 * Registers the page_builder_default area which is used as a fallback.
+		 * @return void
+		 */
 		public function register_default_area() {
 			$this->register_area(
 				'page_builder_default',
@@ -36,6 +48,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			);
 		}
 
+		/**
+		 * Allows new areas to be registered.
+		 * @param  string $slug      The area name/slug.
+		 * @param  array  $args      An array of meta data about the area.
+		 * @param  array  $templates Hard code some templates that use this area.
+		 * @return void
+		 */
 		public function register_area( $slug, $args = array(), $templates = array() ) {
 			$defaults = array(
 				'name'         => ucwords( str_replace( array( '-', '_' ), ' ', $slug ) ),
@@ -51,10 +70,19 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			);
 		}
 
+		/**
+		 * Gets all the registered areas.
+		 * @return array An array of all the areas that have been registered.
+		 */
 		public function get_registered_areas() {
 			return $this->registered_areas;
 		}
 
+		/**
+		 * Gets information about the registered area.
+		 * @param  string $slug The area we want information about.
+		 * @return array        The registered area data.
+		 */
 		public function get_registered_area( $slug ) {
 			$area = isset( $this->registered_areas[ $slug ] ) ? $this->registered_areas[ $slug ] : false;
 			return $area;
@@ -72,9 +100,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		/**
 		 * Set the current area variable
 		 *
-		 * @param $area The slug of the area you are setting.
+		 * @param  string $area The slug of the area you are setting.
+		 * @return void
 		 */
-		public function set_current_area ( $area ) {
+		public function set_current_area( $area ) {
 			$this->current_area = $area;
 		}
 
@@ -143,6 +172,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			return false;
 		}
 
+		/**
+		 * Get the templates for an area.
+		 * @since  1.6.0
+		 * @param  string  $area    The area to get templates from.
+		 * @param  integer $post_id The post ID we're checking.
+		 * @return array            An array of template parts to load.
+		 */
 		public function get_area( $area, $post_id = 0 ) {
 			$area_data = $this->get_registered_area( $area );
 
@@ -197,13 +233,20 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			return;
 		}
 
+
+		/**
+		 * Handle rendering the template parts.
+		 * @param  string  $area    The area we're getting parts from.
+		 * @param  integer $post_id The post ID to check for parts.
+		 * @return bool             True if the function was successful. False if not.
+		 */
 		public function do_area( $area = '', $post_id = 0 ) {
-			// bail if no area was specified
+			// Bail if no area was specified.
 			if ( '' == $area ) {
 				return false;
 			}
 
-			// if no post ID was passed, try to get one
+			// If no post ID was passed, try to get one.
 			if ( 0 == $post_id ) {
 				$post_id = get_queried_object_id();
 			}
