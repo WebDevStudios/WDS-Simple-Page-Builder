@@ -158,8 +158,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			if ( ! empty( $layouts ) ) {
 				foreach ( $layouts as $layout ) {
 					// Skip over any saved layouts that aren't for the passed post type.
-					$parts = get_post_meta( $layout->ID, '_wds_builder_default_post_type' );
-					if ( ! in_array( $post_type, $parts ) ) {
+					$parts = get_post_meta( $layout->ID, '_wds_builder_default_post_type', true );
+					if ( ! $parts || ! in_array( $post_type, $parts ) ) {
 						continue;
 					}
 					// Return the first layout we come to for the correct post type.
