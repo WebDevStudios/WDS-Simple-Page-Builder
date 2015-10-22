@@ -146,12 +146,12 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		public function get_area( $area, $post_id = 0 ) {
 			$area_data = $this->get_registered_area( $area );
 
-			// if there were no page builder areas, bail
+			// If there were no page builder areas, bail.
 			if ( ! $area_data ) {
 				return;
 			}
 
-			// if no post ID was passed, try to get one
+			// If no post ID was passed, try to get one.
 			if ( 0 == $post_id ) {
 				$post_id = get_queried_object_id();
 			}
