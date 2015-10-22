@@ -92,7 +92,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			}
 
 			$layout = get_posts( array(
-				'post_type'      => 'wds_pb_layout',
+				'post_type'      => 'wds_pb_layouts',
 				'post_status'    => 'publish',
 				'posts_per_page' => 1,
 				'name'           => sanitize_title( $layout_name ),
@@ -115,8 +115,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 
 			$post_type = get_post_type( $post_id );
 
-			$layouts = get_posts( array(
-				'post_type'      => 'wds_pb_layout',
+			$layout = get_posts( array(
+				'post_type'      => 'wds_pb_layouts',
 				'post_status'    => 'publish',
 				'posts_per_page' => 1,
 				'meta_query'     => array(
@@ -134,7 +134,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				),
 			) );
 
-			return $layouts;
+			return ( ! empty( $layout ) ) ? $layout[0] : false;
 		}
 
 		public function get_area( $area, $post_id = 0 ) {
