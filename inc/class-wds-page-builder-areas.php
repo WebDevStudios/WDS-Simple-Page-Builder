@@ -106,9 +106,9 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		 * @since  1.6.0
 		 * @param  string  $area    The pagebuilder area to query by.
 		 * @param  integer $post_id The post ID of the post displaying the area for determining the post type.
-		 * @return array            A get_posts array of pagebuilder layouts.
+		 * @return object           The WP_Post object for the most recent pagebuilder layout.
 		 */
-		public function get_saved_layouts( $area, $post_id = 0 ) {
+		public function get_saved_layout( $area, $post_id = 0 ) {
 			if ( 0 == $post_id ) {
 				$post_id = get_queried_object_id();
 			}
