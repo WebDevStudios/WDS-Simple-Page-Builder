@@ -127,7 +127,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				'name'           => sanitize_title( $layout_name ),
 			) );
 
-			return $layout[0];
+			$post_id   = $layout[0]->ID;
+			return $this->do_area( $area, $post_id );
 		}
 
 		/**
