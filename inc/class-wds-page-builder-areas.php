@@ -167,6 +167,15 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				return isset( $area_data['template_group'] ) ? $area_data['template_group'] : false;
 			}
 
+			// If we have a saved layout, store the templates for later.
+			$templates = false;
+			if ( $saved_layout ) {
+				$area_default = get_post_meta( $post_id, '_wds_builder_default_area', true );
+				if ( $area == $area_default ) {
+					$templates = get_post_meta( $post_id, '_wds_builder_layout_template', true );
+				}
+			}
+
 			$area_key = $area ? $area . '_' : '';
 			if ( 'page_builder_default' == $area ) {
 				$area_key = '';
