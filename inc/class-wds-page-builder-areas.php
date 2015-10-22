@@ -191,8 +191,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				$post_id = get_queried_object_id();
 			}
 
+			$post_type = get_post_type( $post_id );
+
 			// Check for a saved layout.
-			$saved_layout = $this->get_saved_layout( $area, $post_id );
+			$saved_layout = $this->get_saved_layout( $area, $post_type );
 			if ( $saved_layout && ! is_wp_error( $saved_layout ) ) {
 				$post_id = $saved_layout->ID;
 			}
@@ -214,6 +216,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			$area_key = $area ? $area . '_' : '';
 			if ( 'page_builder_default' == $area ) {
 				$area_key = '';
+			}
+
+			if ( 'wds_pb_layouts' == $post_type ) {
+				$templates = get_post_meta( $post_id, '_wds_builder_layout_template', true );
 			}
 
 			// Either use the templates we got earlier, or get the templates from the current post.
