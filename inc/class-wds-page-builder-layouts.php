@@ -115,6 +115,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
 				'default' => 'page_builder_default',
 				'options' => $this->get_area_list(),
 			) );
+
+			$advanced->add_field( array(
+				'id'      => '_wds_builder_default_hide_metabox',
+				'name'    => __( 'Hide Metabox', 'wds-simple-page-builder' ),
+				'desc'    => __( 'If checked, the metabox for this area will be hidden on these post types.', 'wds-simple-page-builder' ),
+				'type'    => 'checkbox',
+			) );
 		}
 
 		function add_options_page_metabox() {
