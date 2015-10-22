@@ -134,16 +134,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 		/**
 		 * Return all the saved layouts for a given area and post type.
 		 * @since  1.6.0
-		 * @param  string  $area    The pagebuilder area to query by.
-		 * @param  integer $post_id The post ID of the post displaying the area for determining the post type.
-		 * @return object           The WP_Post object for the most recent pagebuilder layout.
+		 * @param  string $area      The pagebuilder area to query by.
+		 * @param  string $post_type The post type to get layouts from.
+		 * @return object            The WP_Post object for the most recent pagebuilder layout.
 		 */
-		public function get_saved_layout( $area, $post_id = 0 ) {
-			if ( 0 == $post_id ) {
-				$post_id = get_queried_object_id();
-			}
+		public function get_saved_layout( $area, $post_type = '' ) {
 
-			$post_type = get_post_type( $post_id );
+			$post_type = ( '' !== $post_type && in_array( $post_type, get_post_types() ) ) ? $post_type : get_post_type( get_queried_object_id() );
 
 			$layouts = get_posts( array(
 				'post_type'      => 'wds_pb_layouts',
@@ -161,7 +158,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			if ( ! empty( $layouts ) ) {
 				foreach ( $layouts as $layout ) {
 					// Skip over any saved layouts that aren't for the passed post type.
-					if ( ! in_array( $post_type, get_post_meta( $layout->ID, '_wds_builder_default_post_type', true ) ) ) {
+					$parts = get_post_meta( $layout->ID, '_wds_builder_default_post_type' );
+					if ( ! in_array( $post_type, $parts ) ) {
 						continue;
 					}
 					// Return the first layout we come to for the correct post type.
