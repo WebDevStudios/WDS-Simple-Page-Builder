@@ -181,14 +181,19 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				$area_key = '';
 			}
 
-			if ( $templates = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', true ) ) {
-				foreach( $templates as $template ) {
+			// Either use the templates we got earlier, or get the templates from the current post.
+			$templates = ( ! $templates ) ? get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', true ) : $templates;
+
+			// If we have templates, loop through them and prepare the output.
+			if ( $templates ) {
+				foreach ( $templates as $template ) {
 					$out[] = isset( $template['template_group'] ) ? $template['template_group'] : '';
 				}
 
 				return $out;
 			}
 
+			// Byeeeee!
 			return;
 		}
 
