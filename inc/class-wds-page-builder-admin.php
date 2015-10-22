@@ -181,18 +181,20 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 				$area_key = $area . '_';
 			}
 
+			// Get the post type so we can check if there's a saved layout for this area.
 			$post_type = '';
 			if ( isset( $_GET['post'] ) || isset( $_GET['post_type'] ) ) {
 				$post_type = isset( $_GET['post'] ) ? get_post_type( $_GET['post'] ) : $_GET['post_type'];
 			}
 			$saved_layout = $this->plugin->areas->get_saved_layout( $area, $post_type );
-			$hide_area    = false;
-			if ( $saved_layout ) {
-				$hide_area = ( '' !== get_post_meta( $saved_layout->ID, '_wds_builder_default_hide_metabox', true ) ) ? true : false;
-			}
 
-			if ( $hide_area ) {
-				return;
+			// If we have a saved layout for this area, see if we need to hide the area.
+			if ( $saved_layout ) {
+				$hide_area = ( 'on' == get_post_meta( $saved_layout->ID, '_wds_builder_default_hide_metabox', true ) ) ? true : false;
+				// We're hiding the area.
+				if ( $hide_area ) {
+					return;
+				}
 			}
 
 			$object_types = $this->plugin->options->get( 'post_types', array( 'page' ) );
