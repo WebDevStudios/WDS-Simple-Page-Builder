@@ -45,3 +45,29 @@ function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
 	wds_page_builder_load_parts( $layout, $container, $class );
 
 }
+
+
+/**
+ * Helper function to get the template part prefix
+ *
+ * @deprecated    Since 1.6 prefixes aren't used.
+ *
+ * @return string The template part prefix (without the hyphen)
+ */
+function wds_page_builder_template_part_prefix() {
+	_deprecated_function( 'wds_page_builder_template_part_prefix', '1.6' );
+	return wds_page_builder()->options->get_parts_prefix();
+}
+
+/**
+ * Helper function to return the template parts directory
+ *
+ * @deprecated    Since 1.6 template part directory doesn't need to be hard-coded.
+ * @link          https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Page-Builder-Template-Stack
+ *
+ * @return string The template part directory name
+ */
+function wds_page_builder_template_parts_dir() {
+	_deprecated_function( 'wds_page_builder_template_parts_dir', '1.6' );
+	return wds_page_builder()->options->get_parts_dir();
+}

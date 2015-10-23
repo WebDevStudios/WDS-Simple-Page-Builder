@@ -179,21 +179,6 @@ function wds_page_builder_get_option( $key = '', $default = false ) {
 	return wds_page_builder()->options->get( $key, $default );
 }
 
-/**
- * Helper function to get the template part prefix
- * @return string The template part prefix (without the hyphen)
- */
-function wds_page_builder_template_part_prefix() {
-	return wds_page_builder()->options->get_parts_prefix();
-}
-
-/**
- * Helper function to return the template parts directory
- * @return string The template part directory name
- */
-function wds_page_builder_template_parts_dir() {
-	return wds_page_builder()->options->get_parts_dir();
-}
 
 /**
  * Helper function to return the main page builder container element
