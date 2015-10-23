@@ -50,7 +50,9 @@ function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
 /**
  * Helper function to get the template part prefix
  *
- * @deprecated    Since 1.6 prefixes aren't used.
+ * @deprecated    Since 1.6 prefixes aren't used. Instead of using file names to determine part names in the dropdown, use the template part header.
+ * @link          https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/30#issuecomment-133083700
+ * @todo          This needs documentation.
  *
  * @return string The template part prefix (without the hyphen)
  */
