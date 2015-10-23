@@ -1,22 +1,6 @@
 <?php
 
 /**
- * Load an array of template parts (by slug). If no array is passed, used as a wrapper
- * for the wds_page_builder_load_parts action.
- * @since  1.3
- * @param  mixed  $parts     Optional. A specific layout or an array of parts to
- *                           display
- * @param  string $container Optional. Container HTML element.
- * @param  string $class     Optional. Custom container class to wrap around individual parts
- * @param  string $area      Optional. The area which these parts belong to.
- *
- * @return null
- */
-function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-	wds_page_builder()->functions->load_parts( $parts, $container, $class, $area );
-}
-
-/**
  * Helper function for loading a single template part
  * @since  1.3
  * @param  string $part The part slug
@@ -86,10 +70,12 @@ function get_page_builder_area( $area = '', $post_id = 0 ) {
 }
 
 /**
- * The function to load a specific page builder area
- * @param  string  $area    Which area to load. If no page builder area is found, will
- *                          look for a saved layout with the same name.
+ * The function to load a page builder area
+ *
+ * @since  1.6.0
+ * @param  string  $area    Which area to load. If no page builder area is found, will look for a saved layout with the same name.
  * @param  integer $post_id Optional. The post id.
+ * @todo                    Add support for custom container elements and classes.
  * @return void
  */
 function wds_page_builder_area( $area = 'page_builder_default', $post_id = 0 ) {
