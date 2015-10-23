@@ -232,12 +232,12 @@ function get_saved_page_builder_layout_by_slug( $layout_name = '' ) {
 /**
  * Return the last saved layout for a given area and post type.
  * @since  1.6.0
- * @param  string  $area    The pagebuilder area to query by.
- * @param  integer $post_id The post ID of the post displaying the area for determining the post type.
- * @return array            A get_posts array of pagebuilder layouts.
+ * @param  string $area      The pagebuilder area to query by.
+ * @param  string $post_type The post type of the post displaying the area.
+ * @return array             A get_posts array of pagebuilder layouts.
  */
-function get_saved_page_builder_layout( $area = '', $post_id = 0 ) {
-	return wds_page_builder()->areas->get_saved_layout( $area, $post_id );
+function get_saved_page_builder_layout( $area = '', $post_type = '' ) {
+	return wds_page_builder()->areas->get_saved_layout( $area, $post_type );
 }
 
 /**
