@@ -67,6 +67,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-functions.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-layouts.php' );
 			require_once( $this->directory_path . 'inc/template-tags.php' );
+			require_once( $this->directory_path . 'inc/deprecated-functions.php' );
 
 			// CMB2 takes care of figuring out which version to run internally
 			require_once( $this->directory_path . 'inc/cmb2/init.php' );
