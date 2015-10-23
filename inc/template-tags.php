@@ -1,13 +1,18 @@
 <?php
+/**
+ * Template Tags
+ * Public functions that can be used in themes and plugins.
+ * @package WDS Simple Page Builder
+ */
 
 /**
  * Helper function for loading a single template part
  * @since  1.3
- * @param  string $part The part slug
+ * @param  string $part The part slug.
  * @return null
  */
 function wds_page_builder_load_part( $part = '' ) {
-	// bail if no part was specified
+	// Bail if no part was specified.
 	if ( '' == $part ) {
 		return;
 	}
@@ -19,7 +24,8 @@ function wds_page_builder_load_part( $part = '' ) {
  * Gets an array of page builder parts.
  *
  * Note, this function ONLY returns values AFTER the parts have been loaded, so hook into
- * wds_page_builder_after_load_parts or later for this to be populated
+ * wds_page_builder_after_load_parts or later for this to be populated.
+ *
  * @since  1.5
  * @return array An array of template parts in use on the page
  */
@@ -84,15 +90,17 @@ function wds_page_builder_area( $area = 'page_builder_default', $post_id = 0 ) {
 
 /**
  * Function to programmatically set certain Page Builder options
- * @param  array  $args An array of arguments matching Page Builder settings in the options table.
- *                      'parts_dir'       The directory that template parts are saved in
- *                      'parts_prefix'    The template part prefix being used
- *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
- *                      'container'       A valid HTML container type.
- *                      'container_class' The container class
- *                      'post_types'      A post type name as a string or array of post types
- *                      'hide_options'    True to hide options that have been set, disabled to
- *                                        display them as uneditable fields
+ *
+ * Possible $args values:
+ *    'parts_dir'       The directory that template parts are saved in.
+ *    'parts_prefix'    The template part prefix being used.
+ *    'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *    'container'       A valid HTML container type.
+ *    'container_class' The container class.
+ *    'post_types'      A post type name as a string or array of post types.
+ *    'hide_options'    True to hide options that have been set, disabled to display them as uneditable fields.
+ *
+ * @param  array $args An array of arguments matching Page Builder settings in the options table.
  * @return void
  */
 function wds_register_page_builder_options( $args = array() ) {
@@ -108,20 +116,19 @@ function wds_register_page_builder_options( $args = array() ) {
 /**
  * Helper function to add Page Builder theme support
  *
- * Because theme features are all hard-coded, we can't pass arguments directly to
- * add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in
- * combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct
- * values to the Page Builder options.
+ * Because theme features are all hard-coded, we can't pass arguments directly to  add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct values to the Page Builder options.
+ *
+ * Possible $args values:
+ *    'parts_dir'       The directory that template parts are saved in.
+ *    'parts_prefix'    The template part prefix being used.
+ *    'use_wrap'        'on' to use the container wrap, empty string to omit.
+ *    'container'       A valid HTML container type.
+ *    'container_class' The container class.
+ *    'post_types'      A post type name as a string or array of post types.
+ *    'hide_options'    True to hide options that have been set, disabled to display them as uneditable fields.
+ *
  * @since  1.5
- * @param  array  $args An array of arguments matching Page Builder settings in the options table.
- *                      'parts_dir'       The directory that template parts are saved in
- *                      'parts_prefix'    The template part prefix being used
- *                      'use_wrap'        'on' to use the container wrap, empty string to omit.
- *                      'container'       A valid HTML container type.
- *                      'container_class' The container class
- *                      'post_types'      A post type name as a string or array of post types
- *                      'hide_options'    True to hide options that have been set, disabled to
- *                                        display them as uneditable fields
+ * @param  array $args An array of arguments matching Page Builder settings in the options table.
  * @return void
  */
 function wds_page_builder_theme_support( $args = array() ) {
@@ -159,9 +166,9 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
  * the .php extension.
  *
  * @since 1.6
- * @param string $part          The template part slug or index/slug array
+ * @param string $part          The template part slug or index/slug array.
  * @param string $meta_key      The meta to find the value of.
- * @param int    $post_id       The Post ID to retrieve the data for (optional)
+ * @param int    $post_id       The Post ID to retrieve the data for (optional).
  *
  * @return null|mixed           Null on failure, the stored meta value on success.
  */
@@ -172,8 +179,9 @@ function wds_page_builder_get_part_data( $part, $meta_key, $post_id = 0 ) {
 /**
  * Wrapper function around WDS_Page_Builder_Options::get()
  * @since  0.1.0
- * @param  string  $key Options array key
- * @return mixed        Option value
+ * @param  string $key     Options array key.
+ * @param  string $default A default value for the option.
+ * @return mixed           Option value
  */
 function wds_page_builder_get_option( $key = '', $default = false ) {
 	return wds_page_builder()->options->get( $key, $default );
@@ -233,64 +241,66 @@ function get_saved_page_builder_layout( $area = '', $post_id = 0 ) {
 }
 
 /**
- * spb_register_template_stack function.
+ * Register a template parts folder to the Page Builder template stack.
  *
  * @access public
- * @param string $location_callback (default: '')
- * @param int $priority (default: 10)
- * @return void
+ * @param string $location_callback Absolute path to the new parts folder.
+ * @param int    $priority          Priority for registering the folder.
+ * @link  https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Page-Builder-Template-Stack
+ * @return string                   Path to the new parts folder, if successful.
  */
 function spb_register_template_stack( $location_callback = '', $priority = 10 ) {
 
-	// Bail if no location, or function/method is not callable
+	// Bail if no location, or function/method is not callable.
 	if ( empty( $location_callback ) || ! is_callable( $location_callback ) ) {
 		return false;
 	}
 
-	// Add location callback to template stack
+	// Add location callback to template stack.
 	return add_filter( 'spb_template_stack', $location_callback, (int) $priority );
 }
 
 
 /**
- * spb_get_template_stack function.
+ * Get all the template files in the page builder template stack.
  *
+ * @since  1.6.0
  * @access public
  * @return array
  */
 function spb_get_template_stack() {
 	global $wp_filter, $merged_filters, $wp_current_filter;
 
-	// Setup some default variables
+	// Setup some default variables.
 	$tag  = 'spb_template_stack';
 	$args = $stack = array();
 
-	// Add 'spb_template_stack' to the current filter array
+	// Add 'spb_template_stack' to the current filter array.
 	$wp_current_filter[] = $tag;
 
-	// Sort
+	// Sort.
 	if ( ! isset( $merged_filters[ $tag ] ) ) {
-		ksort( $wp_filter[$tag] );
+		ksort( $wp_filter[ $tag ] );
 		$merged_filters[ $tag ] = true;
 	}
 
-	// Ensure we're always at the beginning of the filter array
+	// Ensure we're always at the beginning of the filter array.
 	reset( $wp_filter[ $tag ] );
 
-	// Loop through 'spb_template_stack' filters, and call callback functions
+	// Loop through 'spb_template_stack' filters, and call callback functions.
 	do {
-		foreach( (array) current( $wp_filter[$tag] ) as $the_ ) {
+		foreach ( (array) current( $wp_filter[ $tag ] ) as $the_ ) {
 			if ( ! is_null( $the_['function'] ) ) {
 				$args[1] = $stack;
 				$stack[] = call_user_func_array( $the_['function'], array_slice( $args, 1, (int) $the_['accepted_args'] ) );
 			}
 		}
-	} while ( next( $wp_filter[$tag] ) !== false );
+	} while ( next( $wp_filter[ $tag ] ) !== false );
 
-	// Remove 'spb_template_stack' from the current filter array
+	// Remove 'spb_template_stack' from the current filter array.
 	array_pop( $wp_current_filter );
 
-	// Remove empties and duplicates
+	// Remove empties and duplicates.
 	$stack = array_unique( array_filter( $stack ) );
 
 	/**
@@ -298,24 +308,23 @@ function spb_get_template_stack() {
 	 *
 	 * @param array $stack Array of registered directories for template locations.
 	 */
-	return (array) apply_filters( 'spb_get_template_stack', $stack ) ;
+	return (array) apply_filters( 'spb_get_template_stack', $stack );
 }
 
 
 /**
- * has_page_builder_part function.
+ * Check if a page has a specific page builder part.
  *
- * pass template slug returns true if loaded on page
- *
+ * @since  1.6.0
  * @access public
- * @param mixed $template (default: null)
- * @return boolean
+ * @param  mixed $template The template we're looking for.
+ * @return boolean         Returns true if loaded on page.
  */
 function has_page_builder_part( $template = null ) {
 
 	$parts = wds_page_builder()->areas->parts;
 
-	if( in_array( $template, $parts ) ) {
+	if ( in_array( $template, $parts ) ) {
 		return true;
 	}
 
@@ -326,14 +335,17 @@ function has_page_builder_part( $template = null ) {
 
 
 /**
- * is_page_builder_page function.
+ * Checks if this is a page that has page builder templates assigned to it.
  *
+ * @since  1.6.0
  * @access public
  * @return string
  */
 function is_page_builder_page() {
 
-	if( wds_page_builder()->areas->area ) return wds_page_builder()->areas->area;
+	if ( wds_page_builder()->areas->area ) {
+		return wds_page_builder()->areas->area;
+	}
 
 	return false;
 
@@ -342,6 +354,8 @@ function is_page_builder_page() {
 
 /**
  * Get all the page builder part files across all Pagebuilder-based plugins/themes.
+ *
+ * @since  1.6.0
  * @return array An array of Pagebuilder template parts.
  */
 function get_page_builder_part_files() {
