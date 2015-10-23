@@ -66,7 +66,7 @@ function get_page_builder_areas() {
 
 /**
  * Function that can be used to return a specific page builder area
- * @param  string  $area    The area by slug/name
+ * @param  string  $area    The area by slug/name.
  * @param  integer $post_id Optional. The post id. If none is passed, we will try to get one if
  *                          it's necessary.
  * @return void
