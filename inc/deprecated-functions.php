@@ -22,3 +22,26 @@ function wds_page_builder_load_parts( $parts = '', $container = '', $class = '',
 	_deprecated_function( 'wds_page_builder_load_parts', '1.6', 'wds_page_builder_area' );
 	wds_page_builder()->functions->load_parts( $parts, $container, $class, $area );
 }
+
+/**
+ * Helper function to display page builder with a full wrap.
+ *
+ * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll get the page builder contents twice
+ *
+ * @deprecated               Deprecated with wds_page_builder_load_parts.
+ *
+ * @param  string $container Optional. Unique container html element or use the default.
+ * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way to change the container classes without a filter.
+ * @param  string $layout    Optional. The specific layout name to load, or the default.
+ * @return void
+ */
+function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
+	_deprecated_function( 'wds_page_builder_wrap', '1.6' );
+	$page_builder = wds_page_builder()->functions;
+	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
+	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
+
+	// Do the page builder stuff.
+	wds_page_builder_load_parts( $layout, $container, $class );
+
+}

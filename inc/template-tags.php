@@ -83,27 +83,6 @@ function wds_page_builder_area( $area = 'page_builder_default', $post_id = 0 ) {
 }
 
 /**
- * Helper function to display page builder with a full wrap.
- *
- * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll
- * get the page builder contents twice
- * @param  string $container Optional. Unique container html element or use the default
- * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way
- *                           to change the container classes without a filter.
- * @param  string $layout    Optional. The specific layout name to load, or the default.
- * @return void
- */
-function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
-	$page_builder = wds_page_builder()->functions;
-	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
-	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
-
-	// do the page builder stuff
-	wds_page_builder_load_parts( $layout, $container, $class );
-
-}
-
-/**
  * Function to programmatically set certain Page Builder options
  * @param  array  $args An array of arguments matching Page Builder settings in the options table.
  *                      'parts_dir'       The directory that template parts are saved in
