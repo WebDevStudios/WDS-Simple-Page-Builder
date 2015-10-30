@@ -70,7 +70,11 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . 'inc/deprecated-functions.php' );
 
 			// CMB2 takes care of figuring out which version to run internally
-			require_once( $this->directory_path . 'inc/cmb2/init.php' );
+			if ( file_exists(  __DIR__ . '/cmb2/init.php' ) ) {
+			  require_once  __DIR__ . '/cmb2/init.php';
+			} elseif ( file_exists(  __DIR__ . '/CMB2/init.php' ) ) {
+			  require_once  __DIR__ . '/CMB2/init.php';
+			}
 
 			$this->plugin_classes();
 			$this->hooks();
