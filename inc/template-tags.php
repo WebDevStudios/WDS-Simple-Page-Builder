@@ -207,8 +207,7 @@ function wds_page_builder_container_class() {
 }
 
 /**
- * Get a list of the template parts in the current theme, return them
- * in an array.
+ * Get a list of the template parts in the current theme, return them in an array.
  *
  * @return array An array of template parts
  */
@@ -244,10 +243,10 @@ function get_saved_page_builder_layout( $area = '', $post_type = '' ) {
  * Register a template parts folder to the Page Builder template stack.
  *
  * @access public
- * @param string $location_callback Absolute path to the new parts folder.
+ * @param string $location_callback Callback function that registers the folder in the template stack.
  * @param int    $priority          Priority for registering the folder.
  * @link  https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Page-Builder-Template-Stack
- * @return string                   Path to the new parts folder, if successful.
+ * @return string                   Filtered callback function, if successful.
  */
 function spb_register_template_stack( $location_callback = '', $priority = 10 ) {
 
