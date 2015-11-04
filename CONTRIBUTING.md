@@ -2,13 +2,14 @@
 
 > This document is a _living document_ -- that is, it will constantly be changed as the project evolves and develops. The date below will be updated whenever new changes have been made to this document. The goal of this document is to give contributors and potential contributors a quick overview of the project and how they can contribute. Be sure to check here before branching, committing or submitting pull requests.
 
-### Last updated 9/21/2015
+### Last updated 11/4/2015
 
-#### Current active development branch: ```refactor-2```
+#### Current active development branch: ```develop```
 
 ### Changelog
 
-* initial draft
+* 11/4/2015 - belated update of current active development branch
+* 9/21/2015 - initial draft
 
 ## Philosophy
 
