@@ -199,6 +199,16 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 
 			$object_types = $this->plugin->options->get( 'post_types', array( 'page' ) );
 
+			/**
+			 * Filter fires before registering the CMB2 fields for the Page Builder areas. Return false here to short
+			 * circuit if you don't want to show the metaboxes in certain instances.
+			 */
+			$post_id = isset( $_GET['post'] ) ? $_GET['post'] : 0;
+			$do = apply_filters( 'page_builder_display_area_fields', true, $area, $post_type, $post_id, $area_data, $area_key );
+			if ( ! $do ) {
+				return;
+			}
+
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_' . $area,
 				'title'        => sprintf( __( '%s Page Builder Templates', 'wds-simple-page-builder' ), esc_html( $area_data['name'] ) ),
