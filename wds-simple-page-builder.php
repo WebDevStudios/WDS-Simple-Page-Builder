@@ -59,6 +59,9 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
+			// CMB2 takes care of figuring out which version to run internally
+			require_once( $this->directory_path . 'inc/cmb2/init.php';
+
 			// Include any required files
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-options.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-admin.php' );
@@ -68,13 +71,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-layouts.php' );
 			require_once( $this->directory_path . 'inc/template-tags.php' );
 			require_once( $this->directory_path . 'inc/deprecated-functions.php' );
-
-			// CMB2 takes care of figuring out which version to run internally
-			if ( file_exists(  __DIR__ . '/cmb2/init.php' ) ) {
-			  require_once  __DIR__ . '/cmb2/init.php';
-			} elseif ( file_exists(  __DIR__ . '/CMB2/init.php' ) ) {
-			  require_once  __DIR__ . '/CMB2/init.php';
-			}
 
 			$this->plugin_classes();
 			$this->hooks();
