@@ -60,7 +60,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
 			// CMB2 takes care of figuring out which version to run internally
-			require_once( $this->directory_path . 'inc/cmb2/init.php';
+			require_once( $this->directory_path . 'inc/cmb2/init.php' );
 
 			// Include any required files
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-options.php' );
