@@ -16,7 +16,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
 		}
 
 
-		public function get( $part, $meta_key, $post_id = 0 ) {
+		public function get( $part, $meta_key, $post_id = 0, $area = '' ) {
 			// Can specify the index if parts are used multiple times on a page
 			if ( is_array( $part ) ) {
 
@@ -34,7 +34,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
 				$part_slug  = $part;
 			}
 
-			$area     = wds_page_builder()->areas->get_current_area();
+			$area     = ( $area ) ? $area : wds_page_builder()->areas->get_current_area();
 			$area_key = $area ? $area . '_' : '';
 			if ( 'page_builder_default' == $area ) {
 				$area_key = '';

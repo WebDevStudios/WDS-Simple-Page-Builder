@@ -166,14 +166,15 @@ function wds_page_builder_get_this_part_data( $meta_key ) {
  * the .php extension.
  *
  * @since 1.6
- * @param string $part          The template part slug or index/slug array.
- * @param string $meta_key      The meta to find the value of.
- * @param int    $post_id       The Post ID to retrieve the data for (optional).
+ * @param string $part     The template part slug or index/slug array.
+ * @param string $meta_key The meta to find the value of.
+ * @param int    $post_id  The Post ID to retrieve the data for (optional).
+ * @param string $area     The area to pull the meta data from (optional).
  *
- * @return null|mixed           Null on failure, the stored meta value on success.
+ * @return null|mixed      Null on failure, the stored meta value on success.
  */
-function wds_page_builder_get_part_data( $part, $meta_key, $post_id = 0 ) {
-	return wds_page_builder()->data->get( $part, $meta_key, $post_id );
+function wds_page_builder_get_part_data( $part, $meta_key, $post_id = 0, $area = '' ) {
+	return wds_page_builder()->data->get( $part, $meta_key, $post_id, $area );
 }
 
 /**
