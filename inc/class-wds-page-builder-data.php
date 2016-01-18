@@ -45,7 +45,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
 			if ( ! $meta || 'none' == $meta[0]['template_group'] ) {
 				// Get default layout for this area.
 				$option = get_option( $this->plugin->options->key . '_default_area_layouts' );
-				$meta = get_post_meta( $option[$area], '_wds_builder_layout_template', true );
+				$meta = isset( $option[ $area ] ) ? get_post_meta( $option[ $area ], '_wds_builder_layout_template', true ) : false;
 			}
 			if (
 				// if index exists and the template_group index is there
