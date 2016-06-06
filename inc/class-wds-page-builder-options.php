@@ -416,7 +416,7 @@ class WDS_Page_Builder_Options {
 				$parts[ esc_attr( $slug ) ] = array(
 					'name'        => $data['name'] ? esc_attr( $data['name'] ) : ucwords( str_replace( '-', ' ',  esc_attr( $slug ) ) ),
 					'description' => esc_attr( $data['description'] ),
-					'path'        => esc_url( $file ),
+					'path'        => esc_attr( $file ),
 					'area'        => $areas,
 				);
 
