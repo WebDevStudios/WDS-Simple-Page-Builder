@@ -8,6 +8,7 @@
 
 /**
  * Helper function for loading a single template part
+ *
  * @since  1.3
  * @param  string $part The part slug.
  * @return null
@@ -53,6 +54,7 @@ function register_page_builder_area( $slug = '', $name = '', $templates = array(
 
 /**
  * Gets the page builder areas
+ *
  * @return mixed False if there are no areas or an array of layouts if there's more than one.
  */
 function get_page_builder_areas() {
@@ -67,6 +69,7 @@ function get_page_builder_areas() {
 
 /**
  * Function that can be used to return a specific page builder area
+ *
  * @param  string  $area    The area by slug/name.
  * @param  integer $post_id Optional. The post id. If none is passed, we will try to get one if
  *                          it's necessary.
@@ -180,6 +183,7 @@ function spb2_get_part_data( $part, $meta_key, $post_id = 0, $area = '' ) {
 
 /**
  * Wrapper function around Options::get()
+ *
  * @since  0.1.0
  * @param  string $key     Options array key.
  * @param  string $default A default value for the option.
@@ -192,6 +196,7 @@ function spb2_get_option( $key = '', $default = false ) {
 
 /**
  * Helper function to return the main page builder container element
+ *
  * @return string The class name
  */
 function spb2_container() {
@@ -201,6 +206,7 @@ function spb2_container() {
 
 /**
  * Helper function to return the main page builder container class
+ *
  * @return string The class name
  */
 function spb2_container_class() {
@@ -221,7 +227,7 @@ function spb2_get_parts() {
 
 /**
  * Return a saved layout object by its slug.
- * Note: This only works with layouts created after 1.6.
+ *
  * @since  1.6.0
  * @param  string $layout_name The post slug of the pagebuilder layout.
  * @return object              The WP_Post object for the pagebuilder layout.
@@ -232,6 +238,7 @@ function get_saved_page_builder_layout_by_slug( $layout_name = '' ) {
 
 /**
  * Return the last saved layout for a given area and post type.
+ *
  * @since  1.6.0
  * @param  string $area      The pagebuilder area to query by.
  * @param  string $post_type The post type of the post displaying the area.
@@ -285,7 +292,7 @@ function spb_get_template_stack() {
 	} else {
 		$filter = &$wp_filter[ $tag ];
 
-		// Sort
+		// Sort.
 		if ( ! isset( $merged_filters[ $tag ] ) ) {
 			ksort( $filter );
 			$merged_filters[ $tag ] = true;
@@ -295,7 +302,7 @@ function spb_get_template_stack() {
 	// Ensure we're always at the beginning of the filter array.
 	reset( $wp_filter[ $tag ] );
 
-	// Loop through 'spb_template_stack' filters, and call callback functions
+	// Loop through 'spb_template_stack' filters, and call callback functions.
 	do {
 		foreach ( (array) current( $filter ) as $the_ ) {
 			if ( ! is_null( $the_['function'] ) ) {
