@@ -257,7 +257,7 @@ class WDS_Page_Builder_Options {
 		) );
 
 		// @todo depricate this
-		if ( PAGEBUILDER_VERSION < 1.6 ) {
+		if ( SPB2_VERSION < 1.6 ) {
 
 			$cmb->add_field( array(
 				'name'       => __( 'Template Parts Directory', 'wds-simple-page-builder' ),
@@ -356,7 +356,7 @@ class WDS_Page_Builder_Options {
 		$stack = spb_get_template_stack();
 
 		// if in admin refresh glob transient
-		if ( is_admin() ) { 
+		if ( is_admin() ) {
 			delete_transient( 'spb_part_glob' );
 		}
 

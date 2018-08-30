@@ -170,7 +170,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			do_action( 'wds_page_builder_before_load_template', $container, $classes, $this->part_slug, $part_data );
 
 			// backpat for versions less than 1.6
-			if ( PAGEBUILDER_VERSION < 1.6 ) {
+			if ( SPB2_VERSION < 1.6 ) {
 				load_template( $part_data['path'] );
 			} else {
 				load_template( spb_locate_template( $part_data['path'] ), false );
@@ -407,7 +407,7 @@ function page_builder_get_plugin_compat_dir() {
 	 *
 	 * @param string $dir The absolute path of the template package in use.
 	 */
-	return apply_filters( 'page_builder_get_plugin_compat_dir', PAGEBUILDER_VERSION_PATH . 'templates/pagebuilder/' );
+	return apply_filters( 'page_builder_get_plugin_compat_dir', SPB2_VERSION_PATH . 'templates/pagebuilder/' );
 }
 
 
