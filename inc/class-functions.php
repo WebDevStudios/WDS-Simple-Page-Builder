@@ -176,12 +176,7 @@ class Functions {
 		*/
 		do_action( 'spb2_before_load_template', $container, $classes, $this->part_slug, $part_data );
 
-		// backpat for versions less than 1.6
-		if ( SPB2_VERSION < 1.6 ) {
-			load_template( $part_data['path'] );
-		} else {
-			load_template( spb_locate_template( $part_data['path'] ), false );
-		}
+		load_template( spb_locate_template( $part_data['path'] ), false );
 
 		do_action( 'spb2_after_load_template', $container, $this->part_slug, $part_data );
 
