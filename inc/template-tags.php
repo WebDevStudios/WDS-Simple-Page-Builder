@@ -2,7 +2,8 @@
 /**
  * Template Tags
  * Public functions that can be used in themes and plugins.
- * @package WDS Simple Page Builder
+ *
+ * @package SPB2
  */
 
 /**

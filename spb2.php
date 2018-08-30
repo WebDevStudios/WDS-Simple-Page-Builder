@@ -148,7 +148,7 @@ if ( ! class_exists( 'SPB2' ) ) {
 				// Display our error.
 				echo '<div id="message" class="error">';
 				// Translators: %s is the URL of the plugins page.
-				echo '<p>' . esc_html( sprintf( __( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) ) . '</p>';
+				echo '<p>' . esc_html( sprintf( __( 'SPB2 (Simple Page Builder) requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) ) . '</p>';
 				echo '</div>';
 
 				// Deactivate our plugin.

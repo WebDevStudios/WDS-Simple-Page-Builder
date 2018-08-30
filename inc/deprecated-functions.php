@@ -2,7 +2,9 @@
 /**
  * Deprecated functions
  * All the functions here are deprecated. Please use their alternatives.
- * @package WDS Simple Page Builder
+ *
+ * @todo    Remove this file. Nothing will be deprecated in hard fork. (Alternately, EVERYTHING will be deprecated, making this superfluous.)
+ * @package SPB2
  */
 
 /**

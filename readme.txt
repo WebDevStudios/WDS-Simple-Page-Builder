@@ -1,4 +1,4 @@
-=== WDS Simple Page Builder ===
+=== SPB2 (Simple Page Builder) ===
 Contributors: jazzs3quence, webdevstudios
 Tags: page builder, template parts, theme
 Requires at least: 3.0
