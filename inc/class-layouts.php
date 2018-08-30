@@ -64,16 +64,16 @@ if ( ! class_exists( 'Layouts' ) ) {
 				'has_archive'   => false,
 				'hierarchical'  => false,
 				'supports'      => array( 'title' ),
-				'show_in_menu' => 'edit.php?post_type=wds_pb_layouts',
+				'show_in_menu' => 'edit.php?post_type=spb2_layouts',
 			);
-			register_post_type( 'wds_pb_layouts', $args );
+			register_post_type( 'spb2_layouts', $args );
 		}
 
 		public function register_fields() {
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_layout',
 				'title'        => __( 'Page Builder Templates', 'simple-page-builder' ),
-				'object_types' => array( 'wds_pb_layouts' ),
+				'object_types' => array( 'spb2_layouts' ),
 				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
 			) );
 
@@ -95,7 +95,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 			$advanced = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_layout_advanced',
 				'title'        => __( 'Layout Defaults', 'simple-page-builder' ),
-				'object_types' => array( 'wds_pb_layouts' ),
+				'object_types' => array( 'spb2_layouts' ),
 				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
 			) );
 
@@ -154,7 +154,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 		 */
 		public function get_saved_layouts( $meta_query = array() ) {
 			$args = array(
-				'post_type'      => 'wds_pb_layouts',
+				'post_type'      => 'spb2_layouts',
 				'posts_per_page' => 9999,
 				'post_status'    => 'publish',
 				'orderby'        => 'title',
@@ -199,7 +199,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 				return false;
 			}
 
-			$layout = get_page_by_path( $layout_name, OBJECT, 'wds_pb_layouts' );
+			$layout = get_page_by_path( $layout_name, OBJECT, 'spb2_layouts' );
 
 			return $layout;
 		}

@@ -53,13 +53,13 @@ class Admin {
 
 	/**
 	 * Handles conditionally loading the SPB admin css
+	 *
 	 * @since  1.6
-	 * @param  string $hook Current page hook
-	 * @return null
+	 * @param  string $hook Current page hook.
 	 */
 	public function load_admin_css( $hook ) {
 		if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) &&
-			( 'wds_pb_layouts' == get_post_type() ||
+			( 'spb2_layouts' == get_post_type() ||
 			is_array( spb2_get_option( 'post_types' ) ) &&
 			in_array( get_post_type(), spb2_get_option( 'post_types' ) ) ) ) {
 			wp_enqueue_style( 'simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', SPB2::VERSION );
@@ -296,7 +296,7 @@ class Admin {
 		global $post;
 
 		// Don't filter the parts by area if we're editing a saved layout.
-		if ( ( $post && 'wds_pb_layouts' !== $post->post_type ) || isset( $_GET['post_type'] ) && 'wds_pb_layouts' !== $_GET['post_type'] ) {
+		if ( ( $post && 'spb2_layouts' !== $post->post_type ) || isset( $_GET['post_type'] ) && 'spb2_layouts' !== $_GET['post_type'] ) {
 			foreach ( $parts as $slug => $part ) {
 				if ( ! $part['area'] ) {
 					continue;

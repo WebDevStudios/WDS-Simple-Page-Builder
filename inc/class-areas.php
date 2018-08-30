@@ -121,7 +121,7 @@ if ( ! class_exists( 'Areas' ) ) {
 			}
 
 			$layout = get_posts( array(
-				'post_type'      => 'wds_pb_layouts',
+				'post_type'      => 'spb2_layouts',
 				'post_status'    => 'publish',
 				'posts_per_page' => 1,
 				'name'           => sanitize_title( $layout_name ),
@@ -143,7 +143,7 @@ if ( ! class_exists( 'Areas' ) ) {
 			$post_type = ( '' !== $post_type && in_array( $post_type, get_post_types() ) ) ? $post_type : get_post_type( get_queried_object_id() );
 
 			$layouts = get_posts( array(
-				'post_type'      => 'wds_pb_layouts',
+				'post_type'      => 'spb2_layouts',
 				'post_status'    => 'publish',
 				'posts_per_page' => count( get_post_types() ),
 				'meta_query'     => array(
@@ -218,7 +218,7 @@ if ( ! class_exists( 'Areas' ) ) {
 				$area_key = '';
 			}
 
-			if ( 'wds_pb_layouts' == $post_type ) {
+			if ( 'spb2_layouts' == $post_type ) {
 				$templates = get_post_meta( $post_id, '_spb2_layout_template', true );
 			}
 

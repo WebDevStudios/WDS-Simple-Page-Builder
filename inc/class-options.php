@@ -200,8 +200,8 @@ class Options {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		add_menu_page( __( 'Page Builder', 'simple-page-builder' ), __( 'Page Builder', 'simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_layouts', '', 'dashicons-list-view' );
-		$this->options_page = add_submenu_page( 'edit.php?post_type=wds_pb_layouts', $this->title, __( 'Page Builder Options', 'simple-page-builder' ), 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
+		add_menu_page( __( 'Page Builder', 'simple-page-builder' ), __( 'Page Builder', 'simple-page-builder' ), 'edit_posts', 'edit.php?post_type=spb2_layouts', '', 'dashicons-list-view' );
+		$this->options_page = add_submenu_page( 'edit.php?post_type=spb2_layouts', $this->title, __( 'Page Builder Options', 'simple-page-builder' ), 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
 		// Include CMB CSS in the head to avoid FOUT.
 		add_action( "admin_print_styles-{$this->options_page}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 	}
