@@ -1,12 +1,14 @@
 <?php
 /**
- * Plugin Name: WDS Simple Page Builder
- * Plugin URI: https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki
+ * Plugin Name: SPB2 (Simple Page Builder 2)
+ * Plugin URI: https://github.com/jazzsequence/SPB2/wiki
  * Description: Uses existing template parts in the currently-active theme to build a customized page with rearrangeable elements.
- * Author: WebDevStudios
- * Author URI: http://webdevstudios.com
- * Version: 1.6
+ * Author: jazzs3quence
+ * Author URI: https://chrisreynolds.io
+ * Version: 2.0
  * License: GPLv2
+ *
+ * @package SPB2
  */
 
 // Exit if accessed directly
@@ -14,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PAGEBUILDER_VERSION', 1.6 );
-define( 'PAGEBUILDER_VERSION_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SPB2_VERSION', 2.0 );
+define( 'SPB2_VERSION_PATH', plugin_dir_path( __FILE__ ) );
 
 if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 
@@ -26,7 +28,7 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
 		 * @var   string
 		 * @since 1.5
 		 */
-		const VERSION = PAGEBUILDER_VERSION;
+		const VERSION = SPB2_VERSION;
 
 		/**
 		 * Singleton instance of plugin
