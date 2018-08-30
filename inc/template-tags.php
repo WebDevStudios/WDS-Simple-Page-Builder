@@ -6,6 +6,8 @@
  * @package SPB2
  */
 
+namespace SPB2;
+
 /**
  * Helper function for loading a single template part
  *
