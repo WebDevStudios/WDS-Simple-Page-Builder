@@ -49,7 +49,7 @@ class Functions {
 	 * @return null
 	 */
 	public function templates_loaded() {
-		if ( $this->templates_loaded === false ) {
+		if ( false === $this->templates_loaded ) {
 			$this->templates_loaded = true;
 		}
 	}
