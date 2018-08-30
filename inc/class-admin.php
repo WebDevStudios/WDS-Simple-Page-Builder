@@ -222,7 +222,7 @@ class Admin {
 		}
 
 		$cmb = new_cmb2_box( array(
-			'id'           => 'wds_simple_page_builder_' . $area,
+			'id'           => 'spb2_' . $area,
 			'title'        => sprintf( __( '%s Page Builder Templates', 'simple-page-builder' ), esc_html( $area_data['name'] ) ),
 			'object_types' => $object_types,
 			'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),

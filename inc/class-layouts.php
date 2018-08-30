@@ -71,7 +71,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 
 		public function register_fields() {
 			$cmb = new_cmb2_box( array(
-				'id'           => 'wds_simple_page_builder_layout',
+				'id'           => 'spb2_layout',
 				'title'        => __( 'Page Builder Templates', 'simple-page-builder' ),
 				'object_types' => array( 'spb2_layouts' ),
 				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
@@ -93,7 +93,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 			}
 
 			$advanced = new_cmb2_box( array(
-				'id'           => 'wds_simple_page_builder_layout_advanced',
+				'id'           => 'spb2_layout_advanced',
 				'title'        => __( 'Layout Defaults', 'simple-page-builder' ),
 				'object_types' => array( 'spb2_layouts' ),
 				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),

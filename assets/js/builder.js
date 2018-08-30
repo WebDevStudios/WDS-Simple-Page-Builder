@@ -6,7 +6,7 @@
 		var app = { $ : {} };
 
 		app.cache = function() {
-			app.$.box         = $( document.getElementById( 'cmb2-metabox-wds_simple_page_builder_' + value ) );
+			app.$.box         = $( document.getElementById( 'cmb2-metabox-spb2_' + value ) );
 			app.$.dropdowns   = app.$.box.find( '.simple-page-builder-template-select' );
 			app.$.postForm    = $( document.getElementById( 'post' ) );
 			app.$.hiddenParts = app.$.box.find( '.hidden-parts-fields' );
