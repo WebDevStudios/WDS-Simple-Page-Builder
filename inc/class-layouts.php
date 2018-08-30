@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Page_Builder_Layouts' ) ) {
+if ( ! class_exists( 'Layouts' ) ) {
 
-	class WDS_Page_Builder_Layouts {
+	class Layouts {
 		/**
 		 * Constructor
 		 * @since 0.1.0

@@ -179,7 +179,7 @@ function spb2_get_part_data( $part, $meta_key, $post_id = 0, $area = '' ) {
 }
 
 /**
- * Wrapper function around WDS_Page_Builder_Options::get()
+ * Wrapper function around Options::get()
  * @since  0.1.0
  * @param  string $key     Options array key.
  * @param  string $default A default value for the option.

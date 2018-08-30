@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
+if ( ! class_exists( 'Data' ) ) {
 
-	class WDS_Page_Builder_Data {
+	class Data {
 		/**
 		 * Constructor
 		 * @since 0.1.0

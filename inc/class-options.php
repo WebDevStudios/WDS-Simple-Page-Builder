@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-class WDS_Page_Builder_Options {
+class Options {
 
 	/**
 	 * Option key, and option page slug

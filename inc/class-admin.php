@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
+if ( ! class_exists( 'Admin' ) ) {
 
-	class WDS_Page_Builder_Admin {
+	class Admin {
 
 		public $part_slug;
 		protected $parts_index = 0;

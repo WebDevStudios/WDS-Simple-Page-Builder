@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
+if ( ! class_exists( 'Areas' ) ) {
 
 	/**
 	 * Handle the logic around Page Builder Areas
 	 */
-	class WDS_Page_Builder_Areas {
+	class Areas {
 		/**
 		 * Constructor
 		 * @param object $plugin The parent plugin object.

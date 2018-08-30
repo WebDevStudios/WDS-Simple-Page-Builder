@@ -11,6 +11,8 @@
  * @package SPB2
  */
 
+namespace SPB2;
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -87,12 +89,12 @@ if ( ! class_exists( 'SPB2' ) ) {
 		 * @since  0.1.0
 		 */
 		private function plugin_classes() {
-			$this->admin = new WDS_Page_Builder_Admin( $this );
-			$this->options = new WDS_Page_Builder_Options( $this );
-			$this->functions = new WDS_Page_Builder_Functions( $this );
-			$this->areas = new WDS_Page_Builder_Areas( $this );
-			$this->layouts = new WDS_Page_Builder_Layouts( $this );
-			$this->data = new WDS_Page_Builder_Data( $this );
+			$this->admin = new Admin( $this );
+			$this->options = new Options( $this );
+			$this->functions = new Functions( $this );
+			$this->areas = new Areas( $this );
+			$this->layouts = new Layouts( $this );
+			$this->data = new Data( $this );
 		}
 
 		/**

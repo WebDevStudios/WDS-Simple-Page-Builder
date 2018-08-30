@@ -8,9 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
+if ( ! class_exists( 'Functions' ) ) {
 
-	class WDS_Page_Builder_Functions {
+	class Functions {
 
 		public $part_slug;
 		protected $parts_index = 0;
@@ -381,14 +381,14 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
  */
 function page_builder_get_theme_compat_dir() {
 
-	$WDS_Page_Builder_Options = new WDS_Page_Builder_Options( spb2() );
+	$Options = new Options( spb2() );
 
 	/**
 	 * Filters the absolute path of the teamplate locations.
 	 *
 	 * @param string $dir The absolute path of the template package in use.
 	 */
-	return apply_filters( 'page_builder_get_theme_compat_dir', $WDS_Page_Builder_Options->get_parts_path() );
+	return apply_filters( 'page_builder_get_theme_compat_dir', $Options->get_parts_path() );
 }
 
 
