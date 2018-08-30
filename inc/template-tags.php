@@ -117,7 +117,7 @@ function wds_register_page_builder_options( $args = array() ) {
 /**
  * Helper function to add Page Builder theme support
  *
- * Because theme features are all hard-coded, we can't pass arguments directly to  add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in combination with `add_theme_support( 'wds-simple-page-builder' )` in order to pass the correct values to the Page Builder options.
+ * Because theme features are all hard-coded, we can't pass arguments directly to  add_theme_supports (at least, not that I'm aware of...). This helper function MUST be used in combination with `add_theme_support( 'simple-page-builder' )` in order to pass the correct values to the Page Builder options.
  *
  * Possible $args values:
  *    'parts_dir'       The directory that template parts are saved in.

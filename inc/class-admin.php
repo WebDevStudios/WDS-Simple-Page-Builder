@@ -50,10 +50,10 @@ if ( ! class_exists( 'Admin' ) ) {
 				( 'wds_pb_layouts' == get_post_type() ||
 				is_array( spb2_get_option( 'post_types' ) ) &&
 				in_array( get_post_type(), spb2_get_option( 'post_types' ) ) ) ) {
-				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', SPB2::VERSION );
+				wp_enqueue_style( 'simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', SPB2::VERSION );
 
 
-				wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), SPB2::VERSION, true );
+				wp_enqueue_script( 'simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), SPB2::VERSION, true );
 			}
 		}
 
@@ -78,11 +78,11 @@ if ( ! class_exists( 'Admin' ) ) {
 		public function get_group_fields( $id = 'template_group' ) {
 			$fields = array(
 				array(
-					'name'       => __( 'Template', 'wds-simple-page-builder' ),
+					'name'       => __( 'Template', 'simple-page-builder' ),
 					'id'         => $id,
 					'type'       => 'select',
 					'options'    => apply_filters( 'spb2_area_parts_select', $this->plugin->options->get_parts_select(), $this->plugin->options->get_parts(), $this->area ),
-					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
+					'attributes' => array( 'class' => 'cmb2_select simple-page-builder-template-select' ),
 				),
 			);
 
@@ -211,7 +211,7 @@ if ( ! class_exists( 'Admin' ) ) {
 
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_' . $area,
-				'title'        => sprintf( __( '%s Page Builder Templates', 'wds-simple-page-builder' ), esc_html( $area_data['name'] ) ),
+				'title'        => sprintf( __( '%s Page Builder Templates', 'simple-page-builder' ), esc_html( $area_data['name'] ) ),
 				'object_types' => $object_types,
 				'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
 			) );
@@ -228,9 +228,9 @@ if ( ! class_exists( 'Admin' ) ) {
 				'id'       => $this->prefix . $area_key . 'template',
 				'type'     => 'group',
 				'options'  => array(
-					'group_title'   => sprintf( __( '%s Template Part {#}', 'wds-simple-page-builder' ), esc_html( $area_data['name'] ) ),
-					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
-					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+					'group_title'   => sprintf( __( '%s Template Part {#}', 'simple-page-builder' ), esc_html( $area_data['name'] ) ),
+					'add_button'    => __( 'Add another template part', 'simple-page-builder' ),
+					'remove_button' => __( 'Remove template part', 'simple-page-builder' ),
 					'sortable'      => true,
 				)
 			) );
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Admin' ) ) {
 		 * @return null
 		 */
 		public function enqueue_builder_js() {
-			wp_enqueue_script( 'wds-simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), SPB2::VERSION, true );
+			wp_enqueue_script( 'simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), SPB2::VERSION, true );
 			$areas = $this->plugin->areas->get_registered_areas();
 			// Fake layouts as an area, so JS loads for the Layouts CPT.
 			$areas['layout'] = '';
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Admin' ) ) {
 			foreach ( $areas as $key => $area ) {
 				$data[] = $key;
 			}
-			wp_localize_script( 'wds-simple-page-builder', 'page_builder_areas', $data );
+			wp_localize_script( 'simple-page-builder', 'page_builder_areas', $data );
 		}
 
 		/**

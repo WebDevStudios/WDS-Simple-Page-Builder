@@ -42,8 +42,8 @@ if ( ! class_exists( 'Areas' ) ) {
 			$this->register_area(
 				'page_builder_default',
 				array(
-					'name'        => __( 'Default Page Builder Area', 'wds-simple-page-builder' ),
-					'description' => __( 'This is the default area. Place the template tag spb2_area() in your theme file to display. You can also create custom areas.', 'wds-simple-page-builder' ),
+					'name'        => __( 'Default Page Builder Area', 'simple-page-builder' ),
+					'description' => __( 'This is the default area. Place the template tag spb2_area() in your theme file to display. You can also create custom areas.', 'simple-page-builder' ),
 				)
 			);
 		}

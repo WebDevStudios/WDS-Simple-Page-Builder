@@ -43,19 +43,19 @@ if ( ! class_exists( 'Layouts' ) ) {
 
 		public function layouts_cpt() {
 			$labels = array(
-				'name'               => _x( 'Saved Layouts', 'post type general name', 'wds-simple-page-builder' ),
-				'singular_name'      => _x( 'Saved Layout', 'post type singular name', 'wds-simple-page-builder' ),
-				'menu_name'          => _x( 'Saved Layouts', 'admin menu', 'wds-simple-page-builder' ),
-				'name_admin_bar'     => _x( 'Saved Layout', 'add new on admin bar', 'wds-simple-page-builder' ),
-				'add_new'            => _x( 'Add New Layout', 'page builder layout', 'wds-simple-page-builder' ),
-				'add_new_item'       => __( 'Add New Layout', 'wds-simple-page-builder' ),
-				'new_item'           => __( 'New Layout', 'wds-simple-page-builder' ),
-				'edit_item'          => __( 'Edit Layout', 'wds-simple-page-builder' ),
-				'view_item'          => __( 'View Layout', 'wds-simple-page-builder' ),
-				'all_items'          => __( 'Saved Layouts', 'wds-simple-page-builder' ),
-				'search_items'       => __( 'Search Layouts', 'wds-simple-page-builder' ),
-				'not_found'          => __( 'No layouts found.', 'wds-simple-page-builder' ),
-				'not_found_in_trash' => __( 'No layouts found in Trash.', 'wds-simple-page-builder' )
+				'name'               => _x( 'Saved Layouts', 'post type general name', 'simple-page-builder' ),
+				'singular_name'      => _x( 'Saved Layout', 'post type singular name', 'simple-page-builder' ),
+				'menu_name'          => _x( 'Saved Layouts', 'admin menu', 'simple-page-builder' ),
+				'name_admin_bar'     => _x( 'Saved Layout', 'add new on admin bar', 'simple-page-builder' ),
+				'add_new'            => _x( 'Add New Layout', 'page builder layout', 'simple-page-builder' ),
+				'add_new_item'       => __( 'Add New Layout', 'simple-page-builder' ),
+				'new_item'           => __( 'New Layout', 'simple-page-builder' ),
+				'edit_item'          => __( 'Edit Layout', 'simple-page-builder' ),
+				'view_item'          => __( 'View Layout', 'simple-page-builder' ),
+				'all_items'          => __( 'Saved Layouts', 'simple-page-builder' ),
+				'search_items'       => __( 'Search Layouts', 'simple-page-builder' ),
+				'not_found'          => __( 'No layouts found.', 'simple-page-builder' ),
+				'not_found_in_trash' => __( 'No layouts found in Trash.', 'simple-page-builder' )
 			);
 			$args = array(
 				'labels'        => $labels,
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 		public function register_fields() {
 			$cmb = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_layout',
-				'title'        => __( 'Page Builder Templates', 'wds-simple-page-builder' ),
+				'title'        => __( 'Page Builder Templates', 'simple-page-builder' ),
 				'object_types' => array( 'wds_pb_layouts' ),
 				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
 			) );
@@ -81,9 +81,9 @@ if ( ! class_exists( 'Layouts' ) ) {
 				'id'       => '_wds_builder_layout_template',
 				'type'     => 'group',
 				'options'  => array(
-					'group_title'   => __( 'Template Part {#}', 'wds-simple-page-builder' ),
-					'add_button'    => __( 'Add another template part', 'wds-simple-page-builder' ),
-					'remove_button' => __( 'Remove template part', 'wds-simple-page-builder' ),
+					'group_title'   => __( 'Template Part {#}', 'simple-page-builder' ),
+					'add_button'    => __( 'Add another template part', 'simple-page-builder' ),
+					'remove_button' => __( 'Remove template part', 'simple-page-builder' ),
 					'sortable'      => true,
 				)
 			) );
@@ -94,23 +94,23 @@ if ( ! class_exists( 'Layouts' ) ) {
 
 			$advanced = new_cmb2_box( array(
 				'id'           => 'wds_simple_page_builder_layout_advanced',
-				'title'        => __( 'Layout Defaults', 'wds-simple-page-builder' ),
+				'title'        => __( 'Layout Defaults', 'simple-page-builder' ),
 				'object_types' => array( 'wds_pb_layouts' ),
 				'show_on_cb'   => array( $this->plugin->admin, 'maybe_enqueue_builder_js' ),
 			) );
 
 			$advanced->add_field( array(
 				'id'      => '_wds_builder_default_post_type',
-				'name'    => __( 'Post Type', 'wds-simple-page-builder' ),
-				'desc'    => __( 'Set this layout as the default layout for the these post types.', 'wds-simple-page-builder' ),
+				'name'    => __( 'Post Type', 'simple-page-builder' ),
+				'desc'    => __( 'Set this layout as the default layout for the these post types.', 'simple-page-builder' ),
 				'type'    => 'multicheck',
 				'options' => $this->plugin->options->get_post_types(),
 			) );
 
 			$advanced->add_field( array(
 				'id'      => '_wds_builder_default_area',
-				'name'    => __( 'Area', 'wds-simple-page-builder' ),
-				'desc'    => __( 'If the layout is set as a default layout for a post type, select what area the layout should be the default in.', 'wds-simple-page-builder' ),
+				'name'    => __( 'Area', 'simple-page-builder' ),
+				'desc'    => __( 'If the layout is set as a default layout for a post type, select what area the layout should be the default in.', 'simple-page-builder' ),
 				'type'    => 'radio',
 				'default' => 'page_builder_default',
 				'options' => $this->get_area_list(),
@@ -118,8 +118,8 @@ if ( ! class_exists( 'Layouts' ) ) {
 
 			$advanced->add_field( array(
 				'id'      => '_wds_builder_default_hide_metabox',
-				'name'    => __( 'Hide Metabox', 'wds-simple-page-builder' ),
-				'desc'    => __( 'If checked, the metabox for this area will be hidden on these post types.', 'wds-simple-page-builder' ),
+				'name'    => __( 'Hide Metabox', 'simple-page-builder' ),
+				'desc'    => __( 'If checked, the metabox for this area will be hidden on these post types.', 'simple-page-builder' ),
 				'type'    => 'checkbox',
 			) );
 		}
@@ -181,7 +181,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 		public function get_area_list() {
 			$areas = $this->plugin->areas->get_registered_areas();
 
-			$output['page_builder_default'] = __( 'Page Builder Default', 'wds-simple-page-builder' );
+			$output['page_builder_default'] = __( 'Page Builder Default', 'simple-page-builder' );
 			foreach ( $areas as $key => $values ) {
 				$output[ $key ] = $values['name'];
 			}

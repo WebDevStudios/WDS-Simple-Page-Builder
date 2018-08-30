@@ -35,7 +35,7 @@ Saved layouts are used when there is no layout set for that page (or post) with 
 
 == Installation ==
 
-1. Upload the `wds-simple-page-builder` directory to the \`/wp-content/plugins/\` directory or install via the Plugin Installer
+1. Upload the `simple-page-builder` directory to the \`/wp-content/plugins/\` directory or install via the Plugin Installer
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Place `<?php do_action( 'spb2_load_parts' ); ?>` in your templates
 
@@ -73,7 +73,7 @@ Another [CMB2](https://wordpress.org/plugins/CMB2) issue which will also be fixe
 * added a new `page_builder_class` function ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/11) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#page_builder_class-class---))
 * added a new function that will initialize page builder with a wrapping container around it ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/13) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#spb2_wrap-container---class---layout---))
 * added a new function to initialize the page builder options and set those initialized options as either hidden or visible but uneditable ([issue](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/issues/13) | [documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Template-Tags#wds_register_page_builder_options-args--array-))
-* added the ability to register Page Builder as a theme feature (using `add_theme_support( 'wds-simple-page-builder' )`) and a helper function to initialize the Page Builder options ([documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Adding-Theme-Support))
+* added the ability to register Page Builder as a theme feature (using `add_theme_support( 'simple-page-builder' )`) and a helper function to initialize the Page Builder options ([documentation](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki/Adding-Theme-Support))
 
 = 1.4.2 =
 * added `saved_page_builder_layout_exists` function

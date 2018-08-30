@@ -48,7 +48,7 @@ class Options {
 		$this->plugin = $plugin;
 
 		// Set our title
-		$this->title   = apply_filters( 'spb2_options_title', __( 'Options', 'wds-simple-page-builder' ) );
+		$this->title   = apply_filters( 'spb2_options_title', __( 'Options', 'simple-page-builder' ) );
 	}
 
 	/**
@@ -189,7 +189,7 @@ class Options {
 	 * @link   http://justintadlock.com/archives/2010/11/01/theme-supported-features
 	 */
 	public function add_theme_support( $args ) {
-		if ( current_theme_supports( 'wds-simple-page-builder' ) ) {
+		if ( current_theme_supports( 'simple-page-builder' ) ) {
 			wds_register_page_builder_options( $args );
 		}
 	}
@@ -200,8 +200,8 @@ class Options {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		add_menu_page( __( 'Page Builder', 'wds-simple-page-builder' ), __( 'Page Builder', 'wds-simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_layouts', '', 'dashicons-list-view' );
-		$this->options_page = add_submenu_page( 'edit.php?post_type=wds_pb_layouts', $this->title, __( 'Page Builder Options', 'wds-simple-page-builder' ), 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
+		add_menu_page( __( 'Page Builder', 'simple-page-builder' ), __( 'Page Builder', 'simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_layouts', '', 'dashicons-list-view' );
+		$this->options_page = add_submenu_page( 'edit.php?post_type=wds_pb_layouts', $this->title, __( 'Page Builder Options', 'simple-page-builder' ), 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
 		// Include CMB CSS in the head to avoid FOUT.
 		add_action( "admin_print_styles-{$this->options_page}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 	}
@@ -212,15 +212,15 @@ class Options {
 	 */
 	public function admin_page_display() {
 		// Enqueue our JS in the footer.
-		wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), SPB2::VERSION, true );
+		wp_enqueue_script( 'simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), SPB2::VERSION, true );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 		?>
 		<div class="wrap cmb2_options_page <?php echo $this->key; ?>">
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 			<h3 class="nav-tab-wrapper">
-				<a href="<?php echo esc_url( remove_query_arg( 'tab' ) ); ?>" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'wds-simple-page-builder' ); ?></a>
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'default-area-layouts' ) ) ); ?>" class="nav-tab <?php echo $tab == 'default-area-layouts' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Global Area Layouts', 'wds-simple-page-builder' ); ?></a>
+				<a href="<?php echo esc_url( remove_query_arg( 'tab' ) ); ?>" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'simple-page-builder' ); ?></a>
+				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'default-area-layouts' ) ) ); ?>" class="nav-tab <?php echo $tab == 'default-area-layouts' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Global Area Layouts', 'simple-page-builder' ); ?></a>
 			</h3>
 			<?php
 			if ( 'settings' === $tab ) {
@@ -260,8 +260,8 @@ class Options {
 		if ( SPB2_VERSION < 1.6 ) {
 
 			$cmb->add_field( array(
-				'name'       => __( 'Template Parts Directory', 'wds-simple-page-builder' ),
-				'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'wds-simple-page-builder' ),
+				'name'       => __( 'Template Parts Directory', 'simple-page-builder' ),
+				'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'simple-page-builder' ),
 				'id'         => 'parts_dir',
 				'type'       => 'text_small',
 				'default'    => 'parts',
@@ -270,8 +270,8 @@ class Options {
 			) );
 
 			$cmb->add_field( array(
-				'name'       => __( 'Template Parts Prefix', 'wds-simple-page-builder' ),
-				'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'wds-simple-page-builder' ),
+				'name'       => __( 'Template Parts Prefix', 'simple-page-builder' ),
+				'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'simple-page-builder' ),
 				'id'         => 'parts_prefix',
 				'type'       => 'text_small',
 				'default'    => 'part',
@@ -282,8 +282,8 @@ class Options {
 		}
 
 		$cmb->add_field( array(
-			'name'       => __( 'Use Wrapper', 'wds-simple-page-builder' ),
-			'desc'       => __( 'If checked, a wrapper HTML container will be added around each individual template part.', 'wds-simple-page-builder' ),
+			'name'       => __( 'Use Wrapper', 'simple-page-builder' ),
+			'desc'       => __( 'If checked, a wrapper HTML container will be added around each individual template part.', 'simple-page-builder' ),
 			'id'         => 'use_wrap',
 			'type'       => 'checkbox',
 			'show_on_cb' => array( $this, 'show_use_wrap' ),
@@ -291,15 +291,15 @@ class Options {
 		) );
 
 		$cmb->add_field( array(
-			'name'       => __( 'Container Type', 'wds-simple-page-builder' ),
-			'desc'       => __( 'The type of HTML container wrapper to use, if Use Wrapper is selected.', 'wds-simple-page-builder' ),
+			'name'       => __( 'Container Type', 'simple-page-builder' ),
+			'desc'       => __( 'The type of HTML container wrapper to use, if Use Wrapper is selected.', 'simple-page-builder' ),
 			'id'         => 'container',
 			'type'       => 'select',
 			'options'    => array(
-				'section' => __( 'Section', 'wds-simple-page-builder' ),
-				'div'     => __( 'Div', 'wds-simple-page-builder' ),
-				'aside'   => __( 'Aside', 'wds-simple-page-builder' ),
-				'article' => __( 'Article', 'wds-simple-page-builder' ),
+				'section' => __( 'Section', 'simple-page-builder' ),
+				'div'     => __( 'Div', 'simple-page-builder' ),
+				'aside'   => __( 'Aside', 'simple-page-builder' ),
+				'article' => __( 'Article', 'simple-page-builder' ),
 			),
 			'default'    => 'section',
 			'show_on_cb' => array( $this, 'show_container' ),
@@ -307,8 +307,8 @@ class Options {
 		) );
 
 		$cmb->add_field( array(
-			'name'       => __( 'Container Class', 'wds-simple-page-builder' ),
-			'desc'       => sprintf( __( '%1$sThe default class to use for all template part wrappers. Specific classes will be added to each wrapper in addition to this. %2$sMultiple classes, separated by a space, can be added here.%3$s', 'wds-simple-page-builder' ), '<p>', '<br />', '</p>' ),
+			'name'       => __( 'Container Class', 'simple-page-builder' ),
+			'desc'       => sprintf( __( '%1$sThe default class to use for all template part wrappers. Specific classes will be added to each wrapper in addition to this. %2$sMultiple classes, separated by a space, can be added here.%3$s', 'simple-page-builder' ), '<p>', '<br />', '</p>' ),
 			'id'         => 'container_class',
 			'type'       => 'text_medium',
 			'default'    => 'pagebuilder-part',
@@ -317,8 +317,8 @@ class Options {
 		) );
 
 		$cmb->add_field( array(
-			'name'       => __( 'Allowed Post Types', 'wds-simple-page-builder' ),
-			'desc'       => __( 'Post types that can use the page builder. Default is Page.', 'wds-simple-page-builder' ),
+			'name'       => __( 'Allowed Post Types', 'simple-page-builder' ),
+			'desc'       => __( 'Post types that can use the page builder. Default is Page.', 'simple-page-builder' ),
 			'id'         => 'post_types',
 			'type'       => 'multicheck',
 			'default'    => 'page',
@@ -456,7 +456,7 @@ class Options {
 		$parts = $this->get_parts();
 		$options = array(
 			// add a generic 'none' option
-			'none' => __( '- No Template Parts -', 'wds-simple-page-builder' ),
+			'none' => __( '- No Template Parts -', 'simple-page-builder' ),
 		);
 		foreach ( $parts as $key => $part ) {
 			$options[$key] = $part['name'];
