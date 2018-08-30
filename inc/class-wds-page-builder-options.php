@@ -212,7 +212,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function admin_page_display() {
 		// Enqueue our JS in the footer.
-		wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
+		wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), SPB2::VERSION, true );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 		?>
 		<div class="wrap cmb2_options_page <?php echo $this->key; ?>">

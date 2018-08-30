@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'SPB2_VERSION', 2.0 );
 define( 'SPB2_VERSION_PATH', plugin_dir_path( __FILE__ ) );
 
-if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
+if ( ! class_exists( 'SPB2' ) ) {
 
-	class WDS_Simple_Page_Builder {
+	class SPB2 {
 
 		/**
 		 * Current version number
@@ -163,6 +163,6 @@ if ( ! class_exists( 'WDS_Simple_Page_Builder' ) ) {
  * Public wrapper function
  */
 function wds_page_builder() {
-	return WDS_Simple_Page_Builder::get_instance();
+	return SPB2::get_instance();
 }
 wds_page_builder();

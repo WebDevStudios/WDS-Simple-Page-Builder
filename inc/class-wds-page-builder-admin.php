@@ -50,10 +50,10 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 				( 'wds_pb_layouts' == get_post_type() ||
 				is_array( wds_page_builder_get_option( 'post_types' ) ) &&
 				in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
-				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', WDS_Simple_Page_Builder::VERSION );
+				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', SPB2::VERSION );
 
 
-				wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), WDS_Simple_Page_Builder::VERSION, true );
+				wp_enqueue_script( 'wds-simple-page-builder-admin', $this->plugin->directory_url . '/assets/js/admin.js', array( 'jquery' ), SPB2::VERSION, true );
 			}
 		}
 
@@ -260,7 +260,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 * @return null
 		 */
 		public function enqueue_builder_js() {
-			wp_enqueue_script( 'wds-simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), WDS_Simple_Page_Builder::VERSION, true );
+			wp_enqueue_script( 'wds-simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), SPB2::VERSION, true );
 			$areas = $this->plugin->areas->get_registered_areas();
 			// Fake layouts as an area, so JS loads for the Layouts CPT.
 			$areas['layout'] = '';
