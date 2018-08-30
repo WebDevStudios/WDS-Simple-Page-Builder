@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Areas {
 	/**
 	 * Constructor
+	 *
 	 * @param object $plugin The parent plugin object.
 	 * @since 0.1.0
 	 */
@@ -34,7 +35,6 @@ class Areas {
 
 	/**
 	 * Run our hooks
-	 * @return void
 	 */
 	public function hooks() {
 		add_action( 'init', array( $this, 'register_default_area' ) );
@@ -42,7 +42,6 @@ class Areas {
 
 	/**
 	 * Registers the page_builder_default area which is used as a fallback.
-	 * @return void
 	 */
 	public function register_default_area() {
 		$this->register_area(
@@ -56,6 +55,7 @@ class Areas {
 
 	/**
 	 * Allows new areas to be registered.
+	 *
 	 * @param  string $slug      The area name/slug.
 	 * @param  array  $args      An array of meta data about the area.
 	 * @param  array  $templates Hard code some templates that use this area.
@@ -78,6 +78,7 @@ class Areas {
 
 	/**
 	 * Gets all the registered areas.
+	 *
 	 * @return array An array of all the areas that have been registered.
 	 */
 	public function get_registered_areas() {
@@ -86,6 +87,7 @@ class Areas {
 
 	/**
 	 * Gets information about the registered area.
+	 *
 	 * @param  string $slug The area we want information about.
 	 * @return array        The registered area data.
 	 */
@@ -117,6 +119,7 @@ class Areas {
 	/**
 	 * Return a saved layout object by its slug.
 	 * Note: This only works with layouts created after 1.6.
+	 *
 	 * @since  1.6.0
 	 * @param  string $layout_name The post slug of the pagebuilder layout.
 	 * @return object              The WP_Post object for the pagebuilder layout.
@@ -139,6 +142,7 @@ class Areas {
 
 	/**
 	 * Return all the saved layouts for a given area and post type.
+	 *
 	 * @since  1.6.0
 	 * @param  string $area      The pagebuilder area to query by.
 	 * @param  string $post_type The post type to get layouts from.
@@ -179,6 +183,7 @@ class Areas {
 
 	/**
 	 * Get the templates for an area.
+	 *
 	 * @since  1.6.0
 	 * @param  string  $area    The area to get templates from.
 	 * @param  integer $post_id The post ID we're checking.
@@ -247,6 +252,7 @@ class Areas {
 
 	/**
 	 * Handle rendering the template parts.
+	 *
 	 * @param  string  $area    The area we're getting parts from.
 	 * @param  integer $post_id The post ID to check for parts.
 	 * @return bool             True if the function was successful. False if not.
