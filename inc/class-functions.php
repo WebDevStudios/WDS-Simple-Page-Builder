@@ -29,7 +29,7 @@ class Functions {
 		$this->plugin = $plugin;
 		$this->hooks();
 
-		// Setup some base variables for the plugin
+		// Setup some base variables for the plugin.
 		$this->basename       = $plugin->basename;
 		$this->directory_path = $plugin->directory_path;
 		$this->directory_url  = $plugin->directory_url;
@@ -37,6 +37,9 @@ class Functions {
 		$this->templates_loaded = false;
 	}
 
+	/**
+	 * All our hooks.
+	 */
 	public function hooks() {
 		add_action( 'spb2_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
 		add_action( 'spb2_after_load_parts', array( $this, 'templates_loaded' ) );
@@ -45,8 +48,8 @@ class Functions {
 
 	/**
 	 * Toggles the templates-loaded status, triggered by the spb2_after_load_parts hook
+	 *
 	 * @since  1.5
-	 * @return null
 	 */
 	public function templates_loaded() {
 		if ( false === $this->templates_loaded ) {
@@ -57,7 +60,9 @@ class Functions {
 	/**
 	 * Handle identifying the template parts to use and trigger loading those parts
 	 *
-	 * @param string $layout Optional parameter to specify a specific layout to use
+	 * @param string $layout    Optional parameter to specify a specific layout to use.
+	 * @param string $container The container to use.
+	 * @param string $class     Custom class to use as wrapper.
 	 */
 	public function add_template_parts( $layout = '', $container = '', $class = '' ) {
 
@@ -74,15 +79,15 @@ class Functions {
 		$saved_layouts      = spb2_get_option( 'parts_saved_layouts' );
 		$registered_layouts = get_option( 'spb2_layouts' );
 
-		// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
+		// If there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action.
 		if ( ! $parts && ! $global_parts && ! $saved_layouts && '' == $layout ) {
 			return;
 		}
 
-		// if a layout was passed or a layout is being used by default for this post type, we're going to check that first
+		// If a layout was passed or a layout is being used by default for this post type, we're going to check that first.
 		if ( ! $parts && $saved_layouts || ! $parts && $registered_layouts ) {
 
-			// check if the layout requested is one that was registered
+			// Check if the layout requested is one that was registered.
 			if ( $registered_layouts ) {
 
 				if ( in_array( $layout, $registered_layouts ) ) {
@@ -90,10 +95,10 @@ class Functions {
 				}
 			}
 
-			// loop through the saved layouts, we'll check for the one we're looking for
+			// Loop through the saved layouts, we'll check for the one we're looking for.
 			foreach ( $saved_layouts as $saved_layout ) {
 
-				// is the layout the one that was named or one that was set for this post type?
+				// Is the layout the one that was named or one that was set for this post type?
 				if ( isset( $saved_layout['layouts_name'] ) && $layout == $saved_layout['layouts_name'] ) {
 
 					$parts = array();
@@ -102,30 +107,27 @@ class Functions {
 					}
 				} elseif ( isset( $saved_layout['default_layout'] ) && is_array( $saved_layout['default_layout'] ) && in_array( get_post_type( $post_id ), $saved_layout['default_layout'] ) ) {
 
-					// loop through the template parts and prepare the $parts variable for the load_template_part method
+					// Loop through the template parts and prepare the $parts variable for the load_template_part method.
 					foreach ( $saved_layout['template_group'] as $template_group ) {
 						$parts[] = array( 'template_group' => $template_group );
-					} // end template part loop
+					} // End template part loop.
+				} // End layout check.
+			} // End saved layouts loop.
+		} // Done checking saved layouts.
 
-				} // end layout check
-
-			} // end saved layouts loop
-
-		} // done checking saved layouts
-
-		// check for locally set template parts, make sure that the part isn't set to none, default to the globals if they aren't set
+		// Check for locally set template parts, make sure that the part isn't set to none, default to the globals if they aren't set.
 		elseif ( ! $parts || in_array( 'none', $parts[0] ) ) {
 
 			$parts = $global_parts;
 
 		}
 
-		// loop through each part and load the template parts
+		// Loop through each part and load the template parts.
 		if ( is_array( $parts ) && ! $this->templates_loaded ) {
 			do_action( 'spb2_before_load_parts' );
 			foreach ( $parts as $this->parts_index => $part ) {
 
-				// check if the current part was loaded already
+				// Check if the current part was loaded already.
 				if ( $this->get_part() && $this->get_part() !== $part['template_group'] ) {
 
 					$this->load_part( $part, $container, $class );
@@ -140,22 +142,24 @@ class Functions {
 	 * Helper function to keep things DRY, takes care of loading the specific template
 	 * part requested
 	 *
-	 * @param array $part A template part array from either the global option or the
-	 *                    post meta for the current page.
+	 * @param array  $part      A template part array from either the global option or the
+	 *                          post meta for the current page.
+	 * @param string $container The container type to use.
+	 * @param string $class     A custom class to use for the wrapper.
 	 */
 	public function load_part( $part = array(), $container = '', $class = '' ) {
 
-		// bail if nothing was passed
+		// Bail if nothing was passed.
 		if ( empty( $part ) ) {
 			return;
 		}
 
-		// bail if, for some reason, there is no template_group array key
+		// Bail if, for some reason, there is no template_group array key.
 		if ( ! isset( $part['template_group'] ) ) {
 			return;
 		}
 
-		// bail if no parts were set
+		// Bail if no parts were set.
 		if ( 'none' == $part['template_group'] ) {
 			return;
 		}
@@ -165,14 +169,13 @@ class Functions {
 
 		$part_data = $this->plugin->options->get_part_data( $this->part_slug );
 
-		// bail if the part doesn't exist
+		// Bail if the part doesn't exist.
 		if ( ! $part_data ) {
 			return;
 		}
 
 		/**
-		* the template part output
-		*
+		* The template part output.
 		*/
 		do_action( 'spb2_before_load_template', $container, $classes, $this->part_slug, $part_data );
 
@@ -182,6 +185,15 @@ class Functions {
 
 	}
 
+	/**
+	 * Load the template parts.
+	 *
+	 * @param  string $parts     Template part to load.
+	 * @param  string $container Wrapper to load parts in.
+	 * @param  string $class     Class to apply to wrapper.
+	 * @param  string $area      Area to put parts in.
+	 * @return void
+	 */
 	public function load_parts( $parts = '', $container = '', $class = '', $area = 'page_builder_default' ) {
 		$this->plugin->areas->set_current_area( $area );
 
@@ -190,7 +202,7 @@ class Functions {
 			return;
 		}
 
-		// parts are specified by their slugs, we pass them to the load_part function which uses the load_template_part method in the WDS_Page_Builder class
+		// Parts are specified by their slugs, we pass them to the load_part function which uses the load_template_part method in the Main class.
 		foreach ( $parts as $index => $part ) {
 			$this->set_parts_index( $index );
 			$this->load_part( array( 'template_group' => $part ) );
@@ -201,6 +213,7 @@ class Functions {
 
 	/**
 	 * Get the current parts index class variable
+	 *
 	 * @since  1.5
 	 * @return string The current value of index
 	 */
@@ -211,7 +224,7 @@ class Functions {
 	/**
 	 * Set the current parts index class variable
 	 *
-	 * @param $index The index value to set.
+	 * @param string $index The index value to set.
 	 */
 	public function set_parts_index( $index ) {
 		$this->parts_index = $index;
@@ -219,6 +232,7 @@ class Functions {
 
 	/**
 	 * Get the current part_slug class variable
+	 *
 	 * @since  1.5
 	 * @return string The current value of part_slug
 	 */
@@ -228,8 +242,9 @@ class Functions {
 
 	/**
 	 * Set the current part_slug class variable
+	 *
 	 * @since  1.5
-	 * @param string $part Sets a new value for the part_slug class variable
+	 * @param string $part Sets a new value for the part_slug class variable.
 	 */
 	public function set_part( $part ) {
 
@@ -243,18 +258,19 @@ class Functions {
 
 	/**
 	 * Returns an array of all the page builder template part slugs on the current page
+	 *
 	 * @since  1.5
 	 * @return array The page builder part slugs
 	 */
 	public function page_builder_parts() {
-		$some_files = array_filter(get_included_files(), array( $this, 'match_parts' ) );
+		$some_files = array_filter( get_included_files(), array( $this, 'match_parts' ) );
 		$the_files  = array();
 		foreach ( $some_files as $file ) {
 			$file = basename( $file );
 			$the_files[] = stripslashes( str_replace( array(
 				$this->plugin->options->get_parts_path(),
 				'.php',
-				'//'
+				'//',
 			), '', $file ) );
 		}
 		return $the_files;
@@ -262,20 +278,21 @@ class Functions {
 
 	/**
 	 * array_filter callback to match template parts
+	 *
 	 * @since  1.5
-	 * @param  string $var The thing to check
+	 * @param  string $var The thing to check.
 	 * @return bool        Whether the string was found
 	 */
-	private function match_parts($var) {
-		return strpos($var, 'part-');
+	private function match_parts( $var ) {
+		return strpos( $var, 'part-' );
 	}
 
 	/**
 	 * Adds opening wrap markup
+	 *
 	 * @since  1.5
-	 * @param  string  $container
-	 * @param  string  $class
-	 * @return null
+	 * @param  string $container The part container.
+	 * @param  string $class     The wrapper to put on the part.
 	 */
 	public function before_parts( $container = '', $class = '' ) {
 		$container = ( ! $container ) ? $this->page_builder_container() : sanitize_title( $container );
@@ -302,8 +319,8 @@ class Functions {
 	 * We just want to return a generic class, the current template part slug, and any
 	 * custom class names that were passed to the function.
 	 *
-	 * @param  string|array $class     One or more classes to add to the class list
-	 * @return array                   Array of classes.
+	 * @param  string|array $class One or more classes to add to the class list.
+	 * @return array               Array of classes.
 	 */
 	public function get_class( $class = '' ) {
 
@@ -320,12 +337,19 @@ class Functions {
 
 	}
 
+	/**
+	 * Get the classes to use.
+	 *
+	 * @param  string $class Additional classes to pass to the wrapper.
+	 * @return string        All the classes.
+	 */
 	public function get_classes( $class = '' ) {
-		// Separates classes with a single space, collates classes for template part wrapper DIV
+		// Separates classes with a single space, collates classes for template part wrapper DIV.
 		$classes = join( ' ', $this->get_class( $class ) );
 
 		/**
 		 * Filter the list of CSS classes
+		 *
 		 * @since  1.5
 		 * @param  array  $classes   An array of pagebuilder part classes
 		 */
@@ -334,10 +358,10 @@ class Functions {
 
 	/**
 	 * Adds closing wrap markup
+	 *
 	 * @since  1.5
-	 * @param  string  $container
-	 * @param  string  $class
-	 * @return null
+	 * @param  string $container The container type.
+	 * @param  string $class     The class used for the container.
 	 */
 	public function after_parts( $container = '', $class = '' ) {
 		$container = ( ! $container ) ? $this->page_builder_container() : esc_attr( $container );
@@ -347,16 +371,18 @@ class Functions {
 
 	/**
 	 * Helper function to return the main page builder container element
-	 * @return string The container type
+	 *
+	 * @return string The container type.
 	 */
 	public function page_builder_container() {
-		$container = ( $this->plugin->options->get( 'container' ) ) ? $this->plugin->options->get( 'container' )  : 'section';
+		$container = ( $this->plugin->options->get( 'container' ) ) ? $this->plugin->options->get( 'container' ) : 'section';
 		return esc_attr( apply_filters( 'spb2_container', $container ) );
 	}
 
 	/**
 	 * If we've set the option to use a wrapper around the page builder parts, add the actions
 	 * to display those parts
+	 *
 	 * @since  1.5
 	 * @return void
 	 */
