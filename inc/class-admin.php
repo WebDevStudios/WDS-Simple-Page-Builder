@@ -1,5 +1,15 @@
 <?php
-// Exit if accessed directly
+/**
+ * SPB Admin class.
+ *
+ * Handles everything that happens in the admin.
+ *
+ * @package SPB2
+ */
+
+namespace SPB;
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
