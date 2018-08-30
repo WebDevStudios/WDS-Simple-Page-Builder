@@ -163,7 +163,7 @@ if ( ! class_exists( 'SPB2' ) ) {
 /**
  * Public wrapper function
  */
-function wds_page_builder() {
+function spb2() {
 	return SPB2::get_instance();
 }
-wds_page_builder();
+spb2();

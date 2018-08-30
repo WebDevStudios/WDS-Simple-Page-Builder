@@ -30,11 +30,11 @@ if ( ! class_exists( 'WDS_Page_Builder_Data' ) ) {
 
 			} else {
 				// Get current part index
-				$part_index = ( ! $post_id ) ? wds_page_builder()->functions->get_parts_index() : 0;
+				$part_index = ( ! $post_id ) ? spb2()->functions->get_parts_index() : 0;
 				$part_slug  = $part;
 			}
 
-			$area     = ( $area ) ? $area : wds_page_builder()->areas->get_current_area();
+			$area     = ( $area ) ? $area : spb2()->areas->get_current_area();
 			$area_key = $area ? $area . '_' : '';
 			if ( 'page_builder_default' == $area ) {
 				$area_key = '';

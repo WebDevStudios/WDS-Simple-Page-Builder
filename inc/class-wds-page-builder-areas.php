@@ -43,7 +43,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 				'page_builder_default',
 				array(
 					'name'        => __( 'Default Page Builder Area', 'wds-simple-page-builder' ),
-					'description' => __( 'This is the default area. Place the template tag wds_page_builder_area() in your theme file to display. You can also create custom areas.', 'wds-simple-page-builder' ),
+					'description' => __( 'This is the default area. Place the template tag spb2_area() in your theme file to display. You can also create custom areas.', 'wds-simple-page-builder' ),
 				)
 			);
 		}
@@ -259,7 +259,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			/**
 			 * Filer allowing you to short-circuit and not display the area.
 			 */
-			$do = apply_filters( 'wds_page_builder_do_area', true, $area, $post_id );
+			$do = apply_filters( 'spb2_do_area', true, $area, $post_id );
 			if ( ! $do ) {
 				return false;
 			}
@@ -285,11 +285,11 @@ if ( ! class_exists( 'WDS_Page_Builder_Areas' ) ) {
 			$this->parts = $parts;
 			$this->area = $area;
 
-			do_action( 'wds_page_builder_load_parts', $parts, $area, $post_id );
+			do_action( 'spb2_load_parts', $parts, $area, $post_id );
 
-			do_action( 'wds_page_builder_before_load_parts', $parts, $area, $post_id );
+			do_action( 'spb2_before_load_parts', $parts, $area, $post_id );
 			$this->plugin->functions->load_parts( $parts, '', '', $area );
-			do_action( 'wds_page_builder_after_load_parts', $parts, $area, $post_id );
+			do_action( 'spb2_after_load_parts', $parts, $area, $post_id );
 
 			return true;
 		}

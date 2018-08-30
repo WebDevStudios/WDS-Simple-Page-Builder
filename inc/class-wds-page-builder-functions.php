@@ -31,13 +31,13 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		}
 
 		public function hooks() {
-			add_action( 'wds_page_builder_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
-			add_action( 'wds_page_builder_after_load_parts', array( $this, 'templates_loaded' ) );
+			add_action( 'spb2_load_parts', array( $this, 'add_template_parts' ), 10, 3 );
+			add_action( 'spb2_after_load_parts', array( $this, 'templates_loaded' ) );
 			add_action( 'cmb2_after_init', array( $this, 'wrapper_init' ) );
 		}
 
 		/**
-		 * Toggles the templates-loaded status, triggered by the wds_page_builder_after_load_parts hook
+		 * Toggles the templates-loaded status, triggered by the spb2_after_load_parts hook
 		 * @since  1.5
 		 * @return null
 		 */
@@ -56,16 +56,16 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 
 			if ( '' == $layout ) {
 				$this->templates_loaded = false;
-				if ( ! wds_page_builder_get_option( 'parts_saved_layouts' ) && ( ! is_page() || wds_page_builder_get_option( 'post_types' ) && ! in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
+				if ( ! spb2_get_option( 'parts_saved_layouts' ) && ( ! is_page() || spb2_get_option( 'post_types' ) && ! in_array( get_post_type(), spb2_get_option( 'post_types' ) ) ) ) {
 					return;
 				}
 			}
 
 			$post_id            = ( is_singular() ) ? get_queried_object()->ID : 0;
 			$parts              = get_post_meta( $post_id, '_wds_builder_template', true );
-			$global_parts       = wds_page_builder_get_option( 'parts_global_templates' );
-			$saved_layouts      = wds_page_builder_get_option( 'parts_saved_layouts' );
-			$registered_layouts = get_option( 'wds_page_builder_layouts' );
+			$global_parts       = spb2_get_option( 'parts_global_templates' );
+			$saved_layouts      = spb2_get_option( 'parts_saved_layouts' );
+			$registered_layouts = get_option( 'spb2_layouts' );
 
 			// if there are no parts saved for this post, no global parts, no saved layouts, and no layout passed to the action
 			if ( ! $parts && ! $global_parts && ! $saved_layouts && '' == $layout ) {
@@ -115,7 +115,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 
 			// loop through each part and load the template parts
 			if ( is_array( $parts ) && ! $this->templates_loaded ) {
-				do_action( 'wds_page_builder_before_load_parts' );
+				do_action( 'spb2_before_load_parts' );
 				foreach ( $parts as $this->parts_index => $part ) {
 
 					// check if the current part was loaded already
@@ -124,7 +124,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 						$this->load_part( $part, $container, $class );
 					}
 				}
-				do_action( 'wds_page_builder_after_load_parts' );
+				do_action( 'spb2_after_load_parts' );
 			}
 
 		}
@@ -167,7 +167,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			* the template part output
 			*
 			*/
-			do_action( 'wds_page_builder_before_load_template', $container, $classes, $this->part_slug, $part_data );
+			do_action( 'spb2_before_load_template', $container, $classes, $this->part_slug, $part_data );
 
 			// backpat for versions less than 1.6
 			if ( SPB2_VERSION < 1.6 ) {
@@ -176,7 +176,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 				load_template( spb_locate_template( $part_data['path'] ), false );
 			}
 
-			do_action( 'wds_page_builder_after_load_template', $container, $this->part_slug, $part_data );
+			do_action( 'spb2_after_load_template', $container, $this->part_slug, $part_data );
 
 		}
 
@@ -184,7 +184,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			$this->plugin->areas->set_current_area( $area );
 
 			if ( ! is_array( $parts ) ) {
-				do_action( 'wds_page_builder_load_parts', $parts, $container, $class );
+				do_action( 'spb2_load_parts', $parts, $container, $class );
 				return;
 			}
 
@@ -235,7 +235,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			 * Filter to change the part slug of a part. Could be used to allow multiple
 			 * instances of the same part to be loaded on a page.
 			 */
-			$this->part_slug = apply_filters( 'wds_page_builder_set_part', $part );
+			$this->part_slug = apply_filters( 'spb2_set_part', $part );
 
 		}
 
@@ -285,12 +285,12 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 			 *
 			 * Note, there's no filter for what the closing markup would look like, so if the
 			 * container element is being changed, make sure to only change the container by
-			 * filtering wds_page_builder_container.
+			 * filtering spb2_container.
 			 *
 			 * @since 1.5
 			 * @param string $before The full opening container markup
 			 */
-			echo apply_filters( 'wds_page_builder_wrapper', $before );
+			echo apply_filters( 'spb2_wrapper', $before );
 		}
 
 		/**
@@ -349,7 +349,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		 */
 		public function page_builder_container() {
 			$container = ( $this->plugin->options->get( 'container' ) ) ? $this->plugin->options->get( 'container' )  : 'section';
-			return esc_attr( apply_filters( 'wds_page_builder_container', $container ) );
+			return esc_attr( apply_filters( 'spb2_container', $container ) );
 		}
 
 		/**
@@ -360,8 +360,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
 		 */
 		public function wrapper_init() {
 			if ( $this->plugin->options->get( 'use_wrap' ) ) {
-				add_action( 'wds_page_builder_before_load_template', array( $this, 'before_parts' ), 10, 2 );
-				add_action( 'wds_page_builder_after_load_template', array( $this, 'after_parts' ), 10, 2 );
+				add_action( 'spb2_before_load_template', array( $this, 'before_parts' ), 10, 2 );
+				add_action( 'spb2_after_load_template', array( $this, 'after_parts' ), 10, 2 );
 			}
 		}
 
@@ -381,7 +381,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Functions' ) ) {
  */
 function page_builder_get_theme_compat_dir() {
 
-	$WDS_Page_Builder_Options = new WDS_Page_Builder_Options( wds_page_builder() );
+	$WDS_Page_Builder_Options = new WDS_Page_Builder_Options( spb2() );
 
 	/**
 	 * Filters the absolute path of the teamplate locations.

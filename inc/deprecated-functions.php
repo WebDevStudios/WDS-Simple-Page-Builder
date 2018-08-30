@@ -7,9 +7,9 @@
 
 /**
  * Load an array of template parts (by slug). If no array is passed, used as a wrapper
- * for the wds_page_builder_load_parts action.
+ * for the spb2_load_parts action.
  *
- * @deprecated               We're no longer loading all the parts in one place, parts are saved to areas, so use wds_page_builder_area instead.
+ * @deprecated               We're no longer loading all the parts in one place, parts are saved to areas, so use spb2_area instead.
  *
  * @since  1.3
  * @param  mixed  $parts     Optional. A specific layout or an array of parts to display.
@@ -18,9 +18,9 @@
  * @param  string $area      Optional. The area which these parts belong to.
  * @return void
  */
-function wds_page_builder_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
-	_deprecated_function( 'wds_page_builder_load_parts', '1.6', 'wds_page_builder_area' );
-	wds_page_builder()->functions->load_parts( $parts, $container, $class, $area );
+function spb2_load_parts( $parts = '', $container = '', $class = '', $area = '' ) {
+	_deprecated_function( 'spb2_load_parts', '1.6', 'spb2_area' );
+	spb2()->functions->load_parts( $parts, $container, $class, $area );
 }
 
 /**
@@ -28,21 +28,21 @@ function wds_page_builder_load_parts( $parts = '', $container = '', $class = '',
  *
  * Note, this should be used only if the option to use a wrapper is _disabled_, otherwise, you'll get the page builder contents twice
  *
- * @deprecated               Deprecated with wds_page_builder_load_parts.
+ * @deprecated               Deprecated with spb2_load_parts.
  *
  * @param  string $container Optional. Unique container html element or use the default.
  * @param  string $class     Optional. Unique class to pass to the wrapper -- this is the only way to change the container classes without a filter.
  * @param  string $layout    Optional. The specific layout name to load, or the default.
  * @return void
  */
-function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
-	_deprecated_function( 'wds_page_builder_wrap', '1.6' );
-	$page_builder = wds_page_builder()->functions;
-	add_action( 'wds_page_builder_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
-	add_action( 'wds_page_builder_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
+function spb2_wrap( $container = '', $class = '', $layout = '' ) {
+	_deprecated_function( 'spb2_wrap', '1.6' );
+	$page_builder = spb2()->functions;
+	add_action( 'spb2_before_load_template', array( $page_builder, 'before_parts' ), 10, 2 );
+	add_action( 'spb2_after_load_template', array( $page_builder, 'after_parts' ), 10, 2 );
 
 	// Do the page builder stuff.
-	wds_page_builder_load_parts( $layout, $container, $class );
+	spb2_load_parts( $layout, $container, $class );
 
 }
 
@@ -56,9 +56,9 @@ function wds_page_builder_wrap( $container = '', $class = '', $layout = '' ) {
  *
  * @return string The template part prefix (without the hyphen)
  */
-function wds_page_builder_template_part_prefix() {
-	_deprecated_function( 'wds_page_builder_template_part_prefix', '1.6' );
-	return wds_page_builder()->options->get_parts_prefix();
+function spb2_template_part_prefix() {
+	_deprecated_function( 'spb2_template_part_prefix', '1.6' );
+	return spb2()->options->get_parts_prefix();
 }
 
 /**
@@ -69,9 +69,9 @@ function wds_page_builder_template_part_prefix() {
  *
  * @return string The template part directory name
  */
-function wds_page_builder_template_parts_dir() {
-	_deprecated_function( 'wds_page_builder_template_parts_dir', '1.6' );
-	return wds_page_builder()->options->get_parts_dir();
+function spb2_template_parts_dir() {
+	_deprecated_function( 'spb2_template_parts_dir', '1.6' );
+	return spb2()->options->get_parts_dir();
 }
 
 /**
@@ -101,7 +101,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	// If allow edit is true, add the template to the same options group as the other templates. This will enable users to update the layout after it's registered.
 	if ( $allow_edit ) {
 
-		$old_options = get_option( 'wds_page_builder_options' );
+		$old_options = get_option( 'spb2_options' );
 		$new_options = $old_options;
 		$new_options['parts_saved_layouts'][] = array(
 			'layouts_name'   => esc_attr( $name ),
@@ -115,7 +115,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 		// If the layout doesn't exist already, add it. this allows that layout to be edited.
 		if ( ! $layout_exists ) {
-			update_option( 'wds_page_builder_options', $new_options );
+			update_option( 'spb2_options', $new_options );
 		}
 
 		return;
@@ -123,7 +123,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 	}
 
 	// This is a hard coded layout.
-	$options = get_option( 'wds_page_builder_layouts' );
+	$options = get_option( 'spb2_layouts' );
 
 	// Check existing layouts for the one we're trying to add to see if it exists.
 	$layout_exists   = false;
@@ -137,7 +137,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 					$layout_exists = true;
 				} else {
 					// If the group is different, delete the option, then insert the new templates into the template group.
-					delete_option( 'wds_page_builder_layouts' );
+					delete_option( 'spb2_layouts' );
 					unset( $options[ $i ] );
 					$options[ $i ]['layouts_name']   = esc_attr( $name );
 					$options[ $i ]['template_group'] = $templates;
@@ -160,7 +160,7 @@ function register_page_builder_layout( $name = '', $templates = array(), $allow_
 
 	// Only run update_option if the layout doesn't exist already.
 	if ( ! $layout_exists ) {
-		update_option( 'wds_page_builder_layouts', $new_options );
+		update_option( 'spb2_layouts', $new_options );
 	}
 
 	return;
@@ -191,7 +191,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 	}
 	// @todo Deprecate all this.
 	elseif ( $editable ) {
-		$options          = get_option( 'wds_page_builder_options' );
+		$options          = get_option( 'spb2_options' );
 		$existing_layouts = isset( $options['parts_saved_layouts'] ) ? $options['parts_saved_layouts'] : array();
 		$layout_exists    = false;
 
@@ -205,7 +205,7 @@ function saved_page_builder_layout_exists( $layout_name = '', $editable = true )
 			}
 		}
 	} else {
-		$options       = get_option( 'wds_page_builder_layouts' );
+		$options       = get_option( 'spb2_layouts' );
 		$layout_exists = false;
 
 		if ( ! $options  ) {
@@ -244,11 +244,11 @@ function unregister_page_builder_layout( $name = '' ) {
 
 	// If 'all' is passed, delete the option entirely.
 	if ( 'all' == $name ) {
-		delete_option( 'wds_page_builder_layouts' );
+		delete_option( 'spb2_layouts' );
 		return;
 	}
 
-	$old_options = ( is_array( get_option( 'wds_page_builder_layouts' ) ) ) ? get_option( 'wds_page_builder_layouts' ) : false;
+	$old_options = ( is_array( get_option( 'spb2_layouts' ) ) ) ? get_option( 'spb2_layouts' ) : false;
 
 	if ( $old_options ) {
 		foreach ( $old_options as $layout ) {
@@ -259,8 +259,8 @@ function unregister_page_builder_layout( $name = '' ) {
 		}
 
 		// Delete the saved layout before updating.
-		delete_option( 'wds_page_builder_layouts' );
-		update_option( 'wds_page_builder_layouts', $new_options );
+		delete_option( 'spb2_layouts' );
+		update_option( 'spb2_layouts', $new_options );
 
 	}
 

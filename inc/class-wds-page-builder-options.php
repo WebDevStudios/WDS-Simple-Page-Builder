@@ -16,13 +16,13 @@ class WDS_Page_Builder_Options {
 	 * Option key, and option page slug
 	 * @var string
 	 */
-	private $key = 'wds_page_builder_options';
+	private $key = 'spb2_options';
 
 	/**
 	 * Options page metabox id
 	 * @var string
 	 */
-	private $metabox_id = 'wds_page_builder_option_metabox';
+	private $metabox_id = 'spb2_option_metabox';
 
 	/**
 	 * Options Page title
@@ -48,7 +48,7 @@ class WDS_Page_Builder_Options {
 		$this->plugin = $plugin;
 
 		// Set our title
-		$this->title   = apply_filters( 'wds_page_builder_options_title', __( 'Options', 'wds-simple-page-builder' ) );
+		$this->title   = apply_filters( 'spb2_options_title', __( 'Options', 'wds-simple-page-builder' ) );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class WDS_Page_Builder_Options {
 			add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
 		}
 		add_action( 'wds_register_page_builder_options', array( $this, 'register_settings' ) );
-		add_action( 'wds_page_builder_add_theme_support', array( $this, 'add_theme_support' ) );
+		add_action( 'spb2_add_theme_support', array( $this, 'add_theme_support' ) );
 	}
 
 	/**
@@ -113,17 +113,17 @@ class WDS_Page_Builder_Options {
 	 */
 	public function get_parts_dir() {
 		$directory = $this->get( 'parts_dir', 'parts' );
-		return apply_filters( 'wds_page_builder_parts_directory', $directory );
+		return apply_filters( 'spb2_parts_directory', $directory );
 	}
 
 	public function get_parts_path() {
 		$path = get_template_directory() . '/' . $this->get_parts_dir() . '/';
-		return apply_filters( 'wds_page_builder_parts_path', $path );
+		return apply_filters( 'spb2_parts_path', $path );
 	}
 
 	public function get_parts_prefix() {
 		$prefix = $this->get( 'parts_prefix', 'part' );
-		return apply_filters( 'wds_page_builder_parts_prefix', $prefix );
+		return apply_filters( 'spb2_parts_prefix', $prefix );
 	}
 
 	/**
@@ -336,7 +336,7 @@ class WDS_Page_Builder_Options {
 	 */
 	public function get_post_types() {
 
-		$post_types = apply_filters( 'wds_page_builder_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
+		$post_types = apply_filters( 'spb2_post_types', get_post_types( array( 'public' => true ), 'objects' ) );
 
 		foreach ( $post_types as $post_type ) {
 			$types[ $post_type->name ] = $post_type->labels->name;

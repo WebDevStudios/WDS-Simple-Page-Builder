@@ -34,7 +34,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function hooks() {
 			if ( is_admin() ) {
 				add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
-				add_filter( 'wds_page_builder_area_parts_select', array( $this, 'limit_part_to_area' ), 10, 3 );
+				add_filter( 'spb2_area_parts_select', array( $this, 'limit_part_to_area' ), 10, 3 );
 			}
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
 		}
@@ -48,8 +48,8 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		public function load_admin_css( $hook ) {
 			if ( in_array( $hook, array( 'post-new.php', 'post.php' ) ) &&
 				( 'wds_pb_layouts' == get_post_type() ||
-				is_array( wds_page_builder_get_option( 'post_types' ) ) &&
-				in_array( get_post_type(), wds_page_builder_get_option( 'post_types' ) ) ) ) {
+				is_array( spb2_get_option( 'post_types' ) ) &&
+				in_array( get_post_type(), spb2_get_option( 'post_types' ) ) ) ) {
 				wp_enqueue_style( 'wds-simple-page-builder-admin', $this->directory_url . '/assets/css/admin.css', '', SPB2::VERSION );
 
 
@@ -68,7 +68,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 		 * Gets the fields for each group set.
 		 *
 		 * Has an internal filter to allow for the addition of fields based on the part slug.
-		 * ie: To add fields for the template part-sample.php you would add_filter( 'wds_page_builder_fields_sample', 'myfunc' )
+		 * ie: To add fields for the template part-sample.php you would add_filter( 'spb2_fields_sample', 'myfunc' )
 		 * The added fields will then only show up if that template part is selected within the group.
 		 *
 		 * @since 1.6
@@ -81,7 +81,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 					'name'       => __( 'Template', 'wds-simple-page-builder' ),
 					'id'         => $id,
 					'type'       => 'select',
-					'options'    => apply_filters( 'wds_page_builder_area_parts_select', $this->plugin->options->get_parts_select(), $this->plugin->options->get_parts(), $this->area ),
+					'options'    => apply_filters( 'spb2_area_parts_select', $this->plugin->options->get_parts_select(), $this->plugin->options->get_parts(), $this->area ),
 					'attributes' => array( 'class' => 'cmb2_select wds-simple-page-builder-template-select' ),
 				),
 			);
@@ -102,7 +102,7 @@ if ( ! class_exists( 'WDS_Page_Builder_Admin' ) ) {
 			$this->data_fields = array();
 
 			foreach ( $this->plugin->options->get_parts() as $part_slug => $part ) {
-				$new_fields = apply_filters( "wds_page_builder_fields_$part_slug", array() );
+				$new_fields = apply_filters( "spb2_fields_$part_slug", array() );
 
 				if ( ! empty( $new_fields ) && is_array( $new_fields ) ) {
 
