@@ -14,9 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Admin' ) ) {
-
-	class Admin {
+/**
+ * Main SPB2 Admin class.
+ */
+class Admin {
 
 		public $part_slug;
 		protected $parts_index = 0;
@@ -309,4 +310,3 @@ if ( ! class_exists( 'Admin' ) ) {
 		}
 
 	}
-}
