@@ -21,10 +21,14 @@ define( 'SPB2_VERSION_PATH', plugin_dir_path( __FILE__ ) );
 
 if ( ! class_exists( 'SPB2' ) ) {
 
+/**
+ * Main plugin class
+ */
 	class SPB2 {
 
 		/**
 		 * Current version number
+		 *
 		 * @var   string
 		 * @since 1.5
 		 */
@@ -33,7 +37,7 @@ if ( ! class_exists( 'SPB2' ) ) {
 		/**
 		 * Singleton instance of plugin
 		 *
-		 * @var
+		 * @var    object
 		 * @since  0.1.0
 		 */
 		protected static $single_instance = null;
@@ -56,15 +60,15 @@ if ( ! class_exists( 'SPB2' ) ) {
 		 * Construct function to get things started.
 		 */
 		protected function __construct() {
-			// Setup some base variables for the plugin
+			// Setup some base variables for the plugin.
 			$this->basename       = plugin_basename( __FILE__ );
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
-			// CMB2 takes care of figuring out which version to run internally
+			// TODO: remove CMB2.
 			require_once( $this->directory_path . 'inc/cmb2/init.php' );
 
-			// Include any required files
+			// Include any required files.
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-options.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-admin.php' );
 			require_once( $this->directory_path . 'inc/class-wds-page-builder-areas.php' );
@@ -81,10 +85,9 @@ if ( ! class_exists( 'SPB2' ) ) {
 		/**
 		 * Attach other plugin classes to the base plugin class.
 		 *
-		 * @since 0.1.0
-		 * @return  null
+		 * @since  0.1.0
 		 */
-		function plugin_classes() {
+		private function plugin_classes() {
 			$this->admin = new WDS_Page_Builder_Admin( $this );
 			$this->options = new WDS_Page_Builder_Options( $this );
 			$this->functions = new WDS_Page_Builder_Functions( $this );
@@ -95,19 +98,17 @@ if ( ! class_exists( 'SPB2' ) ) {
 
 		/**
 		 * Add hooks and filters
-		 *
-		 * @return null
 		 */
 		public function hooks() {
 			add_action( 'init', array( $this, 'init' ) );
 
 			// Make sure we have our requirements, and disable the plugin if we do not have them.
 			add_action( 'admin_notices', array( $this, 'maybe_disable_plugin' ) );
-			// Run our options hooks
+			// Run our options hooks.
 			$this->options->hooks();
-			// Run our admin hooks
+			// Run our admin hooks.
 			$this->admin->hooks();
-			// Run layouts hooks
+			// Run layouts hooks.
 			$this->layouts->hooks();
 		}
 
@@ -115,13 +116,12 @@ if ( ! class_exists( 'SPB2' ) ) {
 		 * Init hooks
 		 *
 		 * @since  0.1.0
-		 * @return null
 		 */
 		public function init() {
-			// Load Textdomain
+			// Load Textdomain.
 			load_plugin_textdomain( 'wds-simple-page-builder', false, dirname( $this->basename ) . '/languages' );
 
-			do_action('spb_init');
+			do_action( 'spb_init' );
 		}
 
 		/**
@@ -130,12 +130,12 @@ if ( ! class_exists( 'SPB2' ) ) {
 		 * @return boolean
 		 */
 		public static function meets_requirements() {
-			// Make sure we have CMB so we can use it
+			// Make sure we have CMB so we can use it.
 			if ( ! defined( 'CMB2_LOADED' ) ) {
 				return false;
 			}
 
-			// We have met all requirements
+			// We have met all requirements.
 			return true;
 		}
 
@@ -145,12 +145,13 @@ if ( ! class_exists( 'SPB2' ) ) {
 		 */
 		public function maybe_disable_plugin() {
 			if ( ! $this->meets_requirements() ) {
-				// Display our error
+				// Display our error.
 				echo '<div id="message" class="error">';
+				// Translators: %s is the URL of the plugins page.
 				echo '<p>' . esc_html( sprintf( __( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) ) . '</p>';
 				echo '</div>';
 
-				// Deactivate our plugin
+				// Deactivate our plugin.
 				deactivate_plugins( $this->basename );
 			}
 		}
