@@ -31,6 +31,7 @@ class Admin {
 	 * Constructor
 	 *
 	 * @since 0.1.0
+	 * @param object $plugin The plugin instance.
 	 */
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
@@ -43,6 +44,9 @@ class Admin {
 		$this->area           = '';
 	}
 
+	/**
+	 * Admin hooks.
+	 */
 	public function hooks() {
 		if ( is_admin() ) {
 			add_action( 'cmb2_init', array( $this, 'do_meta_boxes' ) );
@@ -103,6 +107,7 @@ class Admin {
 
 	/**
 	 * Retrieve all registered (via filters) additional data fields
+	 *
 	 * @since  1.6
 	 * @return array  Array of additional fields
 	 */
@@ -131,26 +136,28 @@ class Admin {
 
 	/**
 	 * Modify fields to have a before_row/after_row wrap
+	 *
 	 * @since 1.6
-	 * @param  string  $part_slug  The template part slug
-	 * @param  array   $field_args The field arguments array
-	 * @return array               The modified field arguments array
+	 * @param  string $part_slug  The template part slug.
+	 * @param  array  $field_args The field arguments array.
+	 * @return array              The modified field arguments array
 	 */
 	public function add_wrap_to_field_args( $part_slug, $field_args ) {
 
 		$field_args['_builder_group'] = $part_slug;
 
-		// Add before wrap
-		$field_args['before_row'] = isset( $field_args['before_row'] ) ? $field_args['before_row'] : '<div class="hidden-parts-fields hidden-parts-'. $part_slug .' hidden" >';
+		// Add before wrap.
+		$field_args['before_row'] = isset( $field_args['before_row'] ) ? $field_args['before_row'] : '<div class="hidden-parts-fields hidden-parts-' . $part_slug . ' hidden" >';
 
-		// Add after wrap
-		$field_args['after_row'] = isset( $field_args['after_row'] ) ? $field_args['after_row'] : '</div><!-- .hidden-parts-'. $part_slug .' -->';
+		// Add after wrap.
+		$field_args['after_row'] = isset( $field_args['after_row'] ) ? $field_args['after_row'] : '</div><!-- .hidden-parts-' . $part_slug . ' -->';
 
 		return $field_args;
 	}
 
 	/**
 	 * Handles registering get_page_builder_areas fields
+	 *
 	 * @since  1.6
 	 * @return null
 	 */
@@ -162,20 +169,20 @@ class Admin {
 			return;
 		}
 
-		foreach( $areas as $area => $layout ) {
-			// only show these meta fields if there's no defined layout for the area
+		foreach ( $areas as $area => $layout ) {
+			// Only show these meta fields if there's no defined layout for the area.
 			if ( empty( $layout['template_group'] ) ) {
 				$this->register_area_fields( $area );
 			}
-
 		}
 
 	}
 
 	/**
 	 * Handles registering fields for a single area
+	 *
 	 * @since  1.6
-	 * @param  string $area   Area slug
+	 * @param  string $area Area slug.
 	 * @return null
 	 */
 	public function register_area_fields( $area ) {
@@ -223,6 +230,7 @@ class Admin {
 
 		$cmb = new_cmb2_box( array(
 			'id'           => 'spb2_' . $area,
+			// Translators: %s is the area name.
 			'title'        => sprintf( __( '%s Page Builder Templates', 'simple-page-builder' ), esc_html( $area_data['name'] ) ),
 			'object_types' => $object_types,
 			'show_on_cb'   => array( $this, 'maybe_enqueue_builder_js' ),
@@ -240,11 +248,12 @@ class Admin {
 			'id'       => $this->prefix . $area_key . 'template',
 			'type'     => 'group',
 			'options'  => array(
+				// Translators: %s is the area name.
 				'group_title'   => sprintf( __( '%s Template Part {#}', 'simple-page-builder' ), esc_html( $area_data['name'] ) ),
 				'add_button'    => __( 'Add another template part', 'simple-page-builder' ),
 				'remove_button' => __( 'Remove template part', 'simple-page-builder' ),
 				'sortable'      => true,
-			)
+			),
 		) );
 
 		foreach ( $this->get_group_fields() as $field ) {
@@ -254,6 +263,7 @@ class Admin {
 
 	/**
 	 * Enqueue builder JS if it's needed (based on additional fields being present)
+	 *
 	 * @since  1.6
 	 * @return bool  Whether box should show (it should)
 	 */
@@ -262,14 +272,14 @@ class Admin {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_builder_js' ) );
 		}
 
-		// We're just using this hook for adding the admin_enqueue_scripts hook.. return true to display the metabox
+		// We're just using this hook for adding the admin_enqueue_scripts hook.. return true to display the metabox.
 		return true;
 	}
 
 	/**
 	 * Enqueue the builder JS
+	 *
 	 * @since  1.6
-	 * @return null
 	 */
 	public function enqueue_builder_js() {
 		wp_enqueue_script( 'simple-page-builder', $this->directory_url . '/assets/js/builder.js', array( 'cmb2-scripts' ), SPB2::VERSION, true );
@@ -286,9 +296,9 @@ class Admin {
 	/**
 	 * Used to filter the drop-down options for areas and to limit a part to only working in declared areas.
 	 *
-	 * @param $options
-	 * @param $parts
-	 * @param $area
+	 * @param array  $options The optiosn passed to the area.
+	 * @param array  $parts   The parts assigned to the area.
+	 * @param string $area    The current area being edited.
 	 *
 	 * @return mixed
 	 */
@@ -302,7 +312,7 @@ class Admin {
 					continue;
 				}
 				if ( ! in_array( $area, $part['area'] ) ) {
-					unset( $options[$slug] );
+					unset( $options[ $slug ] );
 				}
 			}
 		}
