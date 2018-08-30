@@ -397,30 +397,30 @@ class Functions {
 
 
 /**
- * page_builder_get_theme_compat_dir function.
+ * Wrapper for get_parts_path
  *
- * add_filter callback returns theme path to spb_register_template_stack()
+ * Callback for add_filter that returns theme path to spb_register_template_stack().
  *
  * @access public
  * @return string
  */
 function page_builder_get_theme_compat_dir() {
 
-	$Options = new Options( spb2() );
+	$options = new Options( spb2() );
 
 	/**
 	 * Filters the absolute path of the teamplate locations.
 	 *
 	 * @param string $dir The absolute path of the template package in use.
 	 */
-	return apply_filters( 'page_builder_get_theme_compat_dir', $Options->get_parts_path() );
+	return apply_filters( 'page_builder_get_theme_compat_dir', $options->get_parts_path() );
 }
 
 
 /**
- * page_builder_get_plugin_compat_dir function.
+ * SPB2 templates path.
  *
- * add_filter callback returns plugin path to spb_register_template_stack()
+ * Callback for add_filter that returns plugin path to spb_register_template_stack().
  *
  * @access public
  * @return string
@@ -437,8 +437,6 @@ function page_builder_get_plugin_compat_dir() {
 
 
 /**
- * page_builder_set_theme_compat_dir function.
- *
  * Adds the template folder option directory to template stack
  *
  * @access public
@@ -453,54 +451,52 @@ add_action( 'spb_init', 'page_builder_set_theme_compat_dir' );
 
 
 /**
- * spb_locate_template function.
- *
- * checks through all locatons to find a template then return its path.
+ * Checks through all locatons to find a template then return its path.
  *
  * @access public
- * @param mixed $template_names
- * @param bool $load (default: false)
- * @param bool $require_once (default: true)
+ * @param mixed $template_names List of templates to locate.
+ * @param bool  $load           Whether to load the template (default: false).
+ * @param bool  $require_once   Whether to require the template (default: true).
  * @return string
  */
 function spb_locate_template( $template_names, $load = false, $require_once = true ) {
 
-	// No file found yet
+	// No file found yet.
 	$located            = false;
 	$template_locations = spb_get_template_stack();
 
-	// Try to find a template file
+	// Try to find a template file.
 	foreach ( (array) $template_names as $template_name ) {
 
 		$template_name = explode( '/', $template_name );
 
-		// Continue if template is empty
+		// Continue if template is empty.
 		if ( empty( $template_name ) ) {
 			continue;
 		}
 
-		// Trim off any slashes from the template name
+		// Trim off any slashes from the template name.
 		$template_name  = ltrim( end( $template_name ), '/' );
 
-		// Loop through template stack
+		// Loop through template stack.
 		foreach ( (array) $template_locations as $template_location ) {
 
-			// Continue if $template_location is empty
+			// Continue if $template_location is empty.
 			if ( empty( $template_location ) ) {
 				continue;
 			}
 
-			// Check child theme first
+			// Check child theme first.
 			if ( file_exists( trailingslashit( get_stylesheet_directory() ) . 'pagebuilder/' . $template_name ) ) {
 				$located = trailingslashit( get_stylesheet_directory() ) . 'pagebuilder/' . $template_name;
 				break 2;
 
-			// Check parent theme next
+				// Check parent theme next.
 			} elseif ( file_exists( trailingslashit( get_template_directory() ) . 'pagebuilder/' . $template_name ) ) {
 				$located = trailingslashit( get_template_directory() ) . 'pagebuilder/' . $template_name;
 				break 2;
 
-			// Check template stack last
+				// Check template stack last.
 			} elseif ( file_exists( trailingslashit( $template_location ) . $template_name ) ) {
 				$located = trailingslashit( $template_location ) . $template_name;
 				break 2;
@@ -510,7 +506,7 @@ function spb_locate_template( $template_names, $load = false, $require_once = tr
 
 	do_action( 'spb_locate_template', $located, $template_name, $template_names, $template_locations, $load, $require_once );
 
-	// Maybe load the template if one was located
+	// Maybe load the template if one was located.
 	$use_themes = defined( 'WP_USE_THEMES' ) && WP_USE_THEMES;
 	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
 	if ( ( $use_themes || $doing_ajax ) && ( true == $load ) && ! empty( $located ) ) {
@@ -519,4 +515,3 @@ function spb_locate_template( $template_names, $load = false, $require_once = tr
 
 	return $located;
 }
-
