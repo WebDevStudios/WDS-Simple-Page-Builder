@@ -69,14 +69,13 @@ if ( ! class_exists( 'SPB2' ) ) {
 			require_once( $this->directory_path . 'inc/cmb2/init.php' );
 
 			// Include any required files.
-			require_once( $this->directory_path . 'inc/class-wds-page-builder-options.php' );
-			require_once( $this->directory_path . 'inc/class-wds-page-builder-admin.php' );
-			require_once( $this->directory_path . 'inc/class-wds-page-builder-areas.php' );
-			require_once( $this->directory_path . 'inc/class-wds-page-builder-data.php' );
-			require_once( $this->directory_path . 'inc/class-wds-page-builder-functions.php' );
-			require_once( $this->directory_path . 'inc/class-wds-page-builder-layouts.php' );
+			require_once( $this->directory_path . 'inc/class-options.php' );
+			require_once( $this->directory_path . 'inc/class-admin.php' );
+			require_once( $this->directory_path . 'inc/class-areas.php' );
+			require_once( $this->directory_path . 'inc/class-data.php' );
+			require_once( $this->directory_path . 'inc/class-functions.php' );
+			require_once( $this->directory_path . 'inc/class-layouts.php' );
 			require_once( $this->directory_path . 'inc/template-tags.php' );
-			require_once( $this->directory_path . 'inc/deprecated-functions.php' );
 
 			$this->plugin_classes();
 			$this->hooks();
