@@ -2,6 +2,8 @@
 
 ![SPB2 (Simple Page Builder)](https://raw.githubusercontent.com/WebDevStudios/WDS-Simple-Page-Builder/master/assets/banner-1544x500.png)
 
+Contributors: [jazzsequence](https://github.com/jazzsequence), [modemlooper](https://github.com/modemlooper), [gregrickaby](https://github.com/gregrickaby), [aubreypwd](https://github.com/aubreypwd), [jtsternberg](https://github.com/jtsternberg), [bradp](https://github.com/bradp), [jaywood](https://github.com/jaywood), [dustyf](https://github.com/dustyf), [blobaugh](https://github.com/blobaugh)
+
 Uses existing template parts in the theme to dynamically build a custom page layout, *per page*. An options page allows you to define your template part directory (if you wanted to keep these template parts separate from other template parts) and the template part prefix you are using.
 
 Questions? [Check out the wiki!](https://github.com/WebDevStudios/WDS-Simple-Page-Builder/wiki)
