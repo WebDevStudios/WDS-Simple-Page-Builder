@@ -148,7 +148,7 @@ if ( ! class_exists( 'Areas' ) ) {
 				'posts_per_page' => count( get_post_types() ),
 				'meta_query'     => array(
 					array(
-						'key'     => '_wds_builder_default_area',
+						'key'     => '_spb2_default_area',
 						'value'   => $area,
 						'compare' => '=',
 					),
@@ -158,7 +158,7 @@ if ( ! class_exists( 'Areas' ) ) {
 			if ( ! empty( $layouts ) ) {
 				foreach ( $layouts as $layout ) {
 					// Skip over any saved layouts that aren't for the passed post type.
-					$parts = get_post_meta( $layout->ID, '_wds_builder_default_post_type', true );
+					$parts = get_post_meta( $layout->ID, '_spb2_default_post_type', true );
 					if ( ! $parts || ! in_array( $post_type, $parts ) ) {
 						continue;
 					}
@@ -207,9 +207,9 @@ if ( ! class_exists( 'Areas' ) ) {
 			// If we have a saved layout, store the templates for later.
 			$templates = false;
 			if ( $saved_layout ) {
-				$area_default = get_post_meta( $post_id, '_wds_builder_default_area', true );
+				$area_default = get_post_meta( $post_id, '_spb2_default_area', true );
 				if ( $area == $area_default ) {
-					$templates = get_post_meta( $post_id, '_wds_builder_layout_template', true );
+					$templates = get_post_meta( $post_id, '_spb2_layout_template', true );
 				}
 			}
 
@@ -219,11 +219,11 @@ if ( ! class_exists( 'Areas' ) ) {
 			}
 
 			if ( 'wds_pb_layouts' == $post_type ) {
-				$templates = get_post_meta( $post_id, '_wds_builder_layout_template', true );
+				$templates = get_post_meta( $post_id, '_spb2_layout_template', true );
 			}
 
 			// Either use the templates we got earlier, or get the templates from the current post.
-			$templates = ( ! $templates ) ? get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', true ) : $templates;
+			$templates = ( ! $templates ) ? get_post_meta( $post_id, '_spb2_' . esc_attr( $area_key ) . 'template', true ) : $templates;
 
 			// If we have templates, loop through them and prepare the output.
 			if ( $templates ) {
@@ -272,7 +272,7 @@ if ( ! class_exists( 'Areas' ) ) {
 				if ( ! isset( $option[ $area ] ) ) {
 					return false;
 				}
-				$metas = get_post_meta( $option[ $area ], '_wds_builder_layout_template', true );
+				$metas = get_post_meta( $option[ $area ], '_spb2_layout_template', true );
 				if ( ! $metas ) {
 					return false;
 				}

@@ -78,7 +78,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 			) );
 
 			$group_field = $cmb->add_field( array(
-				'id'       => '_wds_builder_layout_template',
+				'id'       => '_spb2_layout_template',
 				'type'     => 'group',
 				'options'  => array(
 					'group_title'   => __( 'Template Part {#}', 'simple-page-builder' ),
@@ -100,7 +100,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 			) );
 
 			$advanced->add_field( array(
-				'id'      => '_wds_builder_default_post_type',
+				'id'      => '_spb2_default_post_type',
 				'name'    => __( 'Post Type', 'simple-page-builder' ),
 				'desc'    => __( 'Set this layout as the default layout for the these post types.', 'simple-page-builder' ),
 				'type'    => 'multicheck',
@@ -108,7 +108,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 			) );
 
 			$advanced->add_field( array(
-				'id'      => '_wds_builder_default_area',
+				'id'      => '_spb2_default_area',
 				'name'    => __( 'Area', 'simple-page-builder' ),
 				'desc'    => __( 'If the layout is set as a default layout for a post type, select what area the layout should be the default in.', 'simple-page-builder' ),
 				'type'    => 'radio',
@@ -117,7 +117,7 @@ if ( ! class_exists( 'Layouts' ) ) {
 			) );
 
 			$advanced->add_field( array(
-				'id'      => '_wds_builder_default_hide_metabox',
+				'id'      => '_spb2_default_hide_metabox',
 				'name'    => __( 'Hide Metabox', 'simple-page-builder' ),
 				'desc'    => __( 'If checked, the metabox for this area will be hidden on these post types.', 'simple-page-builder' ),
 				'type'    => 'checkbox',

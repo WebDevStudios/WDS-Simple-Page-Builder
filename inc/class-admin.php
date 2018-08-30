@@ -25,7 +25,7 @@ class Admin {
 		protected $builder_js_required = false;
 		protected $cmb = null;
 		protected $data_fields = null;
-		protected $prefix = '_wds_builder_';
+	protected $prefix = '_spb2_';
 
 		/**
 		 * Constructor
@@ -201,7 +201,7 @@ class Admin {
 
 			// If we have a saved layout for this area, see if we need to hide the area.
 			if ( $saved_layout ) {
-				$hide_area = ( 'on' == get_post_meta( $saved_layout->ID, '_wds_builder_default_hide_metabox', true ) ) ? true : false;
+			$hide_area = ( 'on' == get_post_meta( $saved_layout->ID, '_spb2_default_hide_metabox', true ) ) ? true : false;
 				// We're hiding the area.
 				if ( $hide_area ) {
 					return;

@@ -62,7 +62,7 @@ if ( ! class_exists( 'Functions' ) ) {
 			}
 
 			$post_id            = ( is_singular() ) ? get_queried_object()->ID : 0;
-			$parts              = get_post_meta( $post_id, '_wds_builder_template', true );
+			$parts              = get_post_meta( $post_id, '_spb2_template', true );
 			$global_parts       = spb2_get_option( 'parts_global_templates' );
 			$saved_layouts      = spb2_get_option( 'parts_saved_layouts' );
 			$registered_layouts = get_option( 'spb2_layouts' );

@@ -40,12 +40,12 @@ if ( ! class_exists( 'Data' ) ) {
 				$area_key = '';
 			}
 			$post_id = $post_id ? $post_id : get_queried_object_id();
-			$meta    = get_post_meta( $post_id, '_wds_builder_' . esc_attr( $area_key ) . 'template', 1 );
+			$meta    = get_post_meta( $post_id, '_spb2_' . esc_attr( $area_key ) . 'template', 1 );
 
 			if ( ! $meta || 'none' == $meta[0]['template_group'] ) {
 				// Get default layout for this area.
 				$option = get_option( $this->plugin->options->key . '_default_area_layouts' );
-				$meta = isset( $option[ $area ] ) ? get_post_meta( $option[ $area ], '_wds_builder_layout_template', true ) : false;
+				$meta = isset( $option[ $area ] ) ? get_post_meta( $option[ $area ], '_spb2_layout_template', true ) : false;
 			}
 			if (
 				// if index exists and the template_group index is there
