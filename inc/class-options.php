@@ -2,36 +2,46 @@
 /**
  * Add an options page. We want to define a template parts directory and a
  * file prefix that identifies template parts as such.
+ *
+ * @package SPB2
  */
 
-// Exit if accessed directly
+namespace SPB2;
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
+/**
+ * SPB2 Options class.
+ */
 class Options {
 
 	/**
 	 * Option key, and option page slug
+	 *
 	 * @var string
 	 */
 	private $key = 'spb2_options';
 
 	/**
 	 * Options page metabox id
+	 *
 	 * @var string
 	 */
 	private $metabox_id = 'spb2_option_metabox';
 
 	/**
 	 * Options Page title
+	 *
 	 * @var string
 	 */
 	protected $title = '';
 
 	/**
 	 * Options Page hook
+	 *
 	 * @var string
 	 */
 	protected $options_page = '';
@@ -42,17 +52,20 @@ class Options {
 
 	/**
 	 * Constructor
+	 *
+	 * @param object $plugin The plugin instance.
 	 * @since 0.1.0
 	 */
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
 
-		// Set our title
-		$this->title   = apply_filters( 'spb2_options_title', __( 'Options', 'simple-page-builder' ) );
+		// Set our title.
+		$this->title = apply_filters( 'spb2_options_title', __( 'Options', 'simple-page-builder' ) );
 	}
 
 	/**
 	 * Register our setting to WP
+	 *
 	 * @since  0.1.0
 	 */
 	public function init() {
@@ -60,6 +73,9 @@ class Options {
 		add_filter( "pre_update_option_{$this->key}", array( $this, 'prevent_blank_templates' ), 10, 2 );
 	}
 
+	/**
+	 * All our hooks.
+	 */
 	public function hooks() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
@@ -72,8 +88,9 @@ class Options {
 
 	/**
 	 * Registers the settings via wds_register_page_builder_options
+	 *
 	 * @since  1.5
-	 * @param  array  $args The options to update/register
+	 * @param  array $options The options to update/register.
 	 * @return void
 	 */
 	public function register_settings( $options = array() ) {
@@ -105,9 +122,10 @@ class Options {
 
 
 	/**
-	 * get_parts_dir function.
+	 * Get parts directory.
 	 *
-	 * set up parts dir
+	 * Set up parts dir
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -116,11 +134,21 @@ class Options {
 		return apply_filters( 'spb2_parts_directory', $directory );
 	}
 
+	/**
+	 * Get parts path.
+	 *
+	 * @return string The path to the parts directory.
+	 */
 	public function get_parts_path() {
 		$path = get_template_directory() . '/' . $this->get_parts_dir() . '/';
 		return apply_filters( 'spb2_parts_path', $path );
 	}
 
+	/**
+	 * Get parts prefix.
+	 *
+	 * @return string The prefix used on template parts.
+	 */
 	public function get_parts_prefix() {
 		$prefix = $this->get( 'parts_prefix', 'part' );
 		return apply_filters( 'spb2_parts_prefix', $prefix );
@@ -128,7 +156,9 @@ class Options {
 
 	/**
 	 * Get the Page Builder options
-	 * @return array The Page Builder options array
+	 *
+	 * @param  bool $reset Whether to reset the option.
+	 * @return array       The Page Builder options array
 	 */
 	public function get_all( $reset = false ) {
 		if ( ! is_null( $this->options ) && ! $reset ) {
@@ -142,6 +172,7 @@ class Options {
 
 	/**
 	 * Get an option from the option array
+	 *
 	 * @since  1.6
 	 * @param  string $key     The option to get from the array.
 	 * @param  mixed  $default Optional. Default value to return if the option does not exist.
@@ -159,6 +190,7 @@ class Options {
 	/**
 	 * Hooks to pre_update_option_{option name} to prevent empty templates from being saved
 	 * to the Saved Layouts
+	 *
 	 * @param  mixed $new_value The new value.
 	 * @param  mixed $old_value The old value.
 	 * @return mixed            The filtered setting
@@ -167,7 +199,7 @@ class Options {
 	 */
 	public function prevent_blank_templates( $new_value, $old_value ) {
 		$saved_layouts = $new_value['parts_saved_layouts'];
-		if( empty( $saved_layouts ) ) {
+		if ( empty( $saved_layouts ) ) {
 			return $new_value;
 		}
 		$i = 0;
@@ -183,6 +215,7 @@ class Options {
 
 	/**
 	 * Support WordPress add_theme_support feature
+	 *
 	 * @since  1.5
 	 * @uses   current_theme_supports
 	 * @param  array $args            Array of Page Builder options to set.
@@ -197,6 +230,7 @@ class Options {
 
 	/**
 	 * Add menu options page
+	 *
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
@@ -208,6 +242,7 @@ class Options {
 
 	/**
 	 * Admin page markup. Mostly handled by CMB2
+	 *
 	 * @since  0.1.0
 	 */
 	public function admin_page_display() {
@@ -240,9 +275,10 @@ class Options {
 
 	/**
 	 * Add the options metabox to the array of metaboxes
+	 *
 	 * @since  0.1.0
 	 */
-	function add_options_page_metabox() {
+	public function add_options_page_metabox() {
 
 		$disabled = ( isset( $this->options['hide_options'] ) && 'disabled' == $this->options['hide_options'] ) ? array( 'disabled' => '' ) : array();
 
@@ -256,30 +292,25 @@ class Options {
 			),
 		) );
 
-		// @todo depricate this
-		if ( SPB2_VERSION < 1.6 ) {
+		$cmb->add_field( array(
+			'name'       => __( 'Template Parts Directory', 'simple-page-builder' ),
+			'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'simple-page-builder' ),
+			'id'         => 'parts_dir',
+			'type'       => 'text_small',
+			'default'    => 'parts',
+			'show_on_cb' => array( $this, 'show_parts_dir' ),
+			'attributes' => $disabled,
+		) );
 
-			$cmb->add_field( array(
-				'name'       => __( 'Template Parts Directory', 'simple-page-builder' ),
-				'desc'       => __( 'Where the template parts are located in the theme. Default is /parts', 'simple-page-builder' ),
-				'id'         => 'parts_dir',
-				'type'       => 'text_small',
-				'default'    => 'parts',
-				'show_on_cb' => array( $this, 'show_parts_dir' ),
-				'attributes' => $disabled,
-			) );
-
-			$cmb->add_field( array(
-				'name'       => __( 'Template Parts Prefix', 'simple-page-builder' ),
-				'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'simple-page-builder' ),
-				'id'         => 'parts_prefix',
-				'type'       => 'text_small',
-				'default'    => 'part',
-				'show_on_cb' => array( $this, 'show_parts_prefix' ),
-				'attributes' => $disabled,
-			) );
-
-		}
+		$cmb->add_field( array(
+			'name'       => __( 'Template Parts Prefix', 'simple-page-builder' ),
+			'desc'       => __( 'File prefix that identifies template parts. Default is part-', 'simple-page-builder' ),
+			'id'         => 'parts_prefix',
+			'type'       => 'text_small',
+			'default'    => 'part',
+			'show_on_cb' => array( $this, 'show_parts_prefix' ),
+			'attributes' => $disabled,
+		) );
 
 		$cmb->add_field( array(
 			'name'       => __( 'Use Wrapper', 'simple-page-builder' ),
@@ -308,6 +339,7 @@ class Options {
 
 		$cmb->add_field( array(
 			'name'       => __( 'Container Class', 'simple-page-builder' ),
+			// Translators: 1, 2 and 3 are all HTML elements.
 			'desc'       => sprintf( __( '%1$sThe default class to use for all template part wrappers. Specific classes will be added to each wrapper in addition to this. %2$sMultiple classes, separated by a space, can be added here.%3$s', 'simple-page-builder' ), '<p>', '<br />', '</p>' ),
 			'id'         => 'container_class',
 			'type'       => 'text_medium',
@@ -331,8 +363,9 @@ class Options {
 
 	/**
 	 * Get an array of post types for the options page multicheck array
+	 *
 	 * @uses   get_post_types
-	 * @return array 			An array of public post types
+	 * @return array          An array of public post types
 	 */
 	public function get_post_types() {
 
@@ -355,26 +388,26 @@ class Options {
 
 		$stack = spb_get_template_stack();
 
-		// if in admin refresh glob transient
+		// If in admin refresh glob transient.
 		if ( is_admin() ) {
 			delete_transient( 'spb_part_glob' );
 		}
 
-		// check for glob transient and if return instead of re-glob
+		// Check for glob transient and if return instead of re-glob.
 		if ( $parts = get_transient( 'spb_part_glob' ) ) {
 			return $parts;
 		}
 
 		$parts = array();
 
-		// loop through stack and gobble up the templates, yum!
+		// Loop through stack and gobble up the templates, yum!
 		foreach ( $stack as $item ) {
 			array_push( $parts, glob( $item . '*.php', GLOB_NOSORT ) );
 		}
 
 		$parts = call_user_func_array( 'array_merge', $parts );
 
-		// stash glob results in a transient
+		// Stash glob results in a transient.
 		set_transient( 'spb_part_glob', $parts, 365 * DAY_IN_SECONDS );
 
 		return $parts;
@@ -382,12 +415,12 @@ class Options {
 
 
 	/**
-	 * get_parts function.
+	 * Get parts.
 	 *
 	 * @access public
-	 * @return void
+	 * @return array The parts.
 	 */
-	public function get_parts( ) {
+	public function get_parts() {
 
 		if ( ! $this->parts ) {
 			$files = $this->get_part_files();
@@ -434,32 +467,32 @@ class Options {
 
 
 	/**
-	 * get_part_data function.
+	 * Get part data.
 	 *
 	 * @access public
-	 * @param mixed $slug
-	 * @return void
+	 * @param mixed $slug The slug for the part to get data from.
+	 * @return string     The part data.
 	 */
 	public function get_part_data( $slug ) {
 		$parts = $this->get_parts();
-		return isset( $parts[$slug] ) ? $parts[$slug] : false;
+		return isset( $parts[ $slug ] ) ? $parts[ $slug ] : false;
 	}
 
 
 	/**
-	 * get_parts_select function.
+	 * Get parts select
 	 *
 	 * @access public
-	 * @return void
+	 * @return array An array of options.
 	 */
 	public function get_parts_select() {
 		$parts = $this->get_parts();
 		$options = array(
-			// add a generic 'none' option
+			// Add a generic 'none' option.
 			'none' => __( '- No Template Parts -', 'simple-page-builder' ),
 		);
 		foreach ( $parts as $key => $part ) {
-			$options[$key] = $part['name'];
+			$options[ $key ] = $part['name'];
 		}
 
 		return $options;
@@ -467,12 +500,14 @@ class Options {
 
 	/**
 	 * Public getter method for retrieving protected/private variables
+	 *
 	 * @since  0.1.0
-	 * @param  string  $field Field to retrieve
-	 * @return mixed          Field value or exception is thrown
+	 * @param  string $field Field to retrieve.
+	 * @return mixed         Field value or exception is thrown
+	 * @throws Exception     Invalid property if no field found.
 	 */
 	public function __get( $field ) {
-		// Allowed fields to retrieve
+		// Allowed fields to retrieve.
 		if ( in_array( $field, array( 'key', 'metabox_id', 'title', 'options_page' ), true ) ) {
 			return $this->{$field};
 		}
@@ -482,8 +517,9 @@ class Options {
 
 	/**
 	 * Helper proxy method for the CMB2 show_on callbacks.
+	 *
 	 * @since  1.5
-	 * @param  string $check Key to check for show_on_cb
+	 * @param  string $check Key to check for show_on_cb.
 	 * @return bool          Whether to show or hide the option.
 	 */
 	protected function check_if_show( $check ) {
@@ -496,6 +532,7 @@ class Options {
 
 	/**
 	 * CMB2 show_on callback function for parts_dir option.
+	 *
 	 * @since  1.5
 	 * @return bool Whether to show or hide the option.
 	 */
@@ -505,6 +542,7 @@ class Options {
 
 	/**
 	 * CMB2 show_on callback function for parts_prefix option.
+	 *
 	 * @since  1.5
 	 * @return bool Whether to show or hide the option.
 	 */
@@ -514,6 +552,7 @@ class Options {
 
 	/**
 	 * CMB2 show_on callback function for use_wrap option.
+	 *
 	 * @since  1.5
 	 * @return bool Whether to show or hide the option.
 	 */
@@ -523,6 +562,7 @@ class Options {
 
 	/**
 	 * CMB2 show_on callback function for container option.
+	 *
 	 * @since  1.5
 	 * @return bool Whether to show or hide the option.
 	 */
@@ -532,6 +572,7 @@ class Options {
 
 	/**
 	 * CMB2 show_on callback function for container_class option.
+	 *
 	 * @since  1.5
 	 * @return bool Whether to show or hide the option.
 	 */
@@ -541,6 +582,7 @@ class Options {
 
 	/**
 	 * CMB2 show_on callback function for post_types option.
+	 *
 	 * @since  1.5
 	 * @return bool Whether to show or hide the option.
 	 */
