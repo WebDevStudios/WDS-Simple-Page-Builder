@@ -200,8 +200,9 @@ class WDS_Page_Builder_Options {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		add_menu_page( __( 'Page Builder', 'wds-simple-page-builder' ), __( 'Page Builder', 'wds-simple-page-builder' ), 'edit_posts', 'edit.php?post_type=wds_pb_layouts', '', 'dashicons-list-view' );
-		$this->options_page = add_submenu_page( 'edit.php?post_type=wds_pb_layouts', $this->title, __( 'Page Builder Options', 'wds-simple-page-builder' ), 'manage_options', $this->key, array( $this, 'admin_page_display' ) );
+		$this->options_page = add_menu_page( __( 'Page Builder', 'wds-simple-page-builder' ), __( 'Page Builder', 'wds-simple-page-builder' ), 'edit_posts', 'wds_page_builder_options', array( $this, 'admin_page_display' ), 'dashicons-list-view' );
+		add_submenu_page( 'wds_page_builder_options', __( 'Page Builder Options', 'wds-simple-page-builder' ), __( 'Page Builder Options', 'wds-simple-page-builder' ), 'manage_options', 'wds_page_builder_options', array( $this, 'admin_page_display' ) );
+		add_submenu_page( 'wds_page_builder_options', __( 'Saved Layouts', 'wds-simple-page-builder' ), __( 'Saved Layouts', 'wds-simple-page-builder' ), 'manage_options', 'edit.php?post_type=wds_pb_layouts' );
 		// Include CMB CSS in the head to avoid FOUT.
 		add_action( "admin_print_styles-{$this->options_page}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 	}
